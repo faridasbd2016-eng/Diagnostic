@@ -1,6 +1,6 @@
 {
-  "version": "1.7.1",
+  "version": "1.8.0",
   "date": "2026-11-23",
-  "notes": "All Menu, compact New Bill, PAID/DUE stamp with due amount, notice board, complaint box",
+  "notes": "Add tests to an existing bill (same lab ID), Reset button, P.O and doctors with Excel import",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }
