@@ -1,6 +1,6 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.2",
   "date": "2026-11-23",
-  "notes": "Add tests to an existing bill (same lab ID), Reset button, P.O and doctors with Excel import",
+  "notes": "New Bill layout: compact two lines, payment fields under Due, larger test list",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }
