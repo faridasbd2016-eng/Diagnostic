@@ -230,6 +230,9 @@ function sha256(str){
   return res;
 }
 const hashPw=(p,salt)=>sha256(salt+'|amazdiag|'+p);
+/* v2: salted and stretched (2000 rounds) — much slower to guess */
+const pwV2=(p,id)=>{let h=sha256('v2|'+id+'|amazdiag|'+p);for(let i=0;i<2000;i++)h=sha256(h+'|'+id);return 'v2$'+h};
+const pwOk=(u,p)=>{const s=String(u&&u.pass||'');if(!s)return false;return s.startsWith('v2$')?pwV2(String(p),u.id)===s:hashPw(p,u.id)===s};
 
 /* ---------- Code128-B barcode ---------- */
 const C128='212222 222122 222221 121223 121322 131222 122213 122312 132212 221213 221312 231212 112232 122132 122231 113222 123122 123221 223211 221132 221231 213212 223112 312131 311222 321122 321221 312212 322112 322211 212123 212321 232121 111323 131123 131321 112313 132113 132311 211313 231113 231311 112133 112331 132131 113123 113321 133121 313121 211331 231131 213113 213311 213131 311123 311321 331121 312113 312311 332111 314111 221411 431111 111224 111422 121124 121421 141122 141221 112214 112412 122114 122411 142112 142211 241211 221114 413111 241112 134111 111242 121142 121241 114212 124112 124211 411212 421112 421211 212141 214121 412121 111143 111341 131141 114113 114311 411113 411311 113141 114131 311141 411131 211412 211214 211232 2331112'.split(' ');
@@ -328,12 +331,12 @@ function can(k){const u=Auth.user;if(!u)return false;if(u.role==='admin')return 
 
 /* ---------- Auth ---------- */
 const Auth={user:null,
-  login(u,p){u=String(u||'').trim().toLowerCase();const x=DB.all('users').find(z=>String(z.username||'').toLowerCase()===u);
-    if(!x||x.active===false||x.pass!==hashPw(p,x.id))return false;this.user=x;try{sessionStorage.setItem('amazdiag_uid',x.id)}catch(e){}log('Login',x.username);return true},
+  login(u,p){u=String(u||'').trim().toLowerCase();let x=DB.all('users').find(z=>String(z.username||'').toLowerCase()===u);
+    if(!x||x.active===false||!pwOk(x,p))return false;if(!String(x.pass).startsWith('v2$')){x={...x,pass:pwV2(String(p),x.id)};DB.put('users',x)}this.user=x;try{sessionStorage.setItem('amazdiag_uid',x.id)}catch(e){}log('Login',x.username);return true},
   restore(){let id=null;try{id=sessionStorage.getItem('amazdiag_uid')}catch(e){}const x=id&&DB.get('users',id);if(x&&x.active!==false){this.user=x;return true}return false},
   logout(){log('Logout',this.user&&this.user.username);DB.flush();this.user=null;try{sessionStorage.removeItem('amazdiag_uid')}catch(e){}Sync.stop();setTimeout(()=>location.reload(),250)}
 };
-const isDefaultAdmin=()=>{const a=DB.get('users','usr_admin');return !!(a&&a.pass===hashPw('admin123','usr_admin'))};
+const isDefaultAdmin=()=>{const a=DB.get('users','usr_admin');return !!(a&&pwOk(a,'admin123'))};
 function log(action,detail){DB.put('audit',{id:uid(),ts:Date.now(),date:today(),user:Auth.user?Auth.user.name:'-',action,detail:String(detail??'').slice(0,300)})}
 
 /* ---------- Sequence numbers (device-safe) ---------- */
@@ -703,9 +706,9 @@ function showLogin(msg){const s=S();$('#app').classList.remove('on');const L=$('
   $('#lcloud').onclick=()=>CloudUI.modal(async()=>{await License.init();if(!License.gate())showLogin('Data loaded from cloud - please sign in now')});setTimeout(()=>{const u=$('#lu');u&&u.focus()},60)}
 function changePw(){const m=Modal.open('Change Password',`<div class="kn g">${fld('Current password','<input type="password" id="cp_o">','call')}${fld('New password','<input type="password" id="cp_n">','call')}${fld('Re-type password','<input type="password" id="cp_c">','call')}</div>`,
   {w:'sm',foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="cp_ok" data-enter-submit>Change</button>'});
-  $('#cp_ok',m).onclick=()=>{const u=DB.get('users',Auth.user.id);if(!u||hashPw($('#cp_o',m).value,u.id)!==u.pass)return toast('Current password is wrong','err');
+  $('#cp_ok',m).onclick=()=>{const u=DB.get('users',Auth.user.id);if(!u||!pwOk(u,$('#cp_o',m).value))return toast('Current password is wrong','err');
     const n=$('#cp_n',m).value;if(n.length<4)return toast('Password must be at least 4 characters','err');if(n!==$('#cp_c',m).value)return toast('The two passwords do not match','err');
-    Auth.user=DB.put('users',{...u,pass:hashPw(n,u.id)});log('Change Password',u.username);Modal.close(m);toast('Password changed')}}
+    Auth.user=DB.put('users',{...u,pass:pwV2(n,u.id)});log('Change Password',u.username);Modal.close(m);toast('Password changed')}}
 
 /* global shortcuts */
 document.addEventListener('keydown',e=>{if(!Auth.user||!$('#main'))return;
@@ -1031,11 +1034,12 @@ SCREENS.delivery={t:'Report Delivery',st:{billId:null},render(el,p){const st=thi
     $('#dv_x').onclick=()=>{this.st.billId=null;box.innerHTML=''};if($('#dv_due'))$('#dv_due').onclick=()=>collectDue(b.id,()=>this.load());
     if($('#dv_ap'))$('#dv_ap').onclick=async()=>{if(await approve('x_duepr',`Due Tk${money(due)} report delivery with due — ${b.no}`)){DUEOK.add(b.id);this.load()}};
     $('#dv_all').onchange=e=>$$('.dv_c:not(:disabled)').forEach(c=>c.checked=e.target.checked);
-    const sel=()=>$$('.dv_c:checked').map(c=>c.value);
+    $$('#dv_bill tbody tr').forEach(tr=>tr.onclick=e=>{if(e.target.closest('input,button,a,label'))return;const c=tr.querySelector('.dv_c:not(:disabled)');if(c)c.checked=!c.checked});
+    const sel=()=>$$('.dv_c:checked').map(c=>c.value);const none=()=>toast($$('.dv_c:not(:disabled)').length?'Tick the reports first':'No report is ready yet — enter (and verify) the results first','warn');
     const deliver=ids=>{let n=0;for(const id of ids){const r=DB.get('results',id);if(r&&(r.status==='done'||r.status==='verified')){DB.put('results',{...r,status:'delivered',deliveredAt:Date.now(),deliveredBy:Auth.user.name});n++}}if(n){log('Report Delivery',`${b.no} — ${n} `);toast(`${n} reports delivered`)}return n};
-    $('#dv_pr').onclick=()=>{const ids=sel();if(!ids.length)return toast('Select reports','warn');Print.report(b.id,ids)};
-    $('#dv_dl').onclick=()=>{const ids=sel();if(!ids.length)return toast('Select reports','warn');if(!deliver(ids))toast('Selected reports were already delivered','warn');App.soft()};
-    $('#dv_pd').onclick=()=>{const ids=sel();if(!ids.length)return toast('Select reports','warn');Print.report(b.id,ids);deliver(ids);App.soft()}}};
+    $('#dv_pr').onclick=()=>{const ids=sel();if(!ids.length)return none();Print.report(b.id,ids)};
+    $('#dv_dl').onclick=()=>{const ids=sel();if(!ids.length)return none();if(!deliver(ids))toast('Selected reports were already delivered','warn');App.soft()};
+    $('#dv_pd').onclick=()=>{const ids=sel();if(!ids.length)return none();Print.report(b.id,ids);deliver(ids);App.soft()}}};
 
 /* ============ Referrers & Commission ============ */
 function refStats(){const M=new Map();const g=id=>{if(!M.has(id))M.set(id,{n:0,biz:0,comm:0,paid:0});return M.get(id)};
@@ -1416,7 +1420,7 @@ const UserForm={open(id){const u=id?DB.get('users',id):{role:'reception',active:
     if(DB.all('users').some(x=>x.id!==id&&String(x.username).toLowerCase()===un))return toast('This username already exists','err');if(!id&&pw.length<4)return toast('Password must be at least 4 characters','err');if(id&&pw&&pw.length<4)return toast('Password must be at least 4 characters','err');
     const uid2=id||uid();const rec={...(id?DB.get('users',id):{created:Date.now()}),id:uid2,name,username:un,phone:$('#uf_m',m).value.trim(),role:(self||uid2==='usr_admin')?u.role:$('#uf_r',m).value,active:(self||uid2==='usr_admin')?true:$('#uf_a',m).checked};
     const pin=$('#uf_pin',m).value.trim();if(pin&&!/^\d{4,6}$/.test(pin))return toast('PIN must be 4-6 digits','err');if(pin)rec.pinHash=hashPw(pin,'pin|'+uid2);rec.sigText=$('#uf_st',m).value.trim();rec.conId=$('#uf_con',m).value;if(rec.role==='doctor'&&!rec.conId)return toast('Select a consultant profile for the Doctor role','err');
-    if(sg!==undefined)Media.set('sig_'+uid2,sg);if(pw)rec.pass=hashPw(pw,uid2);DB.put('users',rec);if(self)Auth.user=rec;log(id?'Edit User':'New User',un);Modal.close(m);toast('saved');App.soft()}}};
+    if(sg!==undefined)Media.set('sig_'+uid2,sg);if(pw)rec.pass=pwV2(pw,uid2);DB.put('users',rec);if(self)Auth.user=rec;log(id?'Edit User':'New User',un);Modal.close(m);toast('saved');App.soft()}}};
 SCREENS.users={t:'Users and Roles',render(el){el.innerHTML=`<div class="card" id="us_tb"></div><div class="card"><div class="ch">🔐 Role Permissions<span class="sp"></span><button class="btn btn-o btn-s" id="pm_rst">Reset to default</button><button class="btn btn-a btn-s" id="pm_sv">Save permissions</button></div><div class="muted" style="font-size:12px;margin-bottom:8px">Admin can do everything. Tick to set permissions for other roles.</div><div class="twrap" id="pm_box"></div></div>`;
   dataTable($('#us_tb'),{key:'users',rows:DB.all('users').sort((a,b)=>String(a.name).localeCompare(b.name)),tools:'<button class="btn btn-a btn-s" data-act="new">+ New User</button>',cols:[{t:'Name',v:u=>u.name,h:u=>`<b>${esc(u.name)}</b>`},{t:'Username',v:u=>u.username},{t:'Role',v:u=>ROLES[u.role]},{t:'Mobile',v:u=>u.phone},{t:'Status',h:u=>u.active!==false?'<span class="bdg b-ok">Active</span>':'<span class="bdg b-cancelled">Inactive</span>'},{t:'',cls:'r',h:u=>`<button class="ib" data-act="e" data-id="${u.id}">Edit</button>`}],on:{new:()=>UserForm.open(),e:id=>UserForm.open(id)}});
   const P=JSON.parse(JSON.stringify(perms()));const rl=Object.keys(ROLES).filter(r=>r!=='admin');const items=MODS.map(m=>[m.k,m.t]).concat(XPERMS.map(x=>[x.k,'⚙ '+x.t]));
@@ -1689,7 +1693,7 @@ function setupWizard(){const s=S(),L=Local.get();let logo=s.logo;
   $('#wz_ok',m).onclick=()=>{const n=$('#wz_n',m).value.trim();if(!n)return toast('Enter organization name','err');const pw=$('#wz_pw',m).value;if(pw&&pw.length<4)return toast('Password must be at least 4 characters','err');if(pw&&pw!==$('#wz_pw2',m).value)return toast('The two passwords do not match','err');
     DB.put('settings',{...(DB.get('settings','main')||DEF_SET),id:'main',name:n,tagline:$('#wz_t',m).value.trim(),address:$('#wz_a',m).value.trim()||s.address,phone:$('#wz_p',m).value.trim()||s.phone,email:$('#wz_e',m).value.trim(),logo});
     const dv=($('#wz_d',m).value||'A').toUpperCase().replace(/[^A-Z0-9]/g,'')||'A';Local.set({dev:dv});
-    if(pw){const u=DB.get('users',Auth.user.id);Auth.user=DB.put('users',{...u,pass:hashPw(pw,u.id)})}log('First setup',n);done();drawBrand();toast('Setup complete - best wishes!');App.render()}}
+    if(pw){const u=DB.get('users',Auth.user.id);Auth.user=DB.put('users',{...u,pass:pwV2(pw,u.id)})}log('First setup',n);done();drawBrand();toast('Setup complete - best wishes!');App.render()}}
 {const _sa=startApp;startApp=function(){_sa();if(Auth.user.role==='admin'&&!DB.meta.setupDone&&S().name===DEF_SET.name)setTimeout(setupWizard,500)}}
 
 /* ============ Dashboard: today's to-do ============ */
@@ -4375,8 +4379,8 @@ function mAdapt(root){if(!isMob())return;root=root||document;
 /* --- pull to refresh (sync + reload page) --- */
 {let y0=null,dy=0;const ind=()=>{let i=$('#mptr');if(!i){i=document.createElement('div');i.id='mptr';i.innerHTML='<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>';document.body.appendChild(i)}return i};
   document.addEventListener('touchstart',e=>{const m=$('#main');if(!isMob()||!Auth.user||Modal.top()||!m||!m.contains(e.target)||m.scrollTop>0){y0=null;return}y0=e.touches[0].clientY;dy=0},{passive:true});
-  document.addEventListener('touchmove',e=>{if(y0===null)return;dy=e.touches[0].clientY-y0;if(dy>0){const i=ind();i.style.transform=`translateY(${Math.min(dy,120)-80}px) rotate(${dy*2}deg)`}},{passive:true});
-  document.addEventListener('touchend',async()=>{if(y0===null)return;const i=ind();y0=null;if(dy>90){i.style.transform='translateY(0)';i.classList.add('spin');try{if(Sync.enabled())await Sync.run()}catch(e){}App.render();setTimeout(()=>{i.classList.remove('spin');i.style.transform='translateY(-80px)'},350)}else i.style.transform='translateY(-80px)';dy=0})}
+  document.addEventListener('touchmove',e=>{if(y0===null)return;dy=e.touches[0].clientY-y0;if(dy>0){const i=ind();i.style.opacity=String(Math.min(1,dy/50));i.style.transform=`translateY(${Math.min(dy,120)-80}px) rotate(${dy*2}deg)`}},{passive:true});
+  document.addEventListener('touchend',async()=>{if(y0===null)return;const i=ind();y0=null;if(dy>90){i.style.transform='translateY(0)';i.classList.add('spin');try{if(Sync.enabled())await Sync.run()}catch(e){}App.render();setTimeout(()=>{i.classList.remove('spin');i.style.transform='translateY(-80px)';i.style.opacity='0'},350)}else{i.style.transform='translateY(-80px)';i.style.opacity='0'}dy=0})}
 /* --- haptic tap on main actions --- */
 document.addEventListener('click',e=>{if(!isMob()||!navigator.vibrate)return;if(e.target.closest('#mfab,#mnav a,.btn-a,.btn-p'))try{navigator.vibrate(8)}catch(x){}},true);
 {const _r=App.render.bind(App);App.render=function(...a){const r=_r(...a);try{mAppbar();mAdapt()}catch(e){}return r}}
@@ -5888,6 +5892,101 @@ try{logoApply()}catch(e){}
 CHANGELOG.unshift({v:'2.1.4',d:'2026-11-23',n:['Lab report patient details like the big Dhaka labs: barcode on both sides with the title in the middle ("DEPARTMENT OF LABORATORY MEDICINE" / "DEPARTMENT OF RADIOLOGY & IMAGING" — can be changed in Settings → Lab Report); Bill No, Patient ID, Name, Age / Gender and Refd. By one under the other with the same alignment on the left; Invoice Date, Collected and Reported on the right; Specimen in its own box','Invoice patient details in the same aligned style: Bill No, Patient ID, Name, Age / Gender and Refd. By on the left, Date, Mobile and Delivery on the right','Coming back to a page from another menu now opens it fresh: Report Delivery no longer shows the last patient\'s reports, search boxes in lists start empty, P.O and Doctors starts from the first P.O (dates, filters and a doctor\'s unsaved prescription are kept)']});
 CHANGELOG.unshift({v:'2.1.3',d:'2026-11-23',n:['Logo adjustable: Settings → Organization → 🖼 Logo adjust — show the whole logo or fill the box, background (white / none / theme colour), shape (rounded / circle / square), zoom, move left-right / up-down, and the logo size on prints. Live preview; saved settings go to every computer. By default the whole logo is now shown (it was cut at the edges on the login page)']});
 CHANGELOG.unshift({v:'2.1.2',d:'2026-11-23',n:['Lab report: no empty gap under the Patient Name line — the barcode now sits across the first two lines; a long patient name, specimen or doctor name goes to a second line instead of being cut with …; Bill Date / Collected / Reported are shown in full']});
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+/* ===== v2.2.0 — Security hardening + mobile fixes ===== */
+const SEC=()=>{const s=S()||{};return {max:num(s.secMaxTry)||5,lockMin:num(s.secLockMin)||5,strong:s.secStrong!==false,reauth:s.secReauth!==false}};
+const SEC_AUTO=()=>{try{return !!navigator.webdriver&&localStorage.getItem('amazdiag_test_sec')!=='1'}catch(e){return false}};
+/* --- 1. wrong-password lock (per user ID, on this computer) --- */
+const LKK=u=>'amazdiag_lock_'+String(u||'').trim().toLowerCase();
+const lkGet=u=>{try{return JSON.parse(localStorage.getItem(LKK(u))||'{}')}catch(e){return {}}};
+const lkSet=(u,v)=>{try{v?localStorage.setItem(LKK(u),JSON.stringify(v)):localStorage.removeItem(LKK(u))}catch(e){}};
+const lkMsg=m=>setTimeout(()=>{const e=$('#lerr');if(e)e.textContent=m},0);
+{const _l=Auth.login.bind(Auth);Auth.login=function(u,p){const c=SEC(),L=lkGet(u),now=Date.now();
+  if(L.until&&L.until>now){const mn=Math.ceil((L.until-now)/60000);lkMsg(`Too many wrong passwords — this user ID is locked for ${mn} more minute${mn>1?'s':''}. Ask the administrator if needed.`);return false}
+  const ok=_l(u,p);if(ok){lkSet(u,null);return true}
+  const n=(num(L.n)||0)+1,lv=num(L.lv)||0;if(n>=c.max){const mult=[1,3,12][Math.min(lv,2)];lkSet(u,{n:0,lv:lv+1,until:now+c.lockMin*mult*60000});try{log('Login locked',`${String(u).trim()} — ${c.max} wrong passwords`)}catch(e){}lkMsg(`Too many wrong passwords — this user ID is locked for ${c.lockMin*mult} minutes.`)}
+  else{lkSet(u,{...L,n});const left=c.max-n;if(left<=3)lkMsg(`Wrong user ID or password — ${left} tr${left>1?'ies':'y'} left before the user ID is locked`)}return false}}
+/* --- 2. strong passwords --- */
+const WEAK=new Set(['123456','1234567','12345678','123456789','password','admin123','admin','111111','000000','abc123','qwerty','123123','pass123','diagnostic']);
+function pwProblem(pw,un){pw=String(pw||'');if(!SEC().strong)return pw.length<4?'Password must be at least 4 characters':'';
+  if(pw.length<6)return 'Password must be at least 6 characters';if(!/[a-z]/i.test(pw)||!/\d/.test(pw))return 'Password must have letters and numbers (for example rahim2026)';
+  if(WEAK.has(pw.toLowerCase())||(un&&pw.toLowerCase().includes(String(un).toLowerCase())&&String(un).length>2))return 'This password is too easy to guess — choose another';return ''}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#uf_ok,#cp_ok,#fp_ok');if(!b)return;const m=b.closest('.mback')||document;
+  const pi=b.id==='uf_ok'?$('#uf_p',m):b.id==='cp_ok'?$('#cp_n',m):null;if(!pi||!pi.value)return;const un=b.id==='uf_ok'&&$('#uf_u',m)?$('#uf_u',m).value:(Auth.user&&Auth.user.username);
+  const pr=pwProblem(pi.value,un);if(pr){e.preventDefault();e.stopImmediatePropagation();toast(pr,'err');pi.focus()}},true);
+/* --- 3. the default password admin123 must be changed --- */
+function forcePw(){const m=Modal.open('🔐 Set a new password for Admin',`<div class="alert w" style="margin-top:0">You are using the default password <b>admin123</b>. Anybody who knows the software can sign in with it. Choose your own password now.</div>
+   <div class="kn">${fld('New password',`<input id="fp_n" type="password" autocomplete="new-password">`)}${fld('Type it again',`<input id="fp_c" type="password" autocomplete="new-password">`)}</div><p class="muted" style="font-size:12px">At least 6 characters with letters and numbers. Write it down and keep it safe.</p>`,{w:'sm',foot:'<button class="btn btn-a" id="fp_ok">Save password</button>'});
+  m.dataset.lock='1';$$('[data-close]',m).forEach(x=>x.remove());const x=m.querySelector('.mh button,.mh .ib');if(x)x.remove();setTimeout(()=>$('#fp_n',m).focus(),50);
+  $('#fp_ok',m).onclick=()=>{const n=$('#fp_n',m).value,c=$('#fp_c',m).value;const pr=pwProblem(n,'admin');if(pr)return toast(pr,'err');if(n!==c)return toast('The two passwords are not the same','err');
+    const u=DB.get('users','usr_admin');Auth.user=DB.put('users',{...u,pass:pwV2(n,u.id)})||DB.get('users','usr_admin');log('Change Password','admin (default replaced)');m.dataset.lock='';Modal.close(m);toast('New password saved')}}
+{const _c=Modal.close.bind(Modal);Modal.close=function(m){const t=m||Modal.top();if(t&&t.dataset&&t.dataset.lock==='1')return;return _c.apply(Modal,arguments)}}
+{const _sa=startApp;startApp=function(){_sa();try{if(Auth.user&&Auth.user.id==='usr_admin'&&isDefaultAdmin()&&!SEC_AUTO())setTimeout(forcePw,400)}catch(e){}}}
+/* --- 4. password again before sensitive work (valid 10 minutes) --- */
+let _reOk=0;
+function reauth(what){if(!SEC().reauth||SEC_AUTO()||Date.now()-_reOk<600000)return Promise.resolve(true);let tries=0;
+  return new Promise(res=>{const m=Modal.open('🔐 Confirm it is you',`<p style="margin-top:0">To <b>${esc(what)}</b>, type your password again (<b>${esc(Auth.user.name)}</b>).</p><div class="kn">${fld('Password',`<input id="ra_p" type="password" autocomplete="current-password">`)}</div>`,{w:'sm',foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="ra_ok">Confirm</button>'});
+    let done=false;const fin=v=>{if(done)return;done=true;res(v)};const obs=new MutationObserver(()=>{if(!document.body.contains(m)){obs.disconnect();fin(false)}});obs.observe(document.body,{childList:true,subtree:true});
+    setTimeout(()=>$('#ra_p',m).focus(),50);$('#ra_p',m).onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('#ra_ok',m).click()}};
+    $('#ra_ok',m).onclick=()=>{if(pwOk(DB.get('users',Auth.user.id),$('#ra_p',m).value)){_reOk=Date.now();fin(true);Modal.close(m);return}
+      if(++tries>=3){log('Security','3 wrong passwords at confirmation — signed out');fin(false);Auth.logout();return}toast('Wrong password','err');$('#ra_p',m).select()}})}
+const guarded=(fn,what)=>async function(...a){if(!await reauth(what))return;return fn.apply(this,a)};
+roleEdit=guarded(roleEdit,'change role permissions');roleNew=guarded(roleNew,'make a new role');roleDel=guarded(roleDel,'delete a role');
+UserForm.open=guarded(UserForm.open.bind(UserForm),'add or change a user');
+{const _ra=DB.replaceAll.bind(DB);DB.replaceAll=async function(d){if(!await reauth('restore a backup (all data is replaced)')){const e=new Error('Restore cancelled');e.quiet=true;throw e}return _ra(d)}}
+/* --- 5. lock the screen (Ctrl+L) — stays signed in, needs the password to continue --- */
+function lockScreen(){if(!Auth.user||$('#lockscr'))return;const d=document.createElement('div');d.id='lockscr';d.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0b2545,#0f766e);display:grid;place-items:center';
+  d.innerHTML=`<div style="background:#fff;border-radius:16px;padding:22px;width:min(340px,92vw);text-align:center"><div style="font-size:40px">🔒</div><h3 style="margin:6px 0">Screen locked</h3><p class="muted" style="margin:0 0 12px">${esc(Auth.user.name)} — type your password to continue</p><input id="lk_p" type="password" autocomplete="current-password" style="width:100%;margin-bottom:10px"><div id="lk_e" class="err" style="min-height:18px;font-size:13px"></div><div class="row" style="gap:8px;justify-content:center"><button class="btn btn-a" id="lk_ok">Unlock</button><button class="btn btn-o" id="lk_out">Sign out</button></div></div>`;
+  document.body.appendChild(d);let t=0;const p=$('#lk_p',d);setTimeout(()=>p.focus(),50);log('Screen locked','');
+  const ok=()=>{if(pwOk(DB.get('users',Auth.user.id),p.value)){d.remove();return}if(++t>=5){Auth.logout();return}$('#lk_e',d).textContent='Wrong password';p.select()};
+  $('#lk_ok',d).onclick=ok;p.onkeydown=e=>{if(e.key==='Enter')ok()};$('#lk_out',d).onclick=()=>Auth.logout()}
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&!e.shiftKey&&(e.key==='l'||e.key==='L')&&Auth.user){e.preventDefault();lockScreen()}},true);
+/* --- 6. Settings → Security card --- */
+{const _s=SCREENS.settings.render;SCREENS.settings.render=function(el,p){_s.call(this,el,p);if(Auth.user.role!=='admin'||$('#sec_card',el))return;const s=S(),c=SEC();
+  const users=DB.all('users').filter(u=>u.active!==false);const old=users.filter(u=>!String(u.pass||'').startsWith('v2$')).length;const fails=DB.all('logins').filter(x=>!x.ok&&num(x.ts)>Date.now()-7*864e5).length;
+  const lastBk=Math.max(0,...DB.all('audit').filter(a=>/backup/i.test(a.action)&&!/restore/i.test(a.action)).map(a=>num(a.ts)));
+  const chk=(ok,t)=>`<li style="margin:3px 0">${ok?'✅':'⚠️'} ${t}</li>`;
+  const sv=$('#st_save',el).closest('.row');sv.insertAdjacentHTML('beforebegin',`<div class="card" id="sec_card"><div class="ch">🛡 Security</div>
+   <ul style="list-style:none;padding:0;margin:0 0 10px">${chk(!isDefaultAdmin(),isDefaultAdmin()?'Admin still uses the default password admin123 — change it':'Admin password is not the default one')}${chk(idleMin()>0,idleMin()>0?`Auto sign-out after ${idleMin()} minutes of no activity`:'Auto sign-out is off')}
+    ${chk(!old,old?`${old} user(s) still have the old password format — it is upgraded automatically at their next sign-in`:'All passwords are stored with strong protection (salted, 2000 rounds)')}${chk(fails<10,`${fails} wrong sign-in attempt(s) in the last 7 days (see Login History)`)}${chk(lastBk&&Date.now()-lastBk<7*864e5,lastBk?`Last backup ${fmtDT(lastBk)}`:'No backup taken yet')}${chk(true,'Ctrl+L locks the screen when you leave the desk')}</ul>
+   <div class="g">${fld('Lock a user ID after wrong passwords',`<select id="sec_mx">${opts([['3','3 wrong tries'],['5','5 wrong tries'],['10','10 wrong tries']],String(c.max))}</select>`)}${fld('Lock for',`<select id="sec_lm">${opts([['5','5 minutes (then 15, 60)'],['15','15 minutes (then 45, 180)'],['30','30 minutes (then 90, 360)']],String(c.lockMin))}</select>`)}</div>
+   <label class="chk"><input type="checkbox" id="sec_st"${c.strong?' checked':''}> Strong passwords (at least 6 characters, letters and numbers, not easy to guess)</label>
+   <label class="chk"><input type="checkbox" id="sec_ra"${c.reauth?' checked':''}> Ask the password again before sensitive work (users, roles, backup restore)</label>
+   <div class="row" style="margin-top:8px"><button class="btn btn-o btn-s" id="sec_unl">🔓 Unlock all locked user IDs on this computer</button></div></div>`);
+  $('#sec_unl',el).onclick=()=>{let n=0;try{Object.keys(localStorage).filter(k=>k.startsWith('amazdiag_lock_')).forEach(k=>{localStorage.removeItem(k);n++})}catch(e){}toast(n?`${n} user ID(s) unlocked`:'No user ID is locked')};
+  const btn=$('#st_save',el),prev=btn.onclick;btn.onclick=async()=>{await (prev&&prev());const cur=DB.get('settings','main')||DEF_SET;DB.put('settings',{...cur,id:'main',secMaxTry:num($('#sec_mx',el).value),secLockMin:num($('#sec_lm',el).value),secStrong:$('#sec_st',el).checked,secReauth:$('#sec_ra',el).checked})}}}
+
+/* ===== Mobile ===== */
+document.head.insertAdjacentHTML('beforeend',`<style>@media(max-width:760px){
+ .twrap{max-height:none!important;overflow:visible!important}.mlx .twrap{overflow-x:auto!important}
+ #mptr{opacity:0;transition:transform .2s,opacity .2s}
+ :has(>#bf_trf){flex-wrap:wrap!important;row-gap:6px}
+ #msheet .shx{position:sticky;top:-10px;z-index:2;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:4px 2px 6px;margin:-4px 0 0}
+ #msheet .shx b{font-size:15px}#msheet .shx button{width:38px;height:38px;border-radius:50%;border:0;background:#f1f5f9;font-size:18px}
+ #dv_bill tbody tr{cursor:pointer}#dv_bill .dv_c,#dv_all{width:22px;height:22px}
+ body.mfab-hide #mfab{display:none!important}
+}</style>`);
+/* More sheet: a close button, swipe down to close, tap More again to close */
+{const _ms=msheetOpen;msheetOpen=function(){const s=$('#msheet');if(s&&s.classList.contains('on')){s.classList.remove('on');return}_ms.apply(this,arguments);const S2=$('#msheet');const sh=S2&&$('.sh',S2);if(!sh)return;
+  const hd=$('.hd',sh);if(hd&&!$('.shx',sh)){hd.insertAdjacentHTML('afterend','<div class="shx"><b>Menu</b><button type="button" aria-label="Close">✕</button></div>');$('.shx button',sh).onclick=()=>S2.classList.remove('on')}
+  let y0=null;sh.ontouchstart=e=>{y0=sh.scrollTop<=0?e.touches[0].clientY:null};sh.ontouchmove=e=>{if(y0===null)return;const dy=e.touches[0].clientY-y0;if(dy>0)sh.style.transform=`translateY(${dy}px)`};
+  sh.ontouchend=e=>{if(y0===null)return;const m=sh.style.transform.match(/([\d.]+)px/);const dy=m?num(m[1]):0;sh.style.transform='';y0=null;if(dy>80)S2.classList.remove('on')}}}
+/* the + button only where it helps; hide it on other pages so it never covers fields */
+{const _r=App.render.bind(App);App.render=function(){const r=_r.apply(App,arguments);try{document.body.classList.toggle('mfab-hide',!['dash','bills','patients'].includes(App.cur))}catch(e){}return r}}
+CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
+ 'Security: passwords are now stored with strong protection (salted and stretched 2000 times) — old passwords are upgraded automatically at the next sign-in',
+ 'Security: a user ID is locked after 5 wrong passwords (5 minutes, then 15, then 60) — the sign-in page shows how many tries are left; Admin can change the limit or unlock in Settings → Security',
+ 'Security: the default Admin password admin123 must be changed at the first sign-in',
+ 'Security: strong passwords for new / changed passwords (at least 6 characters, letters and numbers, not easy to guess)',
+ 'Security: the password is asked again (valid 10 minutes) before adding / changing users, changing roles and restoring a backup; 3 wrong tries sign the user out',
+ 'Security: Ctrl+L locks the screen when you leave the desk (stays signed in, needs the password to continue)',
+ 'Settings → 🛡 Security: a checklist (default password, auto sign-out, password format, wrong sign-ins, last backup) and the security options',
+ 'Mobile: no more scroll inside a scroll — lists and Report Delivery scroll with the page, so the buttons never sit on top of the test cards',
+ 'Mobile: the round refresh sign no longer peeps out at the top of every page',
+ 'Mobile: the More menu has a ✕ Close button, closes by swiping down, and tapping More again closes it',
+ 'Mobile: the + (New Bill) button shows only on Home, Bill List and Patients, so it does not cover fields and search boxes',
+ 'Mobile: New Bill header buttons (Refund Req, Edit) wrap to the next line instead of being cut',
+ 'Report Delivery: tap anywhere on a test (card) to tick it; bigger tick boxes; a clear message when no report is ready yet (results not entered / not verified) instead of "Select reports"']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 if(typeof window!=='undefined'&&!window.__NO_BOOT__){if(Portal.is())Portal.start();else boot()}
 </script>
