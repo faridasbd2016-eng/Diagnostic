@@ -1,6 +1,6 @@
 {
-  "version": "2.1.2",
+  "version": "2.1.4",
   "date": "2026-11-23",
-  "notes": "Report patient box: no gap, nothing cut",
+  "notes": "Aligned patient details on report and invoice; pages open fresh",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }
