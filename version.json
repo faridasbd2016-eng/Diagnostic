@@ -1,6 +1,6 @@
 {
-  "version": "1.9.6",
+  "version": "2.1.1",
   "date": "2026-11-23",
-  "notes": "Invoice/report print polish, Media & P.O list format",
+  "notes": "Roles in detail, Excel import on lists, cloud sync for logo / pad, list tables, All Menu fix",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }
