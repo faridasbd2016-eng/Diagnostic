@@ -1,6 +1,6 @@
 {
-  "version": "1.8.2",
+  "version": "1.9.2",
   "date": "2026-11-23",
-  "notes": "New Bill layout: compact two lines, payment fields under Due, larger test list",
+  "notes": "Bug fixes: keyboard billing (Address to Test), Social Media share buttons",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }
