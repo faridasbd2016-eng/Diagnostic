@@ -1770,13 +1770,13 @@ const PRINT_CSS=`*{box-sizing:border-box}body{font-family:"Times New Roman",Time
 .lh{display:flex;align-items:center;gap:12px;border-bottom:2px solid #0b2545;padding-bottom:7px;margin-bottom:9px}.lh img{height:64px;width:80px;object-fit:contain}
 .lh .ct{text-align:center;flex:1}.lh .nm{font-size:23px;font-weight:bold;color:#0b2545;letter-spacing:.3px}.lh .tg{font-size:12px;font-style:italic}.lh .ad{font-size:11.5px}
 .ttl{text-align:center;margin:4px 0 9px}.ttl span{display:inline-block;border:1.5px solid #000;padding:3px 18px;font-weight:bold;letter-spacing:1px;font-size:14px}
-table{width:100%;border-collapse:collapse}.info{border:1px solid #000;margin-bottom:9px}.info td{padding:3px 6px;vertical-align:top}
+table{width:100%;border-collapse:collapse}.info{border:1px solid #000;margin-bottom:9px}.info td{padding:3px 6px;vertical-align:top}.pinf{table-layout:fixed;margin-bottom:6px}.pinf td{padding:2px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pinf td>span{color:#333}
 .grid th,.grid td{border:1px solid #000;padding:4px 6px}.grid th{background:#e8edf3;text-align:left}.grid tfoot td{font-weight:bold;background:#f3f5f8}
 .r{text-align:right}.c{text-align:center}.b{font-weight:bold}.tot td{padding:2px 6px}.tot .g td{border-top:1px solid #000;font-weight:bold;font-size:13.5px}
 .sig{display:flex;justify-content:space-between;gap:24px;margin-top:42px}.sig div{flex:1;text-align:center;font-size:11.5px;white-space:pre-line;line-height:1.35}.sig div b{display:block;border-top:1px solid #000;padding-top:3px;margin:0 6px}
 .page{page-break-after:always;break-after:page}.page:last-child{page-break-after:auto;break-after:auto}
 .foot{font-size:10.5px;text-align:center;margin-top:12px;color:#222;border-top:1px solid #999;padding-top:4px}
-.stamp{display:inline-block;border:2.5px solid;padding:2px 14px;font-weight:bold;font-size:18px;transform:rotate(-8deg);letter-spacing:2px;margin:6px 0}
+.stamp{display:inline-block;border:1.2px solid;padding:3px 18px;font-weight:bold;font-size:18px;letter-spacing:2px;margin:4px 0;text-align:center;line-height:1.2}
 .rp th{border-top:1.5px solid #000;border-bottom:1.5px solid #000;padding:5px;text-align:left}.rp td{padding:4px 5px;border-bottom:1px dotted #bbb;vertical-align:top}.rp .gh td{font-weight:bold;text-decoration:underline;border:0;padding-top:8px}
 .tn{font-size:14.5px;font-weight:bold;text-align:center;margin:12px 0 6px;text-decoration:underline;text-transform:uppercase}
 .txtrep{white-space:pre-wrap;font-size:14px;line-height:1.65}.dept{font-size:14px;font-weight:bold;text-align:center;background:#0b2545;color:#fff;padding:3px;margin:8px 0 4px;letter-spacing:1px;text-transform:uppercase}
@@ -1794,7 +1794,7 @@ const Print={
     return `<div class="lh">${s.logo?`<img src="${esc(s.logo)}" alt="">`:''}<div class="ct"><div class="nm">${esc(s.name)}</div>${s.tagline?`<div class="tg">${esc(s.tagline)}</div>`:''}<div class="ad">${esc(s.address)}</div><div class="ad">${[s.phone&&'Phone: '+s.phone,s.email&&'Email: '+s.email,s.web].filter(Boolean).map(esc).join(' | ')}</div>${s.regNo?`<div class="ad">License No: ${esc(s.regNo)}</div>`:''}</div>${s.logo&&!compact?'<div style="width:80px"></div>':''}</div>`},
   foot(extra=''){return `<div class="foot">${extra?esc(extra)+' | ':''}Printed by ${esc(Auth.user?Auth.user.name:'')} on ${fmtDT(Date.now())} | ${APP.name}</div>`},
   invoice(id){const b=DB.get('bills',id);if(!b)return;const s=S();const paid=Idx.paid(id),due=billDue(b);const pays=DB.all('payments').filter(p=>p.billId===id).sort((a,c)=>a.ts-c.ts);const pos=s.invPaper==='POS';
-    const stamp=b.cancelled?'<span class="stamp" style="color:#b91c1c">CANCELLED</span>':due<=0?'<span class="stamp" style="color:#15803d">PAID</span>':`<span class="stamp" style="color:#b91c1c;text-align:center;line-height:1.15">DUE<br><span style="font-size:13.5px;letter-spacing:.5px">Tk ${money(due)}</span></span>`;
+    const stamp=b.cancelled?'<span class="stamp" style="color:#b91c1c">CANCELLED</span>':due<=0?'<span class="stamp" style="color:#15803d">PAID</span>':`<span class="stamp" style="color:#b91c1c">DUE<br><span style="font-size:14.5px;letter-spacing:.3px">TK- ${money(due)}</span></span>`;
     if(pos){const html=`<div class="pos">${this.head(true)}<div class="ttl"><span>${b.cancelled?'CANCELLED':'MONEY RECEIPT'}</span></div>
       <table><tr><td>Bill No</td><td class="r b">${esc(b.no)}</td></tr><tr><td>Date</td><td class="r">${fmtDT(b.ts)}</td></tr><tr><td>Patient</td><td class="r b">${esc(b.pat.name)}</td></tr><tr><td>Age/Sex</td><td class="r">${esc(ageStr(b.pat))} / ${esc(sexStr(b.pat.sex))}</td></tr><tr><td>Mobile</td><td class="r">${esc(b.pat.phone||'')}</td></tr><tr><td>Ref. By</td><td class="r">${esc(refLabel(b))}</td></tr></table>
       <div style="border-top:1px dashed #000;margin:4px 0"></div><table>${b.items.map((i,n)=>`<tr><td>${n+1}. ${esc(i.name)}</td><td class="r">${money(i.price)}</td></tr>`).join('')}</table><div style="border-top:1px dashed #000;margin:4px 0"></div>
@@ -1802,11 +1802,13 @@ const Print={
       <div class="c">${stamp}</div>${s.showBarcode?`<div class="c bc">${barcodeSVG(b.no,30,1)}</div>`:''}<div class="c" style="font-size:10.5px">Delivery: ${esc(fmtD(b.dlvDate)+' '+t12(b.dlvTime))}<br>${esc(s.invNote)}<br>Served by: ${esc(b.by||'')}</div></div>`;
       return this.go(html,{page:'80mm auto',margin:'3mm',title:b.no})}
     const one=copy=>`${this.head(true)}<div class="ttl"><span>${b.cancelled?'CANCELLED BILL':'INVOICE / MONEY RECEIPT'}</span>${copy?`<div style="font-size:10.5px;margin-top:2px">${copy}</div>`:''}</div>
-      <table class="info"><tr><td width="15%">Bill No</td><td width="35%">: <b>${esc(b.no)}</b></td><td width="15%">Date</td><td>: ${fmtDT(b.ts)}</td></tr><tr><td>Patient ID</td><td>: ${esc(b.pat.pid||'')}</td><td>Mobile</td><td>: ${esc(b.pat.phone||'')}</td></tr>
-      <tr><td>Patient Name</td><td>: <b>${esc(b.pat.name)}</b></td><td>Age / Sex</td><td>: ${esc(ageStr(b.pat))} / ${esc(sexStr(b.pat.sex))}</td></tr><tr><td>Referred By</td><td>: ${esc(refLabel(b))}</td><td>Delivery</td><td>: <b>${esc(fmtD(b.dlvDate)+' '+t12(b.dlvTime))}</b></td></tr></table>
+      <table class="info pinf"><tr><td width="34%"><span>Bill No:</span> <b>${esc(b.no)}</b></td><td width="30%"><span>Patient ID:</span> ${esc(b.pat.pid||'')}</td><td><span>Date:</span> ${fmtDT(b.ts)}</td></tr>
+      <tr><td colspan="2"><span>Patient Name:</span> <b>${esc(b.pat.name)}</b></td><td><span>Mobile:</span> ${esc(b.pat.phone||'')}</td></tr>
+      <tr><td><span>Age:</span> ${esc(ageStr(b.pat))}</td><td><span>Gender:</span> ${esc(sexStr(b.pat.sex))}</td><td><span>Delivery:</span> <b>${esc(fmtD(b.dlvDate)+' '+t12(b.dlvTime))}</b></td></tr>
+      <tr><td colspan="3" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0"><span>Refd. By:</span> <b>${esc(refFull(b))}</b></td></tr></table>
       <table class="grid"><thead><tr><th class="c" width="7%">SL</th><th width="15%">Code</th><th>Test Name</th><th class="r" width="18%">Amount (Tk)</th></tr></thead><tbody>${b.items.map((i,n)=>`<tr><td class="c">${n+1}</td><td>${esc(i.code)}</td><td>${esc(i.name)}${i.pkgIds?` <i style="font-size:10.5px">(${esc(i.pkgIds.map(x=>(DB.get('tests',x)||{code:''}).code).join(', '))})</i>`:''}</td><td class="r">${money(i.price)}</td></tr>`).join('')}</tbody></table>
       <table style="margin-top:6px"><tr><td style="vertical-align:top;width:56%;padding-right:10px"><div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:0 0 auto">${s.showBarcode?`<div class="bc">${barcodeSVG(b.no)}<div style="font-size:9px;letter-spacing:2px;margin-left:2px">${esc(b.no)}</div></div>`:''}${this.invQR?this.invQR(b):''}</div><div style="flex:1;display:flex;justify-content:center;align-items:center;min-height:60px;padding-top:4px">${stamp}</div></div><div style="font-size:11.5px;margin-top:4px"><b>In Words:</b> ${esc(inWords(b.net))}</div>${b.note?`<div style="font-size:11.5px"><b>Note:</b> ${esc(b.note)}</div>`:''}</td>
-      <td style="vertical-align:top"><table class="tot"><tr><td>Sub Total</td><td class="r">${money(b.sub)}</td></tr><tr><td>Discount${num(b.discPct)?' ('+r2(b.discPct)+'%)':''}</td><td class="r">${money(b.disc)}</td></tr>${num(b.vatAmt)?`<tr><td>VAT (${num(b.vatPct)}%)</td><td class="r">${money(b.vatAmt)}</td></tr>`:''}${num(b.urg)?`<tr><td>Urgent Fee</td><td class="r">${money(b.urg)}</td></tr>`:''}<tr class="g"><td>Net Payable</td><td class="r">${money(b.net)}</td></tr><tr><td>Paid</td><td class="r">${money(paid)}</td></tr><tr class="g"><td>Due</td><td class="r">${money(due)}</td></tr></table></td></tr></table>
+      <td style="vertical-align:top"><table class="tot"><tr><td>Sub Total</td><td class="r">${money(b.sub)}</td></tr><tr><td>Discount</td><td class="r">${money(b.disc)}</td></tr>${num(b.vatAmt)?`<tr><td>VAT (${num(b.vatPct)}%)</td><td class="r">${money(b.vatAmt)}</td></tr>`:''}${num(b.urg)?`<tr><td>Urgent Fee</td><td class="r">${money(b.urg)}</td></tr>`:''}<tr class="g"><td>Net Payable</td><td class="r">${money(b.net)}</td></tr><tr><td>Paid</td><td class="r">${money(paid)}</td></tr><tr class="g"><td>Due</td><td class="r">${money(due)}</td></tr></table></td></tr></table>
       ${pays.length>1?`<div style="font-size:11px;margin-top:4px"><b>Payment History:</b> ${pays.map(p=>`${fmtD(p.date)} ${esc(p.mode)} ${money(p.amount)}`).join(' &nbsp;|&nbsp; ')}</div>`:''}
       <div class="sig" style="margin-top:${copy?16:30}px"><div><b>Received By: ${esc(b.by||'')}</b></div><div><b>Authorized Signature</b></div></div>${this.roomStrip?this.roomStrip():''}${s.invNote?`<div class="foot">${esc(s.invNote)}</div>`:''}`;
     if(s.invPaper==='A4'&&num(s.invCopies)===2)return this.go(`<div style="height:135mm;overflow:hidden">${one('Patient Copy')}</div><div class="cut"><span>✂ cut here</span></div><div style="height:135mm;overflow:hidden">${one('Office Copy')}</div>`,{page:'A4',margin:'6mm 10mm',title:b.no});
@@ -2487,7 +2489,7 @@ Print.receipt=function(payId){const p=DB.get('payments',payId);if(!p)return;cons
   const body=`${this.head(true)}<div class="ttl"><span>MONEY RECEIPT</span></div><table class="info"><tr><td width="22%">Receipt No</td><td width="28%">: <b>${esc(String(p.id).slice(-8).toUpperCase())}</b></td><td width="18%">Date</td><td>: ${fmtDT(p.ts)}</td></tr>
    <tr><td>Bill No</td><td>: <b>${esc(b.no)}</b></td><td>Bill Date</td><td>: ${fmtD(b.date)}</td></tr><tr><td>Patient Name</td><td>: <b>${esc(b.pat.name)}</b></td><td>Patient ID</td><td>: ${esc(b.pat.pid||'')}</td></tr><tr><td>Mobile</td><td>: ${esc(b.pat.phone||'')}</td><td>Payment Mode</td><td>: ${esc(p.mode)}</td></tr></table>
    <table class="grid"><tr><td>Net Bill Amount</td><td class="r">${money(b.net)}</td></tr><tr><td>Paid Before This Receipt</td><td class="r">${money(paid-num(p.amount))}</td></tr><tr><td class="b">Amount Received Now</td><td class="r b" style="font-size:15px">${money(p.amount)}</td></tr><tr><td class="b">Due After This Payment</td><td class="r b">${money(due)}</td></tr></table>
-   <div style="margin-top:6px;font-size:12px"><b>In Words:</b> ${esc(inWords(p.amount))}</div><div style="margin-top:6px">${due<=0?'<span class="stamp" style="color:#15803d">PAID</span>':`<span class="stamp" style="color:#b91c1c;text-align:center;line-height:1.15">DUE<br><span style="font-size:13.5px;letter-spacing:.5px">Tk ${money(due)}</span></span>`}</div>
+   <div style="margin-top:6px;font-size:12px"><b>In Words:</b> ${esc(inWords(p.amount))}</div><div style="margin-top:6px">${due<=0?'<span class="stamp" style="color:#15803d">PAID</span>':`<span class="stamp" style="color:#b91c1c">DUE<br><span style="font-size:14.5px;letter-spacing:.3px">TK- ${money(due)}</span></span>`}</div>
    <div class="sig" style="margin-top:30px"><div><b>Received By: ${esc(p.by||'')}</b></div><div><b>Authorized Signature</b></div></div>${this.roomStrip()}${this.foot()}`;
   this.go(body,{page:'A5',margin:'8mm',title:'Receipt '+b.no})};
 Print.roomStrip=function(){const L=String(S().roomInfo||'').split('\n').map(x=>x.trim()).filter(Boolean);if(!L.length)return '';
@@ -2579,7 +2581,7 @@ Print.reportHtml=function(billId,ids){const b=DB.get('bills',billId);if(!b)retur
   const sex=b.pat.sex;const pv=s.rptPrev&&!Portal.on;
   const pbox=items=>{const spec=[...new Set(items.map(r=>(DB.get('tests',r.testId)||{}).sample).filter(Boolean))].join(', ');const col=Math.min(...items.map(r=>num(r.collectedAt)||Infinity)),rep=Math.max(...items.map(r=>num(r.verifiedAt)||num(r.doneAt)||0));
     return `<table class="pbox" style="table-layout:fixed"><tr><td width="14%">Patient Name</td><td width="34%">: <b>${esc(String(b.pat.name).toUpperCase())}</b></td><td width="12%">Bill No</td><td width="22%" style="white-space:nowrap">: <b>${esc(b.no)}</b></td><td rowspan="4" class="r bc" style="vertical-align:middle;width:18%">${barcodeSVG(b.no,30,1)}</td></tr>
-     <tr><td>Age / Sex</td><td>: ${esc(ageStr(b.pat))} / ${esc(sexStr(b.pat.sex))}</td><td>Patient ID</td><td>: ${esc(b.pat.pid||'')}</td></tr><tr><td>Referred By</td><td>: ${esc(refLabel(b))}</td><td>Bill Date</td><td style="white-space:nowrap">: ${fmtDT(b.ts)}</td></tr>
+     <tr><td>Age / Sex</td><td>: ${esc(ageStr(b.pat))} / ${esc(sexStr(b.pat.sex))}</td><td>Patient ID</td><td>: ${esc(b.pat.pid||'')}</td></tr><tr><td>Referred By</td><td>: ${esc(refFull(b))}</td><td>Bill Date</td><td style="white-space:nowrap">: ${fmtDT(b.ts)}</td></tr>
      <tr><td>Specimen</td><td>: ${esc(spec||'-')}</td><td>Reported</td><td style="white-space:nowrap">: ${rep?fmtDT(rep):''}${isFinite(col)&&spec?`<br><span style="font-size:10.5px">Collected: ${fmtDT(col)}</span>`:''}</td></tr></table>`};
   const paramRows=(r,cs)=>{const rows=r.rows||[];const out=[];const pvm=pv?prevResults(r,b):null;
     rows.forEach((x,i)=>{if(x.g){const nx=rows.slice(i+1);const end=nx.findIndex(z=>z.g);const seg=end<0?nx:nx.slice(0,end);if(seg.some(z=>String(z.v??'').trim()!==''))out.push(`<tr class="gh"><td colspan="${cs}">${esc(x.n)}</td></tr>`);return}
@@ -3857,6 +3859,9 @@ const stampInline=()=>`<div class="prst" style="font-size:7.5px;color:#555;text-
 {const _go=Print.go.bind(Print);Print.go=function(body,o={}){const s=S();if(s.printStamp===false||body.includes('class="lbl"'))return _go(body,o);
   const q=t=>'"'+String(t).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"';const k=Print._pk;const pos=/auto/.test(String(o.page||''));const padOn=k&&k!=='path'&&k!=='rad'&&padOf(k).on;
   if(pos||padOn){_stNarrow=pos||/A5|A6/i.test(String(o.page||''));const add=stampInline();_stNarrow=false;const i=body.lastIndexOf('</div>');body=pos||i<0?body+add:body+add;return _go(body,o)}
+  if(body.includes('class="pfix"'))return _go(body,o);
+  if(!body.includes('class="page"')){_stNarrow=/A5|A6|80mm|58mm|^1[0-5][0-9]mm/i.test(String(o.page||''))&&!/landscape/i.test(String(o.page||''));const add=stampInline();_stNarrow=false;
+    return _go(body+(body.includes('<div class="sig"')?'':'<div class="sig" style="display:none"></div>')+add,o)}
   const ms=String(o.margin||'10mm 12mm').trim().split(/\s+/);const bot=parseFloat(ms.length>2?ms[2]:ms[0])||0;if(bot<9){ms[2]='9mm';if(ms.length<2)ms[1]=ms[0];if(ms.length<4)ms[3]=ms[1];o={...o,margin:ms.slice(0,4).join(' ')}}
   _stNarrow=/A5|A6|80mm|58mm|^1[0-5][0-9]mm/i.test(String(o.page||''))&&!/landscape/i.test(String(o.page||''));const fz=_stNarrow?'6pt':'7.5pt';
   const box=`@bottom-center{content:${q(stampLeft()+'  ·  ')} "Page " counter(page) " of " counter(pages) "  ·  ${STAMP_RIGHT}";font-family:${(PFONTS.find(x=>x[0]===S().printFont)||PFONTS[0])[1].replace(/"/g,"'")};font-size:${fz};color:#555;vertical-align:middle;white-space:nowrap}`;_stNarrow=false;
@@ -4416,7 +4421,7 @@ Object.assign(DEF_SET,{fileMargin:25,fileAll:false,printFont:'Calibri'});
 /* one-time: move from Times New Roman to the standard modern font */
 {const _sa=startApp;startApp=function(){_sa();try{const s=DB.get('settings','main');if(s&&!s.fontV2){DB.put('settings',{...s,fontV2:1,printFont:(!s.printFont||s.printFont==='Times New Roman')?'Calibri':s.printFont})}}catch(e){}}}
 document.head.insertAdjacentHTML('beforeend','');
-const RPT_CSS=`.page .tgap td{height:var(--tg,7mm);padding:0!important;border:0!important;background:transparent!important}.page .tgapd{height:var(--tg,7mm)}
+const RPT_CSS=`.page .tgap td{height:var(--tg,4mm);padding:0!important;border:0!important;background:transparent!important}.page .tgapd{height:var(--tg,4mm)}
 .page .rp tbody td{padding-top:var(--rp,3px)!important;padding-bottom:var(--rp,3px)!important}.page .dept{margin-top:4mm}.page .rp{margin-top:4mm!important}
 h1,h2,h3,h4{font-family:inherit}`;
 /* auto spacing per page: few rows -> more air, many rows -> compact so it fits */
@@ -4424,9 +4429,9 @@ h1,h2,h3,h4{font-family:inherit}`;
   const tp=document.createElement('template');tp.innerHTML=h.pages;
   tp.content.querySelectorAll('.page').forEach(pg=>{const rows=pg.querySelectorAll('.rp tbody tr:not(.tgap)').length;const gaps=pg.querySelectorAll('.tgap,.tgapd').length;const txt=pg.querySelector('.txtrep');
     const mh=num((/min-height:([\d.]+)mm/.exec(pg.getAttribute('style')||'')||[])[1])||263;const pf=paperOf('rep');const mhA=mh+((PAPER_H[pf]||297)-297);const padOn=pg.getAttribute('data-pad')==='1';
-    const avail=mhA-(padOn?40:68)-56;let rp=3,tg=7;const need=()=>rows*(4.2+rp*0.53)+gaps*tg;
-    if(!txt){if(need()<avail){rp=Math.min(6,3+((avail-need())/Math.max(rows,1))/0.53/2);tg=Math.min(10,7+(avail-need())/Math.max(gaps,1)/2)}
-      while(need()>avail&&(tg>3||rp>1.5)){if(tg>3)tg-=0.5;else rp-=0.25}}
+    const avail=mhA-(padOn?40:68)-56;let rp=3,tg=4;const need=()=>rows*(4.2+rp*0.53)+gaps*tg;
+    if(!txt){if(need()<avail){rp=Math.min(4,3+((avail-need())/Math.max(rows,1))/0.53/2)}
+      while(need()>avail&&(tg>2||rp>1.5)){if(tg>2)tg-=0.5;else rp-=0.25}}
     pg.style.setProperty('--rp',rp.toFixed(2)+'px');pg.style.setProperty('--tg',tg.toFixed(1)+'mm')});
   const pgs=tp.content.querySelectorAll('.page');const lp=pgs[pgs.length-1];if(lp){const st=lp.getAttribute('style')||'';lp.setAttribute('style',st.replace(/min-height:\s*([\d.]+)mm/,(m,n)=>'min-height:'+(num(n)-4).toFixed(1)+'mm'))}
   h.pages=`<style>${RPT_CSS}</style>`+tp.innerHTML;return h}}
@@ -5577,6 +5582,61 @@ CHANGELOG.unshift({v:'1.9.3',d:'2026-11-23',n:['All Menu uses the full screen wi
 CHANGELOG.unshift({v:'1.9.4',d:'2026-11-23',n:['All Menu: the search box starts empty every time you open it','Notice on Home: "✕ Hide" (hide for me), "✕ Hide all", and for managers "⏹ End for all" and "⚙ Manage". A hidden notice shows again if it is edited']});
 CHANGELOG.unshift({v:'1.9.5',d:'2026-11-23',n:['Fixed: RMP / PC doctors could not be chosen in "Refd. By" on the bill, in edit requests and in the P.Summary doctor filter — now every doctor type works','Doctor Serial: "＋ Add a doctor from the Doctor List…" in the doctor box, and "⇩ From Doctor List" in Consultants / Doctors — a referring doctor becomes a chamber doctor in one click (then set the fee)','Lists page: new card "Chamber Doctor (Serial) List"']});
 CHANGELOG[0].n.push('Prescription: only the doctor, logged in with his own user ID, can write and save prescriptions — only for his own patients. Other users see and print only (Admin can allow staff in Users and Roles). A Doctor user must be linked to his Consultant profile');
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+/* ===== v1.9.6 — Print polish (invoice, report footer) + Media / P.O list format ===== */
+/* referred-by with degree (only if the name does not already carry it) */
+const refFull=b=>{if(!b.refId)return 'Self';const r=DB.get('referrers',b.refId);if(!r)return b.refName||'-';const n=String(r.name||'').trim(),d=String(r.degree||'').trim();return d&&!n.toLowerCase().includes(d.toLowerCase())?n+' '+d:n};
+/* report: no QR (the invoice keeps its "Get your report online" QR) */
+Print.qrBlock=function(b){return ''};
+/* report: the note + "Printed by … Powered by AMAZ ERP Solution" sit at the very bottom of the page,
+   right above the bottom design of the pad (fixed to the bottom of the printable area, on every page) */
+{const _rh=Print.reportHtml;Print.reportHtml=function(billId,ids){const h=_rh.call(this,billId,ids);if(!h||(typeof Portal!=='undefined'&&Portal.on))return h;const s=S();
+  const tp=document.createElement('template');tp.innerHTML=h.pages;tp.content.querySelectorAll('.rfoot').forEach(x=>x.remove());
+  const note=String(s.rptNote||'').trim();const st=s.printStamp===false?'':stampLeft()+'  ·  '+STAMP_RIGHT;
+  h.pages=tp.innerHTML+`<style>.pfix{position:fixed;left:0;right:0;bottom:0;text-align:center}.pfix .pn{font-size:10.5px;border-top:1px solid #999;padding-top:3px}.pfix .ps{font-size:7.5px;color:#555;margin-top:2px}</style><div class="pfix">${note?`<div class="pn">${esc(note)}</div>`:''}${st?`<div class="ps"${note?'':' style="border-top:0.5px solid #bbb;padding-top:2px"'}>${esc(st)}</div>`:''}</div>`;
+  return h}}
+
+/* ---- Referrer e-mail (for the Media / P.O list format) ---- */
+let _rrEmail=null;
+{const _o=RefForm.open.bind(RefForm);RefForm.open=function(id,cb,pt){const r0=id?DB.get('referrers',id):null;_o(id,cb,pt);const m=Modal.top();const ph=m&&$('#rr_p',m);if(!ph||$('#rr_em',m))return;
+  const w=ph.closest('.f')||ph.parentElement;w.insertAdjacentHTML('afterend',fld('E-mail',`<input id="rr_em" type="email" value="${esc((r0&&r0.email)||'')}">`));
+  $('#rr_ok',m).addEventListener('click',()=>{_rrEmail=$('#rr_em',m).value.trim();setTimeout(()=>{_rrEmail=null},0)},true)}}
+{const _p=DB.put.bind(DB);DB.put=function(c,r){if(c==='referrers'&&_rrEmail!==null&&r)r={...r,email:_rrEmail};return _p(c,r)}}
+
+/* ---- Lists in the client's format: SL · Photo · Name · (P/O) · Phone · Email · Address · Status · Action ---- */
+const ML_ICON='<svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="7" r="4.2" fill="#1f2937"/><path d="M3.5 21c.6-4.6 4-7.3 8.5-7.3s7.9 2.7 8.5 7.3z" fill="#1f2937"/><path d="M9 16.3v2.4a1.6 1.6 0 1 0 3.2 0M15.4 16.3v1.6" stroke="#fff" stroke-width="1.2" fill="none"/><circle cx="15.4" cy="18.6" r="1" fill="#fff"/></svg>';
+const ML_TTL={doc:'Doctors',rmp:'RMP / PC',media:'Media People',po:'Promotion Officers'};
+const mlCols=(x,pn,bc)=>{const st={t:'Status',v:r=>r.active===false?'Inactive':'Active',h:r=>r.active===false?'<span class="mls off">Inactive</span>':'<span class="mls">Active</span>'};
+  const act={t:'Action',h:r=>`<button class="mle" data-act="e" data-id="${r.id}" title="Edit">✎</button>`};
+  const sl={t:'SL.',h:r=>'<span class="mlsl"></span>'},ph={t:'Photo',h:r=>r.photo?`<img src="${esc(r.photo)}" style="width:30px;height:30px;border-radius:50%;object-fit:cover">`:ML_ICON},nm={t:'Name',v:r=>r.name,h:r=>esc(r.name)};
+  const phn={t:'Phone',v:r=>r.phone||''},em={t:'Email',v:r=>r.email||''},ad={t:'Address',v:r=>r.address||''};
+  if(x.k==='po')return [sl,ph,nm,phn,em,ad,{t:'Doctors under',cls:'r',v:r=>DB.all('referrers').filter(d=>d.poId===r.id).length},act];
+  if(x.k==='media')return [sl,ph,nm,{t:'P/O',v:r=>pn(r.poId)||'N/A'},phn,em,ad,st,act];
+  return [sl,ph,nm,{t:'Degree',v:r=>r.degree||''},{t:'P/O',v:r=>pn(r.poId)||'N/A'},phn,ad,{t:'Commission',v:r=>r.ctype==='fixed'?'Tk '+money(r.rate):num(r.rate)+'%'},{t:'Bills',cls:'r',v:r=>bc.get(r.id)||0},st,act]};
+SCREENS.mlist.render=function(el){const x=ML.find(y=>y.k===this.k)||ML[0];$('#ptitle')&&($('#ptitle').textContent=x.t);const L=mlRefs(x.type).sort((a,b)=>String(a.name).localeCompare(b.name));
+  const bc=new Map();DB.all('bills').forEach(b=>{if(!b.cancelled){[b.refId,b.mediaId,b.poId].forEach(i=>{if(i)bc.set(i,(bc.get(i)||0)+1)})}});const pn=id=>(DB.get('referrers',id)||{}).name||'';
+  const pg=this.pg||50;const ttl=ML_TTL[x.k]||x.t;
+  el.innerHTML=`<style>.mlx .tbl th,.mlx .tbl td{border:1px solid #dee2e6;vertical-align:middle}.mlx .tbl tbody tr:nth-child(odd){background:#f6f7f9}.mls{display:inline-block;background:#198754;color:#fff;font-size:12px;padding:3px 0;width:72px;text-align:center;border-radius:3px}.mls.off{background:#9ca3af}
+   .mle{background:#ffc107;border:0;border-radius:3px;width:26px;height:24px;cursor:pointer;font-size:13px}.mlx tbody{counter-reset:sl}.mlx tbody tr{counter-increment:sl}.mlx .mlsl::before{content:counter(sl)}.mlhd{display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:6px 6px 0 0;padding:8px 12px;margin:-4px -4px 10px}.mlhd b{flex:1;font-weight:500;font-size:15px}</style>
+   <div class="card mlx"><div class="row" style="gap:8px;margin-bottom:10px;flex-wrap:wrap">${ML.filter(y=>y.type).map(y=>`<button class="btn btn-s ${y.k===x.k?'btn-p':'btn-o'}" data-k="${y.k}">${y.ic} ${esc(y.t)} (${mlRefs(y.type).length})</button>`).join('')}<span style="flex:1"></span><button class="btn btn-o btn-s" id="ml_back">← All lists</button></div>
+   <div class="mlhd"><b>${esc(ttl)}</b><button class="btn btn-p btn-s" id="ml_new">⊕ Add New</button></div>
+   <div class="row" style="gap:8px;margin-bottom:6px;align-items:center"><span>Show <select id="ml_pg" style="width:auto">${[10,25,50,100,500].map(n=>`<option${n===pg?' selected':''}>${n}</option>`).join('')}</select> entries</span><span style="flex:1"></span><button class="btn btn-s" id="ml_pr" style="background:#4c3f91;color:#fff">🖨 Print ${esc(ttl)} List</button></div><div id="ml_t"></div></div>`;
+  $$('[data-k]',el).forEach(b=>b.onclick=()=>{this.k=b.dataset.k;App.render()});$('#ml_back',el).onclick=()=>App.go('masters');$('#ml_new',el).onclick=()=>x.add();
+  $('#ml_pg',el).onchange=e=>{this.pg=num(e.target.value)||50;App.render()};
+  const cols=mlCols(x,pn,bc);
+  $('#ml_pr',el).onclick=()=>{const q=(($('.tsearch',el)||{}).value||'').trim().toLowerCase();const rows=q?L.filter(r=>cols.some(c=>c.v&&String(c.v(r)??'').toLowerCase().includes(q))):L;
+    const pc=cols.filter(c=>c.v&&c.t!=='SL.');Print.table({title:ttl+' List',sub:`Total ${rows.length}`,cols:pc.map((c,i)=>({t:c.t,k:'c'+i,n:c.cls==='r'?1:0})),rows:rows.map(r=>Object.fromEntries(pc.map((c,i)=>['c'+i,c.v(r)])))})};
+  dataTable($('#ml_t',el),{rows:L,page:pg,key:'mlist_'+x.k,empty:'Nobody in this list yet — press ⊕ Add New',cols,on:{e:id=>RefForm.open(id,()=>App.soft())}})};
+
+CHANGELOG.unshift({v:'1.9.6',d:'2026-11-23',n:[
+ 'Invoice: the PAID / DUE box sits next to the barcode, straight (not tilted) with a thin border — "DUE" and below it "TK- amount"',
+ 'Invoice: patient details are compact (Bill No · Patient ID · Date / Patient Name · Mobile / Age · Gender · Delivery / Refd. By on one full line with the degree)',
+ 'Invoice and receipt: the discount percentage is not printed any more — only the discount amount',
+ 'Lab report: less empty space between tests',
+ 'Lab report: the QR code is removed (the invoice keeps its "Get your report online" QR)',
+ 'Lab report on a pad: the note at the bottom now sits right above the bottom design of the pad',
+ 'Every print: "Printed by · time · Powered by AMAZ ERP Solution" at the very bottom of the page',
+ 'Media List and P.O (Promotion Officer) List in the familiar format: SL · Photo · Name · P/O · Phone · Email · Address · Status · Action, with "Show N entries", search, "⊕ Add New" and "🖨 Print … List". Doctor / RMP lists use the same look. Referrers now have an E-mail field']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 if(typeof window!=='undefined'&&!window.__NO_BOOT__){if(Portal.is())Portal.start();else boot()}
 </script>
