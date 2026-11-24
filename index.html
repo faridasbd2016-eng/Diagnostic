@@ -777,7 +777,7 @@ const BillForm={st:null,
     const dl=edit?{d:edit.dlvDate||'',t:edit.dlvTime||''}:defaultDelivery();
     el.innerHTML=`<div class="bgrid">
     <div class="card kn"><div class="ch">👤 Patient Information<span class="sp"></span><span id="bf_ptag"></span><button class="ib" id="bf_newp" title="Start as a new patient">+ New Patient</button></div>
-     <div class="g2">${fld('Mobile Number','<input id="bf_phone" placeholder="01XXXXXXXXX" inputmode="tel">','call')}${fld('Patient Name *','<input id="bf_name">','call')}
+     <div class="g2">${fld('Mobile Number','<input id="bf_phone" inputmode="tel">','call')}${fld('Patient Name *','<input id="bf_name">','call')}
       ${fld('Age','<div class="row" style="flex-wrap:nowrap;gap:6px"><input id="bf_age" type="number" min="0" max="150" style="width:72px"><select id="bf_ageU" style="width:84px"><option value="Y">Years</option><option value="M">Months</option><option value="D">Days</option></select></div>')}
       ${fld('Gender','<select id="bf_sex"><option value="M">Male</option><option value="F">Female</option><option value="O">Other</option></select>')}
       ${fld('Address','<input id="bf_addr">','call')}
@@ -2375,7 +2375,7 @@ BillForm.mount=function(el,p={}){const s=S(),edit=p.editId?DB.get('bills',p.edit
   el.innerHTML=`${BCSS}<div class="card"><div class="ch">🧾 ${edit?'Edit Bill - '+esc(edit.no):'Investigation Billing'}<span class="sp"></span>${edit?'':`<button class="btn btn-o btn-s" id="bf_held">⏸ Held Bills (${held})</button>`}</div>
    <div class="srch">🔍<input id="bf_find" data-noenter placeholder="Search - Patient name / Patient ID / Mobile / Bill No"></div>
    <div class="nb"><div><div class="frm kn">
-    ${fld('Phone *','<input id="bf_phone" placeholder="01XXXXXXXXX" inputmode="tel">')}${fld('Name *','<input id="bf_name">','w4')}
+    ${fld('Phone *','<input id="bf_phone" inputmode="tel">')}${fld('Name *','<input id="bf_name">','w4')}
     ${fld('Age (Y / M / D) *','<div class="row" style="flex-wrap:nowrap;gap:4px"><input id="bf_ay" type="number" min="0" max="150" placeholder="Years"><input id="bf_am" type="number" min="0" max="11" placeholder="Months"><input id="bf_ad" type="number" min="0" max="31" placeholder="Days"></div>')}
     ${fld('Gender *','<select id="bf_sex"><option value="M">Male</option><option value="F">Female</option><option value="O">Other</option></select>','w2')}
     ${fld('Refd. By <button type="button" class="addn" id="bf_addref">+ Add New</button>','<input id="bf_ref" placeholder="Self">','w4')}
@@ -2543,9 +2543,9 @@ function psumRender(el,o){const st=o.st;const refs=DB.all('referrers');const opt
 function testDetails(billId){const b=DB.get('bills',billId);if(!b)return;const res=Idx.results(billId);
   const m=Modal.open('Test Details - '+b.no,`<div class="pstrip">${patStrip(b)}</div><div class="twrap"><table class="tbl"><thead><tr><th>Test</th><th>Department</th><th>Status</th><th>Result by</th><th>Verified</th><th>Delivered</th></tr></thead><tbody>${res.map(r=>`<tr><td>${esc(r.testName)}</td><td>${esc(deptName(r.deptId))}</td><td>${badge(r.status)}</td><td><small>${esc(r.doneBy||'')} ${fmtDT(r.doneAt)}</small></td><td><small>${esc(r.verifiedBy||'')}</small></td><td><small>${fmtDT(r.deliveredAt)}</small></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No lab tests</td></tr>'}</tbody></table></div>`,
    {w:'lg',focus:false,foot:`<button class="btn btn-o" data-close>Close</button>${res.some(r=>canPrintResult(r))?'<button class="btn btn-a" id="td_v">📄 View Report</button>':''}`});if($('#td_v',m))$('#td_v',m).onclick=()=>viewReportModal(billId,null)}
-const psDef=()=>({q:'',doc:'',med:'',po:'',test:'',from:monthStart(),to:today(),due:false});
+const psDef=()=>({q:'',doc:'',med:'',po:'',test:'',from:today(),to:today(),due:false,_d:today()});
 SCREENS.psum={t:'Patient Summary',st:psDef(),render(el){psumRender(el,{st:this.st,def:psDef,title:'Investigation Financial Statement (Patient Test-wise Statement)',ptitle:'Patient Test-wise Statement'})}};
-const dlDef=()=>({q:'',doc:'',med:'',po:'',test:'',from:addDays(today(),-365),to:today(),due:true});
+const dlDef=()=>({q:'',doc:'',med:'',po:'',test:'',from:today(),to:today(),due:true,_d:today()});
 SCREENS.duelist={t:'Due List',st:dlDef(),render(el){psumRender(el,{st:this.st,def:dlDef,fixedDue:true,title:'Due List - click the bill no to collect',ptitle:'Due List'})}};
 
 /* ---------- Test Wise statement ---------- */
@@ -5988,6 +5988,75 @@ CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
  'Mobile: New Bill header buttons (Refund Req, Edit) wrap to the next line instead of being cut',
  'Report Delivery: tap anywhere on a test (card) to tick it; bigger tick boxes; a clear message when no report is ready yet (results not entered / not verified) instead of "Select reports"']});
 CHANGELOG.unshift({v:'2.2.1',d:'2026-11-24',n:['Offline: the installed app (Chrome / phone) now always opens without internet after it has been opened once with internet. Before, if one small file (an icon) could not be saved, nothing was saved and the app showed "This site can\'t be reached". অফলাইন: একবার ইন্টারনেট সহ খোলার পর অ্যাপটি এখন সবসময় ইন্টারনেট ছাড়াও খোলে।','Offline: when the internet is slow the app opens from the saved copy after 3.5 seconds instead of waiting','Offline: if the app was never opened with internet, a clear message with a Try again button is shown instead of an error page']});
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+/* ===== v2.3.0 — compact filters (P.Summary / Due List), one-day "Filter Date", fresh every day; Central Cash Collection (user-wise) ===== */
+const PSF_CSS=`<style id="psf_css">.psf .f{margin:0}.psf .f>span,.psf label>span{font-size:11.5px}.psf input,.psf select{height:34px;padding:4px 8px;font-size:13px}
+ .psf .r1{display:grid;grid-template-columns:2.2fr 1.4fr 1.2fr 1fr 1.4fr;gap:8px;margin-bottom:8px}.psf .r2{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}.psf .r2 .f{width:140px}.psf .r2 .f.fd{width:150px}
+ .psf .btn{height:34px;padding:0 14px}.psf .chk{margin:0 4px 8px}@media(max-width:760px){.psf .r1{grid-template-columns:1fr 1fr}.psf .r1 .f:first-child{grid-column:1/-1}.psf .r2 .f{width:calc(50% - 4px)}}</style>`;
+/* every day starts fresh: today's bills; a period only when you choose one */
+{const _p=psumRender;psumRender=function(el,o){const st=o.st;if(st._d!==today())Object.assign(st,o.def());_p(el,o);
+  if(!$('#psf_css'))document.head.insertAdjacentHTML('beforeend',PSF_CSS);
+  const card=$('#ps_q',el).closest('.card');const row=card.querySelector('.row');const g=id=>$('#'+id,el).closest('label,.f');
+  const r1=document.createElement('div');r1.className='r1';['ps_q','ps_d','ps_m','ps_p','ps_t'].forEach(i=>r1.appendChild(g(i)));
+  const r2=document.createElement('div');r2.className='r2';const one=st.from===st.to?st.from:'';
+  r2.insertAdjacentHTML('beforeend',fld('Filter Date (one day)',`<input type="date" id="ps_one" value="${one}">`,'fd'));r2.appendChild(g('ps_f'));r2.appendChild(g('ps_to'));
+  r2.insertAdjacentHTML('beforeend',`<button class="btn btn-o" id="ps_all" title="All dates">All Data</button>`);
+  const due=$('#ps_due',el);if(due)r2.appendChild(due.closest('label'));r2.appendChild($('#ps_go',el));r2.appendChild($('#ps_rs',el));
+  const wrap=document.createElement('div');wrap.className='psf';wrap.appendChild(r1);wrap.appendChild(r2);row.replaceWith(wrap);
+  const sq=$('#ps_q',el).closest('div[style*="flex:2"]');if(sq&&sq!==r1&&!sq.contains(r1))sq.remove();
+  const rd=()=>{st.q=$('#ps_q',el).value;st.doc=$('#ps_d',el).value;st.med=$('#ps_m',el).value;st.po=$('#ps_p',el).value;st.test=$('#ps_t',el).value;if($('#ps_due',el))st.due=$('#ps_due',el).checked};
+  $('#ps_one',el).onchange=e=>{rd();const v=e.target.value;if(v){st.from=st.to=v}else{st.from=st.to=today()}App.render()};
+  $('#ps_all',el).onclick=()=>{rd();st.from='2000-01-01';st.to=today();App.render()};
+  const tl=card.nextElementSibling&&card.nextElementSibling.querySelector('.ch');if(tl&&!tl.querySelector('.psper')){tl.insertAdjacentHTML('beforeend',`<small class="muted psper" style="font-weight:400;margin-left:8px">${st.from==='2000-01-01'?'All dates':st.from===st.to?fmtD(st.from):fmtD(st.from)+' – '+fmtD(st.to)}</small>`);const sp=tl.querySelector('.sp');if(sp)tl.insertBefore(tl.querySelector('.psper'),sp)}}}
+
+/* ---- Central Cash Collection: who collected how much, by source ---- */
+const CC_SRC=[['inv','Investigation'],['due','Investigation Due Collection'],['con','Consultation'],['ref','Refund'],['oth','Other Income']];
+function ccRows(st){const fromTs=st.fdt?new Date(st.fdt).getTime():new Date(st.from+'T00:00:00').getTime(),toTs=st.tdt?new Date(st.tdt).getTime():new Date(st.to+'T23:59:59.999').getTime();
+  const L=[];const inR=ts=>num(ts)>=fromTs&&num(ts)<=toTs;
+  for(const p of DB.all('payments')){if(!inR(p.ts))continue;const a=num(p.amount);if(!a)continue;const src=a<0?'ref':p.billId?(p.type==='due'?'due':'inv'):'con';L.push({by:p.by||'-',src,amt:a,mode:p.mode||'Cash'})}
+  for(const t of DB.all('txns')){if(t.type!=='in'||!inR(t.ts))continue;L.push({by:t.by||'-',src:'oth',amt:num(t.amount),mode:t.mode||'Cash'})}
+  return L.filter(x=>(!st.user||x.by===st.user)&&(!st.src||x.src===st.src))}
+const ccDef=()=>({user:'',src:'',day:today(),from:today(),to:today(),fdt:'',tdt:'',_d:today()});
+SCREENS.cashcol={t:'Central Cash Collection',st:ccDef(),render(el){const st=this.st;if(st._d!==today())Object.assign(st,ccDef());if(!$('#psf_css'))document.head.insertAdjacentHTML('beforeend',PSF_CSS);
+  const users=[...new Set([...DB.all('users').map(u=>u.name),...DB.all('payments').map(p=>p.by),...DB.all('txns').map(t=>t.by)].filter(Boolean))].sort();
+  const L=ccRows(st);const by=new Map();L.forEach(x=>{if(!by.has(x.by))by.set(x.by,new Map());const m=by.get(x.by);const k=x.src;const c=m.get(k)||{n:0,a:0};c.n++;c.a+=x.amt;m.set(k,c)});
+  const per=st.fdt||st.tdt?`${st.fdt?fmtDT(new Date(st.fdt).getTime()):fmtD(st.from)} to ${st.tdt?fmtDT(new Date(st.tdt).getTime()):fmtD(st.to)}`:st.from===st.to?fmtD(st.from):`${fmtD(st.from)} to ${fmtD(st.to)}`;
+  const U=[...by.keys()].sort();let gn=0,ga=0;const rows=[];
+  U.forEach(u=>{const m=by.get(u);let n=0,a=0;CC_SRC.forEach(([k,t],i)=>{const c=m.get(k);if(!c)return;rows.push({u:n?'':u,s:t,n:c.n,a:c.a});n+=c.n;a+=c.a});rows.push({sub:1,n,a});gn+=n;ga+=a});
+  const cash=sum(L.filter(x=>/cash/i.test(x.mode)),x=>x.amt);
+  el.innerHTML=`<div class="card psf"><div class="r2" style="margin-bottom:0">${fld('Select User',`<select id="cc_u"><option value="">All</option>${opts(users.map(u=>[u,u]),st.user)}</select>`)}${fld('Bill Type',`<select id="cc_s"><option value="">All</option>${opts(CC_SRC,st.src)}</select>`)}
+   ${fld('Filter Date (one day)',`<input type="date" id="cc_d" value="${st.fdt||st.tdt||st.from!==st.to?'':st.from}">`,'fd')}${fld('From Date',`<input type="datetime-local" id="cc_f" value="${esc(st.fdt)}">`,'fd')}${fld('To Date',`<input type="datetime-local" id="cc_t" value="${esc(st.tdt)}">`,'fd')}
+   <button class="btn btn-a" id="cc_go">Apply Filter</button><button class="btn btn-r" id="cc_rs">Reset</button></div></div>
+  <div class="card"><div class="ch">Central Cash Collection<span class="sp"></span><button class="btn btn-o btn-s" id="cc_x">⬇ Excel</button><button class="btn btn-o btn-s" id="cc_pr">🖨 Print</button></div>
+   <div style="text-align:center;margin:-4px 0 10px"><b style="text-decoration:underline">Central Cash Collection — ${esc(per)}</b><br><small style="text-decoration:underline">${st.user?esc(st.user)+' — Collections':'All Users Collections'}${st.src?' · '+esc((CC_SRC.find(x=>x[0]===st.src)||[])[1]):''}</small></div>
+   <div class="twrap"><table class="tbl"><thead><tr><th>User</th><th>Source Of Income</th><th class="r">No Of Transaction</th><th class="r">Amount</th></tr></thead><tbody>
+   ${rows.length?rows.map(r=>r.sub?`<tr style="border-bottom:2px solid #7c3aed"><td></td><td></td><td class="r"><b style="color:#c026d3">${r.n}</b></td><td class="r"><b style="color:#c026d3">${money(r.a)}</b></td></tr>`:`<tr><td>${r.u?`<b style="color:#6d28d9">${esc(r.u)}</b>`:''}</td><td>${esc(r.s)}</td><td class="r">${r.n}</td><td class="r">${money(r.a)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">No collection in this period</td></tr>'}</tbody>
+   ${rows.length?`<tfoot><tr><td></td><td class="r"><b style="color:#1d4ed8">Total</b></td><td class="r"><b style="color:#1d4ed8">${gn}</b></td><td class="r"><b style="color:#1d4ed8">${money(ga)}</b></td></tr></tfoot>`:''}</table></div>
+   ${rows.length?`<div class="muted" style="font-size:12.5px;margin-top:6px">In cash: <b>${money(cash)}</b> · Other modes (bKash, card, bank …): <b>${money(ga-cash)}</b></div>`:''}</div>`;
+  const rd=()=>{st.user=$('#cc_u',el).value;st.src=$('#cc_s',el).value;st.fdt=$('#cc_f',el).value;st.tdt=$('#cc_t',el).value};
+  $('#cc_go',el).onclick=()=>{rd();App.render()};$('#cc_rs',el).onclick=()=>{Object.assign(st,ccDef());App.render()};
+  $('#cc_u',el).onchange=$('#cc_s',el).onchange=()=>{rd();App.render()};
+  $('#cc_d',el).onchange=e=>{rd();st.fdt=st.tdt='';st.from=st.to=e.target.value||today();App.render()};
+  const R=()=>({title:'Central Cash Collection',sub:`${per} · ${st.user||'All Users'}`,cols:[{t:'User',k:'u'},{t:'Source Of Income',k:'s'},{t:'No Of Transaction',k:'n',n:1},{t:'Amount',k:'a',m:1}],
+    rows:rows.map(r=>r.sub?{u:'',s:'Sub total',n:r.n,a:r.a}:{u:r.u,s:r.s,n:r.n,a:r.a}),total:{u:'',s:'Total',n:gn,a:ga}});
+  $('#cc_pr',el).onclick=()=>Print.table(R());
+  $('#cc_x',el).onclick=()=>{const r=R();XLSX.download(`Central_Cash_Collection_${today()}.xlsx`,[{name:'Collection',rows:[r.cols.map(c=>c.t),...r.rows.map(x=>r.cols.map(c=>x[c.k])),['','Total',gn,ga]]}])}}};
+if(!MODS.find(m=>m.k==='cashcol')){const i=MODS.findIndex(m=>m.k==='balance');MODS.splice(i>=0?i+1:MODS.length,0,{k:'cashcol',t:'Cash Collection',g:'Main',ic:'shift'})}
+Object.keys(DEF_PERMS).forEach(r=>{const a=DEF_PERMS[r];if(Array.isArray(a)&&(a.includes('balance')||a.includes('shift'))&&!a.includes('cashcol'))a.push('cashcol')});
+{const _sa=startApp;startApp=function(){try{const s=DB.get('settings','main');if(s&&s.perms&&!s.ccV1){const P=JSON.parse(JSON.stringify(s.perms));Object.keys(P).forEach(r=>{if(Array.isArray(P[r])&&(P[r].includes('balance')||P[r].includes('shift'))&&!P[r].includes('cashcol'))P[r].push('cashcol')});DB.put('settings',{...s,perms:P,ccV1:1})}}catch(e){}return _sa.apply(this,arguments)}}
+try{const g=QUICK.find(x=>/daily/i.test(x[0]));if(g&&!g[1].find(x=>x[0]==='cashcol'))g[1].push(['cashcol','Central Cash Collection'])}catch(e){}
+CHANGELOG.unshift({v:'2.3.0',d:'2026-11-24',n:[
+ 'P.Summary and Due List: smaller filter boxes in two short lines (Search · Doctor · Media · P/O · Test, then the dates and buttons) — more room for the list',
+ 'P.Summary and Due List: new "Filter Date (one day)" — pick one date to see only that day; From / To still gives a period; "All Data" shows every date',
+ 'P.Summary and Due List open fresh every day with today\'s bills (old dues no longer pile into today); choose dates or All Data to see older ones',
+ 'New: Central Cash Collection (Main menu → Cash Collection, also in All Menu → Daily reports) — every user with Investigation, Investigation Due Collection, Consultation, Refund and Other Income: number of transactions and amount, sub-total per user and the grand total. Filters: user, bill type, one day, or from / to date and time. Print and Excel']});
+/* ===== v2.3.1 — New Bill: Tab goes only through the entry fields (no + Add New / chips / buttons) ===== */
+const BF_SKIP_TYPES=/^(hidden|button|submit|reset|checkbox|radio|file|range|color|image)$/i;
+const bfFields=()=>$$('#main input,#main select,#main textarea').filter(x=>!x.disabled&&!x.readOnly&&!BF_SKIP_TYPES.test(x.type||'')&&x.tabIndex>=0&&x.offsetParent!==null&&getComputedStyle(x).visibility!=='hidden');
+document.addEventListener('keydown',e=>{if(e.key!=='Tab'||e.defaultPrevented||e.ctrlKey||e.altKey||App.cur!=='bill'||Modal.top())return;const L=bfFields();if(!L.length)return;
+  const i=L.indexOf(document.activeElement);let n;if(i<0){const all=$$('#main *');const pos=all.indexOf(document.activeElement);n=e.shiftKey?[...L].reverse().find(x=>all.indexOf(x)<pos)||L[L.length-1]:L.find(x=>all.indexOf(x)>pos)||L[0]}
+  else n=L[(i+(e.shiftKey?-1:1)+L.length)%L.length];e.preventDefault();n.focus();try{if(n.select&&/^(text|tel|number|search|email)$/i.test(n.type||''))n.select()}catch(x){}});
+CHANGELOG.unshift({v:'2.3.1',d:'2026-11-24',n:['New Bill: the Phone box is empty (no demo number 01XXXXXXXXX)','New Bill: the Tab key moves only through the entry boxes (Phone → Name → Age → … → Remarks); "+ Add New", the test chips and the other buttons are skipped — use the mouse for them. Shift+Tab goes back']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 if(typeof window!=='undefined'&&!window.__NO_BOOT__){if(Portal.is())Portal.start();else boot()}
 </script>
