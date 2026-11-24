@@ -1,6 +1,6 @@
 {
-  "version": "2.2.0",
-  "date": "2026-11-23",
-  "notes": "Security hardening (strong passwords, lockout, re-confirm, lock screen) and mobile fixes",
+  "version": "2.2.1",
+  "date": "2026-11-24",
+  "notes": "Offline fix: always opens without internet after first online open",
   "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
 }

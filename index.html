@@ -5530,7 +5530,7 @@ BR_TYPES.push(['full','Full discount (free) bills']);
 async function updApply(v){try{await DB.flush()}catch(e){}const bar=$('#updBar');if(bar)bar.innerHTML='<span>⏳ Downloading the new version...</span>';
   try{const r=await fetch('index.html?v='+encodeURIComponent(v)+'&t='+Date.now(),{cache:'no-store'});const txt=await r.text();
     if(!r.ok||!txt.includes(`v:'${v}'`)){toast('The new version is still reaching the server — it will be ready in a few minutes. Try again then.','warn');if(bar)bar.classList.remove('on');return}
-    if('caches' in window){for(const k of await caches.keys()){const c=await caches.open(k);const resp=()=>new Response(txt,{headers:{'Content-Type':'text/html; charset=utf-8'}});await c.put(new Request(new URL('./',location.href).href),resp());await c.put(new Request(new URL('index.html',location.href).href),resp())}}
+    if('caches' in window){for(const k of (await caches.keys()).filter(k=>k.startsWith('amaz-diagnostic-v'))){const c=await caches.open(k);const resp=()=>new Response(txt,{headers:{'Content-Type':'text/html; charset=utf-8'}});await c.put(new Request(new URL('./',location.href).href),resp());await c.put(new Request(new URL('index.html',location.href).href),resp())}}
     try{const reg=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();reg&&await reg.update()}catch(e){}try{sessionStorage.setItem('amazdiag_upd_target',v)}catch(e){}location.reload()}catch(e){toast('Could not download the update — check the internet','err');if(bar)bar.classList.remove('on')}}
 {const _us=updShow;updShow=function(j){_us(j);const b=$('#updBar');if(!b)return;const g=$('#up_go',b);if(g)g.onclick=()=>updApply(j.version);const l=$('#up_l',b);if(l)l.onclick=()=>{try{localStorage.setItem('amazdiag_upd_skip',Date.now()+'|'+j.version)}catch(e){}b.classList.remove('on')}}}
 updCheck=function(manual){const u=String(S().updUrl||'').trim()||(/^https?:$/.test(location.protocol)?'version.json':'');if(!u||!window.fetch){if(manual)toast('Set the update address (version.json link) first','warn');return}
@@ -5987,6 +5987,7 @@ CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
  'Mobile: the + (New Bill) button shows only on Home, Bill List and Patients, so it does not cover fields and search boxes',
  'Mobile: New Bill header buttons (Refund Req, Edit) wrap to the next line instead of being cut',
  'Report Delivery: tap anywhere on a test (card) to tick it; bigger tick boxes; a clear message when no report is ready yet (results not entered / not verified) instead of "Select reports"']});
+CHANGELOG.unshift({v:'2.2.1',d:'2026-11-24',n:['Offline: the installed app (Chrome / phone) now always opens without internet after it has been opened once with internet. Before, if one small file (an icon) could not be saved, nothing was saved and the app showed "This site can\'t be reached". অফলাইন: একবার ইন্টারনেট সহ খোলার পর অ্যাপটি এখন সবসময় ইন্টারনেট ছাড়াও খোলে।','Offline: when the internet is slow the app opens from the saved copy after 3.5 seconds instead of waiting','Offline: if the app was never opened with internet, a clear message with a Try again button is shown instead of an error page']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 if(typeof window!=='undefined'&&!window.__NO_BOOT__){if(Portal.is())Portal.start();else boot()}
 </script>

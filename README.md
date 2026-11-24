@@ -1,5 +1,7 @@
 # AMAZ Diagnostic — Diagnostic Center Management
 
+**Version 2.2.1** (2026-11-24) — offline fix: after the app is opened once with internet, it always opens without internet.
+
 Powered by **AMAZ ERP Solution**
 
 ## Files in this folder
@@ -23,7 +25,7 @@ Powered by **AMAZ ERP Solution**
 
 1. Upload the new `index.html` (replace the old one).
 2. Edit `version.json` → set `"version"` to the new number (for example `1.3.6`) and write short `"notes"`.
-3. Every computer shows **"New version v1.3.6 is available"**:
+3. Every computer shows **"New version v2.2.1 is available"**:
    * opened from the GitHub link → **Update now** loads it at once;
    * opened as a file on the PC → **Download** opens the link in `"url"`.
 
@@ -48,3 +50,8 @@ The QR code on each receipt then opens the patient's report from this link.
 
 ---
 © AMAZ ERP Solution. The license generator is **never** uploaded here.
+
+
+## Offline (installed app)
+
+Upload **all** files (index.html, sw.js, manifest.webmanifest, version.json, README.md and every app-icon-*.png). Then open the app once with internet, close it and open it again — from then on it opens without internet.
