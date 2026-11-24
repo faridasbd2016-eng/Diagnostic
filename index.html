@@ -6068,6 +6068,60 @@ document.head.insertAdjacentHTML('beforeend',`<style id="v232_css">
  .pa-v{background:#0ea5e9}.pa-e{background:#f59e0b}.pa-t{background:#10b981}.pa-p{background:#dc2626;font-weight:700}.pa:hover{filter:brightness(.92)}th.psact{text-align:center}</style>`);
 CHANGELOG.unshift({v:'2.3.2',d:'2026-11-24',n:['Invoice: the room numbers at the bottom are now separate boxes (Blood Collection · X-Ray · Ultrasonogram · E.C.G · Echo-Cardio · Others) with the room number large','New Bill: the test table heading has the same light blue colour as the menu buttons','P.Summary and Due List: standard table — light blue heading, cell borders, striped rows, numbers on one line; the Action column is small coloured buttons: 👁 Bill details, ✎ Edit, 🧪 Test details, ৳ Collect due (hover shows the name)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+/* ===== v2.4.0 — Local Server (LAN): the center's own server PC instead of an online cloud ===== */
+const LAN_APP='diagnostic';
+const lanUrl=u=>{u=String(u||'').trim().replace(/\/+$/,'');if(!u)return '';if(!/^https?:\/\//i.test(u))u='http://'+u;return /\/api\/[a-z0-9_-]+$/i.test(u)?u:u.replace(/\/(diagnostic|api)(\/.*)?$/i,'')+'/api/'+LAN_APP};
+const lanServedHere=()=>/^https?:$/.test(location.protocol)&&!/github\.io$/i.test(location.hostname)&&new RegExp('^/'+LAN_APP+'(/|$)','i').test(location.pathname);
+const lanClient=()=>{let n='';try{n='PC '+(Local.get().dev||'A')}catch(e){}try{if(Auth.user)n+=' · '+Auth.user.name}catch(e){}return n||'PC'};
+{const _cfg=Sync.cfg.bind(Sync);Sync.cfg=function(){const c=_cfg();const l=Local.get();if(l.prov==='lan')return {...c,prov:'lan'};return c}}
+{const _en=Sync.enabled.bind(Sync);Sync.enabled=function(){const c=this.cfg();if(c.prov==='lan')return !!(c.on&&/^https?:\/\//i.test(lanUrl(c.url))&&c.key);return _en()}}
+{const _call=Sync.call.bind(Sync);Sync.call=async function(body,cfg){const c=cfg||this.cfg();if(c.prov!=='lan')return _call(body,c);
+  const ctl=typeof AbortController!=='undefined'?new AbortController():null;const to=setTimeout(()=>ctl&&ctl.abort(),45000);
+  try{let r;try{r=await fetch(lanUrl(c.url),{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8','X-AMAZ-Client':lanClient()},body:JSON.stringify({...body,key:c.key}),signal:ctl?ctl.signal:undefined,cache:'no-store'})}
+    catch(e){throw new Error(location.protocol==='https:'&&/^http:/i.test(lanUrl(c.url))?'The software is open from the internet (https) — open it from the server instead: '+lanUrl(c.url).replace(/\/api\/.*$/,'/'+LAN_APP+'/'):'Cannot reach the local server — is the server PC on and AMAZ Local Server running? ('+lanUrl(c.url).replace(/\/api\/.*$/,'')+')')}
+    if(!r.ok)throw new Error('Local server: HTTP '+r.status);const j=await r.json();if(!j.ok)throw new Error(j.err||'Server error');
+    if(j.rows)j.rows=j.rows.map(x=>({...x,u:num(x.u),d:num(x.d),s:num(x.s),j:String(x.j)}));return j}finally{clearTimeout(to)}}}
+/* setup form: third choice + help */
+{const _f=CloudUI.form;CloudUI.form=function(){let h=_f.call(CloudUI);const c=Sync.cfg();
+  h=h.replace("['sb','Supabase (PostgreSQL database)']","['sb','Supabase (PostgreSQL database)']").replace(/(<select id="cl_pv">[\s\S]*?)(<\/select>)/,(m,a,b)=>a+`<option value="lan"${c.prov==='lan'?' selected':''}>Local Server (LAN) — our own server PC in the office</option>`+b);
+  return h+`<div id="cg_lan" style="display:none;margin-top:8px" class="alert i"><b>Local Server (LAN) — no internet needed</b><ol style="margin:6px 0 0 18px;padding:0;font-size:13px;line-height:1.55">
+   <li>On the <b>server PC</b>: unzip <b>AMAZ_Local_Server</b>, put this software in <code>apps\\${LAN_APP}\\index.html</code>, and double-click <b>Start_AMAZ_Server.bat</b> (run <b>Allow_in_Firewall.bat</b> and <b>Add_to_Windows_Startup.bat</b> once).</li>
+   <li>The server window shows its address, for example <code>http://192.168.1.10:8787</code>.</li>
+   <li>On <b>every</b> computer open <code>http://192.168.1.10:8787/${LAN_APP}/</code> in Chrome (not the GitHub address), choose <b>Local Server (LAN)</b> here, type the server address and the <b>same Secret Key</b> on every computer.</li>
+   <li>Keep the server PC on (with a UPS). Daily backups are made on the server PC in the <code>backups</code> folder.</li></ol></div>`}}
+{const _r=CloudUI.read.bind(CloudUI);CloudUI.read=function(m){const v=_r(m);const pv=$('#cl_pv',m);if(pv&&pv.value==='lan'){v.prov='lan';v.akey='';v.url=lanUrl(v.url)}return v}}
+{const _t=CloudUI.test;CloudUI.test=async function(cfg){if(cfg.prov!=='lan')return _t.call(CloudUI,cfg);
+  const u=lanUrl(cfg.url);if(!u)throw new Error('Enter the server address, for example http://192.168.1.10:8787');
+  if(location.protocol==='https:'&&/^http:/i.test(u))throw new Error('This page is open from the internet (https). Open the software from the server instead: '+u.replace(/\/api\/.*$/,'/'+LAN_APP+'/')+' — then set it up there.');
+  if(!cfg.key||cfg.key.length<6)throw new Error('Enter a Secret Key of at least 6 characters (the same on every computer)');
+  const j=await Sync.call({action:'ping'},{...cfg,url:u});if(j.server!=='AMAZ Local Server')throw new Error('This address is not an AMAZ Local Server')}}
+{const _s=CloudUI.save;CloudUI.save=function(cfg){if(cfg.prov==='lan'){Local.set({prov:'lan'})}return _s.call(CloudUI,cfg)}}
+function lanWire(root){const pv=$('#cl_pv',root);if(!pv||pv._lan)return;pv._lan=1;const u=$('#cl_u',root);
+  const lab=()=>{const lan=pv.value==='lan';const sp=u&&u.closest('label')&&u.closest('label').querySelector('span');const g=$('#cg_lan',root);if(g)g.style.display=lan?'':'none';
+    if(lan){if(sp)sp.textContent='Local server address (http://192.168.1.10:8787)';if(u){u.placeholder='http://192.168.1.10:8787';if((!u.value||/script\.google|supabase/i.test(u.value))&&lanServedHere())u.value=location.origin}const k=$('#cl_sbk',root);if(k)k.style.display='none';
+      const gg=$('#cg_gas',root),ss=$('#cg_sb',root),gl=$('#cg_lan2',root);if(gg&&gl){gg.style.display='none';ss.style.display='none';gl.style.display='';$$('[data-cgt]',root).forEach(b=>b.classList.toggle('btn-a',b.dataset.cgt==='lan'))}}};
+  pv.addEventListener('change',lab);lab()}
+{const _m=CloudUI.modal.bind(CloudUI);CloudUI.modal=function(after){const r=_m(after);const m=Modal.top();if(m)lanWire(m);return r}}
+const LAN_GUIDE=`<div id="cg_lan2" style="display:none"><ol style="padding-left:18px;margin:0 0 10px;line-height:1.7">
+ <li>Choose one computer as the <b>server PC</b> (keep it on, with a UPS). Copy the <b>AMAZ_Local_Server</b> folder to it (for example <code>D:\\AMAZ_Local_Server</code>).</li>
+ <li>Put this software in <code>apps\\${LAN_APP}\\index.html</code> inside that folder.</li>
+ <li>Run <b>Allow_in_Firewall.bat</b> once (Yes to the Windows question) and <b>Add_to_Windows_Startup.bat</b> once, then double-click <b>Start_AMAZ_Server.bat</b>. The window shows the address, for example <code>http://192.168.1.10:8787</code> — keep it open (minimised).</li>
+ <li>Give the server PC a fixed IP in the router (so the address never changes).</li>
+ <li>On <b>every</b> computer open <code>http://192.168.1.10:8787/${LAN_APP}/</code> in Chrome → Cloud setup → Cloud server: <b>Local Server (LAN)</b> → the address → the <b>same Secret Key</b> on every computer → Connect.</li>
+ <li>The server makes a backup every day (kept 30 days) in its <code>backups</code> folder. Copy it to a pen drive or another disk from time to time.</li></ol>
+ <div class="alert w" style="font-size:12px">Only computers in the same office network can connect. The online report portal (patients checking reports from home) needs Google or Supabase.</div></div>`;
+{const _b=SCREENS.backup.render;SCREENS.backup.render=function(el,p){_b.call(this,el,p);const ch=[...$$('.card .ch',el)].find(x=>/Cloud Sync/.test(x.textContent));if(ch)ch.textContent='☁ Cloud Sync (Google Sheet, Supabase or Local Server)';
+  const sbb=$('[data-cgt="sb"]',el);if(sbb&&!$('[data-cgt="lan"]',el)){sbb.insertAdjacentHTML('afterend','<button class="btn btn-s" data-cgt="lan">Local Server (LAN)</button>');const sbg=$('#cg_sb',el);if(sbg)sbg.insertAdjacentHTML('afterend',LAN_GUIDE);
+    $$('[data-cgt]',el).forEach(b=>b.onclick=()=>{['gas','sb','lan'].forEach(k=>{const d=$(k==='lan'?'#cg_lan2':'#cg_'+k,el);if(d)d.style.display=b.dataset.cgt===k?'':'none'});$$('[data-cgt]',el).forEach(x=>x.classList.toggle('btn-a',x===b))})}
+  lanWire(el)}}
+/* opened from the server but not set up yet: suggest it */
+{const _sa=startApp;startApp=function(){_sa();try{if(lanServedHere()&&!Sync.enabled()&&Auth.user&&Auth.user.role==='admin')setTimeout(()=>toast('This software is open from the office server — set up sync: Backup and Cloud → Cloud setup → Local Server (LAN)','warn'),1500)}catch(e){}}}
+CHANGELOG.unshift({v:'2.4.0',d:'2026-11-24',n:[
+ 'New: Local Server (LAN) — instead of an online cloud, a center can use its own server PC in the office. All computers sync with it over the office network; no internet is needed. Backup and Cloud → Cloud setup → Cloud server = "Local Server (LAN)" → server address (for example http://192.168.1.10:8787) and the same Secret Key on every computer',
+ 'The server program is "AMAZ Local Server" (one program for every AMAZ software): double-click to start, no installation; it keeps all data on the server PC and makes a backup every day (kept 30 days)',
+ 'Open the software from the server address (http://<server-ip>:8787/diagnostic/) on every computer — opened from the server, the setup fills the address by itself',
+ 'Attachments and daily cloud backups also go to the local server. The online report portal (patients checking reports from home) needs an online cloud and is not available with the local server']});
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 if(typeof window!=='undefined'&&!window.__NO_BOOT__){if(Portal.is())Portal.start();else boot()}
 </script>
 </body>
