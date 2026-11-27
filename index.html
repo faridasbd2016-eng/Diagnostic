@@ -44,8 +44,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .menu{position:absolute;right:0;top:44px;background:#fff;border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);min-width:190px;padding:6px;z-index:60;display:none}
 .menu.on{display:block}.menu a{display:block;padding:8px 10px;border-radius:6px;cursor:pointer}.menu a:hover{background:#f1f5f9}
 .pend{display:none;background:var(--warnl);color:#92400e;font-size:12px;padding:4px 10px;border-radius:14px;cursor:pointer;white-space:nowrap}
-#main{flex:1;overflow:auto;padding:18px 20px 40px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--rad);box-shadow:var(--sh);padding:16px;margin-bottom:16px}
+#main{flex:1;overflow:auto;padding:10px 16px 20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--rad);box-shadow:var(--sh);padding:12px 14px;margin-bottom:10px}
 .ch{margin:0 0 12px;font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:8px}
 .row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
 .row>.f{min-width:140px}
@@ -70,10 +70,10 @@ textarea{resize:vertical}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .ib{border:0;background:none;cursor:pointer;padding:3px 6px;border-radius:6px;color:var(--pri3);font-weight:600;font-size:12px;white-space:nowrap}
 .ib:hover{background:#eef2ff}.ib.d{color:var(--err)}
-.ttool{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.ttool{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .tsearch{max-width:280px}
 .tcount{color:var(--mut);font-size:12px}
-.twrap{overflow:auto;border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 220px);background:#fff;position:relative}
+.twrap{overflow:auto;border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 265px);background:#fff;position:relative}
 .pgr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 2px 0;font-size:13px}.pgr .btn{min-width:32px;padding:4px 9px}.pgr select{width:auto;padding:3px 6px}.tbl tbody tr:hover td{background:#f1f5f9}
 .tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
 .tbl th{background:#f8fafc;text-align:left;font-weight:700;color:#0f172a;padding:9px 10px;border-bottom:2px solid var(--bd);white-space:nowrap;position:sticky;top:0;z-index:10;box-shadow:inset 0 -2px 0 var(--bd),0 2px 3px rgba(0,0,0,0.04)}
@@ -108,8 +108,8 @@ textarea{resize:vertical}
 .pi{padding:7px 10px;border-radius:7px;cursor:pointer;font-size:13px}
 .pi.on,.pi:hover{background:var(--accl)}
 .pi small{color:var(--mut)}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bd);margin-bottom:14px;flex-wrap:wrap}
-.tabs a{padding:9px 14px;cursor:pointer;border-bottom:2px solid transparent;font-weight:600;color:var(--mut);margin-bottom:-1px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bd);margin-bottom:8px;flex-wrap:wrap}
+.tabs a{padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;font-weight:600;color:var(--mut);margin-bottom:-1px;font-size:13px}
 .tabs a.on{color:var(--pri2);border-color:var(--acc)}
 .bgrid{display:grid;grid-template-columns:330px 1fr 320px;gap:16px;align-items:start}
 @media(max-width:1300px){.bgrid{grid-template-columns:1fr 1fr}.bgrid .bsum{grid-column:1/-1}}
@@ -168,7 +168,7 @@ pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;max-hei
 <script>
 'use strict';
 /* ============ AMAZ Diagnostic — Core ============ */
-const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'1.2.0'};
+const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'2.5.0'};
 const CHANGELOG=[{v:'1.2.0',d:'2026-11-20',n:['Doctor portal: separate doctor login, own serial queue, view previous reports and prescriptions, e-prescription (drug list, templates, follow-up) and print','Tests advised by the doctor are added to the bill at reception in one click','Comparison with previous results (Delta check) with large-change alert','Critical value alert with notification log','Signature images: in settings and per user, placed automatically on Verify','QR code on reports and invoices','Online report portal: patients view reports on mobile and download PDF','Equipment and maintenance log (service / calibration reminders)','Cashier shift closing (note counting, short/excess, print)','PIN approval by Manager (over-limit discount, bill edit/cancel, report with due)','Business analysis (MIS): monthly comparison, trends, top tests/doctors, time and weekday analysis']},{v:'1.1.0',d:'2026-11-20',n:['New module: Corporate / Panel clients (auto discount, credit billing, bulk payment collection, statement)','New module: Staff and Salary (monthly salary sheet, payments go to accounts, print)','Service charge items (home collection, report copy): billed without report','WhatsApp messages: bill, report ready, due reminder, serial','Summary window after saving a bill (print / label / WhatsApp / new bill)','First-run setup wizard','Dashboard To-Do list (late reports, dues, backup reminder etc.)','Helpful tips on every page, font size control, menu button on mobile/tablet','Global search also finds patients (Ctrl+K)','Result entry: Save and Next, all tests of the same patient one after another']},{v:'1.0.0',d:'2026-11-20',n:['First release: patient registration and billing, lab worklist and result entry (auto flag and formula), report delivery, referrer commission, doctor serial, accounts and cash book, inventory (purchase, usage, auto reagent consumption), 16 reports, user roles and permissions, cloud sync, backup/restore','License system: 15-day trial, AMAZ1 license key (Settings → License), warning 10 days before expiry, 7-day grace period, PC count control (via cloud sync)']}];
 const MODES=['Cash','bKash','Nagad','Rocket','Card','Bank'];
 const STATUS={pending:'Pending',collected:'Sample Collected',done:'Result Ready',verified:'Verified',delivered:'Delivered',cancelled:'Cancelled'};
@@ -461,7 +461,7 @@ function dataTable(el,o){const pg=o.page||50;const st={q:o.key?(_tq[o.key]||''):
   const tb=$('tbody',el),tf=$('tfoot',el),cnt=$('.tcount',el),more=$('.more',el),si=$('.tsearch',el),tw=$('.twrap',el);
   const draw=()=>{const q=st.q.trim().toLowerCase();const rows=q?o.rows.filter(r=>o.cols.some(c=>c.v&&String(c.v(r)??'').toLowerCase().includes(q))):o.rows;
     const N=rows.length,per=st.n,pages=Math.max(1,Math.ceil(N/per));if(st.p>=pages)st.p=pages-1;const a=st.p*per;const show=rows.slice(a,a+per);
-    tb.innerHTML=show.length?show.map(r=>`<tr${o.rowCls?` class="${o.rowCls(r)}"`:''}>${o.cols.map(c=>`<td class="${c.cls||''}">${c.h?c.h(r):esc(c.v?c.v(r):'')}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${o.cols.length}" class="empty">${o.empty||'No data found'}</td></tr>`;
+    tb.innerHTML=show.length?show.map((r,idx)=>`<tr${o.rowCls?` class="${o.rowCls(r,a+idx)}"`:''}>${o.cols.map(c=>`<td class="${c.cls||''}">${c.h?c.h(r,a+idx):esc(c.v?c.v(r,a+idx):'')}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${o.cols.length}" class="empty">${o.empty||'No data found'}</td></tr>`;
     cnt.textContent=`Total ${N} `;tf.innerHTML=o.foot&&N?o.foot(rows):'';
     if(N<=Math.min(per,10)&&!st.p){more.style.display='none'}else{more.style.display='';const B=(lbl,to,dis,on)=>`<button class="btn btn-s ${on?'btn-p':'btn-o'}" data-pg="${to}"${dis?' disabled':''}>${lbl}</button>`;
       const nums=[];for(let i=Math.max(0,st.p-2);i<=Math.min(pages-1,st.p+2);i++)nums.push(B(i+1,i,false,i===st.p));
@@ -1678,20 +1678,23 @@ function salPay(sid,ym,dueAmt){const s=DB.get('staff',sid);if(!s)return;
 SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(el){
   el.innerHTML=tabsHtml(this.tab,[['sheet','Standard Salary Sheet'],['list','Staff List']])+'<div id="sf_box"></div>';
   wireTabs(el,this);const box=$('#sf_box',el);
+
   if(this.tab==='list'){
-    box.innerHTML='<div class="card" id="sf_tb"></div>';
-    const rows=DB.all('staff').sort((a,b)=>{
+    box.innerHTML='<div class="card" id="sf_tb" style="padding:10px 14px"></div>';
+    const rawStaff=DB.all('staff').sort((a,b)=>{
       const rA=num(a.rank)||staffDeptRank(a.dept);const rB=num(b.rank)||staffDeptRank(b.dept);
       if(rA!==rB)return rA-rB;
       return String(a.name).localeCompare(b.name);
     });
-    dataTable($('#sf_tb'),{key:'staff',rows,empty:'No staff — click "+ New Staff"',tools:'<button class="btn btn-a btn-s" data-act="new">+ New Staff</button>',
+    const rows=rawStaff.map((s,idx)=>({...s,_sl:idx+1}));
+    dataTable($('#sf_tb'),{key:'staff',rows,empty:'No staff — click "+ New Staff"',
+      tools:'<button class="btn btn-o btn-s" id="sf_lst_pr">🖨 Print Staff List</button> <button class="btn btn-a btn-s" data-act="new">+ New Staff</button>',
       cols:[
-        {t:'SL',v:(s,i)=>i+1,w:'50px'},
+        {t:'SL',cls:'c',v:(s,i)=>s._sl||((i!=null&&!isNaN(i))?i+1:1),h:(s,i)=>`<span class="muted font-mono" style="font-weight:600">${s._sl||((i!=null&&!isNaN(i))?i+1:1)}</span>`,w:'50px'},
         {t:'Department',v:s=>s.dept||'Admin & Director',h:s=>`<span class="bdg" style="background:${staffDeptBg(s.dept)};color:${staffDeptFg(s.dept)};font-weight:700">${esc(s.dept||'Admin & Director')}</span>`},
         {t:'Name',v:s=>s.name,h:s=>`<b>${esc(s.name)}</b>${s.active===false?' <span class="bdg b-cancelled">Inactive</span>':''}`},
         {t:'Designation',v:s=>s.desig||'—'},
-        {t:'Rank/Level',cls:'c',v:s=>s.rank??staffDeptRank(s.dept)},
+        {t:'Rank/Level',cls:'c',v:s=>s.rank??staffDeptRank(s.dept),h:s=>`<span class="bdg" style="background:#f1f5f9;color:#334155;font-weight:700">${s.rank??staffDeptRank(s.dept)}</span>`},
         {t:'Gross Salary',cls:'r',v:s=>money(s.salary)},
         {t:'Mobile',v:s=>s.phone||'—'},
         {t:'Joined',v:s=>fmtD(s.join)},
@@ -1699,6 +1702,54 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
       ],
       on:{new:()=>StaffForm.open(),e:id=>StaffForm.open(id)}
     });
+    const lpBtn=$('#sf_lst_pr',box);
+    if(lpBtn){
+      lpBtn.onclick=()=>{
+        const pHtml=`
+          <div style="font-family:Arial,sans-serif;color:#000">
+            ${Print.head(true)}
+            <div style="text-align:center;margin:10px 0 14px">
+              <div style="font-size:15px;font-weight:700;letter-spacing:0.5px">STAFF & EMPLOYEE DIRECTORY</div>
+              <div style="font-size:12px;color:#334155;margin-top:2px">Total Employees: ${rows.length} · Printed on: ${today()}</div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:11px">
+              <thead>
+                <tr style="background:#0f172a;color:#fff;font-weight:700">
+                  <th style="border:1px solid #000;padding:6px;width:35px;text-align:center">#</th>
+                  <th style="border:1px solid #000;padding:6px;width:130px">Department</th>
+                  <th style="border:1px solid #000;padding:6px">Name</th>
+                  <th style="border:1px solid #000;padding:6px;width:120px">Designation</th>
+                  <th style="border:1px solid #000;padding:6px;width:50px;text-align:center">Rank</th>
+                  <th style="border:1px solid #000;padding:6px;width:85px;text-align:right">Gross Salary</th>
+                  <th style="border:1px solid #000;padding:6px;width:95px">Mobile</th>
+                  <th style="border:1px solid #000;padding:6px;width:80px;text-align:center">Joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.map(s=>`<tr>
+                  <td style="border:1px solid #000;padding:5px;text-align:center">${s._sl}</td>
+                  <td style="border:1px solid #000;padding:5px">${esc(s.dept||'Admin & Director')}</td>
+                  <td style="border:1px solid #000;padding:5px"><b>${esc(s.name)}</b>${s.active===false?' (Inactive)':''}</td>
+                  <td style="border:1px solid #000;padding:5px">${esc(s.desig||'—')}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:center">${s.rank??staffDeptRank(s.dept)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(s.salary)}</td>
+                  <td style="border:1px solid #000;padding:5px">${esc(s.phone||'—')}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:center">${fmtD(s.join)}</td>
+                </tr>`).join('')}
+              </tbody>
+              <tfoot>
+                <tr style="font-weight:700;background:#f8fafc">
+                  <td colspan="5" style="border:1px solid #000;padding:6px;text-align:right">Total Gross Salary:</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sum(rows,s=>s.salary))}</td>
+                  <td colspan="2" style="border:1px solid #000"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        `;
+        Print.go(pHtml,{page:'A4',land:false,title:'Staff_List'});
+      };
+    }
     return;
   }
 
@@ -1740,42 +1791,60 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
   const totDue=sum(staffItems,x=>x.due);
 
   box.innerHTML=`
-    <div class="card" style="margin-bottom:12px">
-      <div class="row" style="align-items:flex-end;gap:12px;flex-wrap:wrap">
-        ${fld('Month',`<input type="month" id="sf_m" value="${ym}">`)}
-        <span class="sp"></span>
-        <button class="btn btn-o" id="sf_new">+ New Staff</button>
-        <button class="btn btn-o" id="sf_sv">💾 Save Sheet</button>
-        <button class="btn btn-o" id="sf_xl">⬇ Excel</button>
-        <button class="btn btn-p" id="sf_pr">🖨️ Print Salary Sheet</button>
+    <div class="card" style="padding:10px 14px;margin-bottom:10px;background:#fff">
+      <div class="row" style="align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-weight:700;font-size:13px;color:var(--txt)">Month:</span>
+          <input type="month" id="sf_m" value="${ym}" style="width:160px;padding:5px 8px;font-size:13px;font-weight:600">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button class="btn btn-o btn-s" id="sf_new">+ New Staff</button>
+          <button class="btn btn-o btn-s" id="sf_sv">💾 Save Sheet</button>
+          <button class="btn btn-o btn-s" id="sf_xl">⬇ Excel</button>
+          <button class="btn btn-p btn-s" id="sf_pr">🖨 Print Salary Sheet</button>
+        </div>
+      </div>
+
+      <div id="sf_kpis" style="display:flex;gap:8px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;flex-wrap:wrap;font-size:12px">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:3px 8px">
+          <span class="muted">Gross:</span> <b style="color:#0f172a">Tk ${money(totGross)}</b>
+        </div>
+        <div style="background:#fffbeb;border:1px solid #fef3c7;border-radius:6px;padding:3px 8px">
+          <span class="muted">Daily Sum:</span> <b style="color:#92400e">Tk ${money(totDaily)}</b>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #e0e7ff;border-radius:6px;padding:3px 8px">
+          <span class="muted">Total Earned:</span> <b style="color:#3730a3">Tk ${money(totSalary)}</b>
+        </div>
+        <div style="background:#fef2f2;border:1px solid #fee2e2;border-radius:6px;padding:3px 8px">
+          <span class="muted">Loan:</span> <b style="color:#b91c1c">Tk ${money(totLoan)}</b>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:3px 8px">
+          <span style="color:#166534;font-weight:600">Net Payable:</span> <b style="color:#15803d">Tk ${money(totBal)}</b>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:3px 8px;margin-left:auto">
+          <span class="muted">Paid:</span> <b style="color:#15803d">${money(totPaid)}</b>
+          <span class="muted" style="margin:0 4px">|</span>
+          <span class="muted">Due:</span> <b style="color:#dc2626">${money(totDue)}</b>
+        </div>
       </div>
     </div>
 
-    <div class="kpis" id="sf_kpis" style="margin-bottom:12px">
-      <div class="kpi"><small>Total Gross</small><b>Tk ${money(totGross)}</b></div>
-      <div class="kpi" style="--c:#fef3c7"><small>Daily Salary Sum</small><b>Tk ${money(totDaily)}</b></div>
-      <div class="kpi" style="--c:#e0e7ff"><small>Total Earned</small><b>Tk ${money(totSalary)}</b></div>
-      <div class="kpi" style="--c:#fee2e2"><small>Loan Deducted</small><b style="color:#b91c1c">Tk ${money(totLoan)}</b></div>
-      <div class="kpi" style="--c:#dcfce7"><small>Net Payable</small><b style="color:#15803d">Tk ${money(totBal)}</b></div>
-      <div class="kpi" style="--c:#f1f5f9"><small>Paid / Due</small><b>${money(totPaid)} / <span style="color:#dc2626">${money(totDue)}</span></b></div>
-    </div>
-
-    <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--bd)">
-      <div class="twrap" style="max-height:calc(100vh - 300px);overflow:auto">
+    <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--bd);margin-bottom:10px">
+      <div class="twrap" style="max-height:calc(100vh - 245px);overflow:auto">
         <table class="tbl kn sal-table" style="margin:0;width:100%;border-collapse:collapse" id="sf_tbl">
           <thead>
             <tr style="position:sticky;top:0;z-index:10;background:#0f172a;color:#fff">
-              <th style="padding:10px 8px;min-width:130px;background:#0f172a;color:#fff">Post / Dept</th>
-              <th style="padding:10px 4px;width:45px;text-align:center;background:#0f172a;color:#fff">SL</th>
-              <th style="padding:10px 8px;min-width:160px;background:#0f172a;color:#fff">Name</th>
-              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Salary (Gross)</th>
-              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Daily Salary</th>
-              <th style="padding:10px 6px;text-align:center;width:75px;background:#0f172a;color:#fff">Day</th>
-              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Total Salary</th>
-              <th style="padding:10px 6px;text-align:right;width:95px;background:#0f172a;color:#fff">Loan</th>
-              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Balance</th>
-              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Paid</th>
-              <th style="padding:10px 6px;text-align:center;background:#0f172a;color:#fff">Action</th>
+              <th style="padding:8px 8px;min-width:130px;background:#0f172a;color:#fff">Post / Dept</th>
+              <th style="padding:8px 4px;width:45px;text-align:center;background:#0f172a;color:#fff">SL</th>
+              <th style="padding:8px 8px;min-width:160px;background:#0f172a;color:#fff">Name</th>
+              <th style="padding:8px 8px;text-align:right;background:#0f172a;color:#fff">Salary (Gross)</th>
+              <th style="padding:8px 8px;text-align:right;background:#0f172a;color:#fff">Daily Salary</th>
+              <th style="padding:8px 6px;text-align:center;width:75px;background:#0f172a;color:#fff">Day</th>
+              <th style="padding:8px 8px;text-align:right;background:#0f172a;color:#fff">Total Salary</th>
+              <th style="padding:8px 6px;text-align:right;width:95px;background:#0f172a;color:#fff">Loan</th>
+              <th style="padding:8px 8px;text-align:right;background:#0f172a;color:#fff">Balance</th>
+              <th style="padding:8px 8px;text-align:right;background:#0f172a;color:#fff">Paid</th>
+              <th style="padding:8px 6px;text-align:center;background:#0f172a;color:#fff">Action</th>
             </tr>
           </thead>
           <tbody id="sf_tbody">
@@ -1784,35 +1853,37 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
               staffItems.forEach((x,i)=>{
                 const isNewDept=x.dept!==renderedDept;
                 if(isNewDept)renderedDept=x.dept;
-                const deptCell=isNewDept?`<td rowspan="${deptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};color:${staffDeptFg(x.dept)};font-weight:700;font-size:12.5px;vertical-align:middle;text-align:center;border-right:2px solid var(--bd);padding:8px 6px;line-height:1.3">${esc(x.dept)}</td>`:'';
+                const deptCell=isNewDept?`<td rowspan="${deptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};color:${staffDeptFg(x.dept)};font-weight:700;font-size:12px;vertical-align:middle;text-align:center;border-right:2px solid var(--bd);padding:6px;line-height:1.3">${esc(x.dept)}</td>`:'';
                 html+=`<tr data-id="${x.s.id}" data-idx="${i}">
                   ${deptCell}
                   <td style="text-align:center;font-weight:600">${x.sl}</td>
                   <td><b>${esc(x.s.name)}</b>${x.s.desig?`<br><small class="muted">${esc(x.s.desig)}</small>`:''}</td>
                   <td class="r" style="font-weight:600">${money(x.gross)}</td>
                   <td class="r text-daily">${money(x.daily)}</td>
-                  <td style="text-align:center;padding:4px"><input type="number" step="0.5" min="0" max="31" class="sf-inp sf-day" data-id="${x.s.id}" value="${x.day}" style="width:62px;text-align:center;font-weight:700;padding:4px"></td>
-                  <td class="r font-bold text-tot">${money(x.tot)}</td>
-                  <td class="r" style="padding:4px"><input type="number" step="any" min="0" class="sf-inp sf-loan" data-id="${x.s.id}" value="${x.loan||''}" placeholder="0" style="width:85px;text-align:right;padding:4px"></td>
-                  <td class="r font-bold text-bal" style="color:${x.due>0?'#b91c1c':'#15803d'}">${money(x.bal)}</td>
-                  <td class="r text-paid">${money(x.paid)}</td>
-                  <td style="text-align:center">${x.due>0?`<button class="btn btn-a btn-s" data-act="pay" data-id="${x.s.id}" data-bal="${x.due}">Tk Pay</button>`:`<span class="bdg b-paid">Paid</span>`}</td>
+                  <td class="c"><input class="sf-inp sf-day font-mono" type="number" min="0" max="31" step="0.5" value="${x.day}" style="width:60px;text-align:center;padding:3px;font-weight:700"></td>
+                  <td class="r text-tot font-mono" style="font-weight:700">${money(x.tot)}</td>
+                  <td class="r"><input class="sf-inp sf-loan font-mono" type="number" min="0" step="any" value="${x.loan||''}" placeholder="0" style="width:80px;text-align:right;padding:3px"></td>
+                  <td class="r text-bal font-mono" style="font-weight:700;color:${x.due>0?'#b91c1c':'#15803d'}">${money(x.bal)}</td>
+                  <td class="r text-paid font-mono" style="color:#0284c7">${money(x.paid)}</td>
+                  <td class="c">
+                    ${x.due>0?`<button class="btn btn-s btn-a" data-act="pay" data-id="${x.s.id}" data-bal="${x.due}">Tk Pay</button>`:`<span class="bdg b-paid">Paid</span>`}
+                  </td>
                 </tr>`;
               });
-              return html||'<tr><td colspan="11" class="empty">No staff added yet</td></tr>';
+              return html||`<tr><td colspan="11" class="empty">No staff found</td></tr>`;
             })()}
           </tbody>
           <tfoot>
             <tr style="position:sticky;bottom:0;z-index:10;background:#f8fafc;font-weight:700;border-top:2px solid var(--bd)">
-              <td colspan="3" style="padding:10px 8px;text-align:right;background:#f8fafc">Total:</td>
-              <td class="r" id="tf_gross" style="background:#f8fafc">${money(totGross)}</td>
-              <td class="r" id="tf_daily" style="background:#f8fafc">${money(totDaily)}</td>
-              <td style="background:#f8fafc"></td>
-              <td class="r" id="tf_tot" style="background:#f8fafc">${money(totSalary)}</td>
-              <td class="r" id="tf_loan" style="background:#f8fafc">${money(totLoan)}</td>
-              <td class="r" id="tf_bal" style="background:#f8fafc;color:#15803d">${money(totBal)}</td>
-              <td class="r" id="tf_paid" style="background:#f8fafc">${money(totPaid)}</td>
-              <td class="r" id="tf_due" style="background:#f8fafc;color:#b91c1c">${money(totDue)}</td>
+              <td colspan="3" style="padding:8px 10px;text-align:right">TOTAL:</td>
+              <td class="r" id="tf_gross" style="padding:8px">${money(totGross)}</td>
+              <td class="r" id="tf_daily" style="padding:8px">${money(totDaily)}</td>
+              <td class="c" style="padding:8px">—</td>
+              <td class="r font-mono" id="tf_tot" style="padding:8px">${money(totSalary)}</td>
+              <td class="r font-mono" id="tf_loan" style="padding:8px;color:#b91c1c">${money(totLoan)}</td>
+              <td class="r font-mono" id="tf_bal" style="padding:8px;color:#15803d">${money(totBal)}</td>
+              <td class="r font-mono" id="tf_paid" style="padding:8px;color:#0284c7">${money(totPaid)}</td>
+              <td class="c font-mono" id="tf_due" style="padding:8px;color:#dc2626">${money(totDue)}</td>
             </tr>
           </tfoot>
         </table>
@@ -1824,15 +1895,15 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
   $('#sf_new').onclick=()=>StaffForm.open();
 
   function saveCurrentPayroll(notify){
-    const rows={};
+    const rec={id:ym,month:ym,updatedAt:Date.now(),rows:{}};
     $$('#sf_tbody tr[data-id]').forEach(tr=>{
       const id=tr.dataset.id;
-      const dInp=tr.querySelector('.sf-day');
-      const lInp=tr.querySelector('.sf-loan');
-      if(id&&dInp)rows[id]={day:num(dInp.value)||0,loan:num(lInp.value)||0};
+      const day=num(tr.querySelector('.sf-day').value)||0;
+      const loan=num(tr.querySelector('.sf-loan').value)||0;
+      rec.rows[id]={day,loan};
     });
-    DB.put('payroll',{id:ym,month:ym,rows,updated:Date.now()});
-    if(notify)toast('Salary sheet saved ✓');
+    DB.put('payroll',rec);
+    if(notify!==false)toast('Salary sheet saved');
   }
 
   $('#sf_sv').onclick=()=>saveCurrentPayroll(true);
@@ -1869,6 +1940,32 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
     $('#tf_bal').textContent=money(gB);
     $('#tf_paid').textContent=money(gP);
     $('#tf_due').textContent=money(gDue);
+
+    const kpisEl=$('#sf_kpis');
+    if(kpisEl){
+      kpisEl.innerHTML=`
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:3px 8px">
+          <span class="muted">Gross:</span> <b style="color:#0f172a">Tk ${money(gG)}</b>
+        </div>
+        <div style="background:#fffbeb;border:1px solid #fef3c7;border-radius:6px;padding:3px 8px">
+          <span class="muted">Daily Sum:</span> <b style="color:#92400e">Tk ${money(gD)}</b>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #e0e7ff;border-radius:6px;padding:3px 8px">
+          <span class="muted">Total Earned:</span> <b style="color:#3730a3">Tk ${money(gT)}</b>
+        </div>
+        <div style="background:#fef2f2;border:1px solid #fee2e2;border-radius:6px;padding:3px 8px">
+          <span class="muted">Loan:</span> <b style="color:#b91c1c">Tk ${money(gL)}</b>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:3px 8px">
+          <span style="color:#166534;font-weight:600">Net Payable:</span> <b style="color:#15803d">Tk ${money(gB)}</b>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:3px 8px;margin-left:auto">
+          <span class="muted">Paid:</span> <b style="color:#15803d">${money(gP)}</b>
+          <span class="muted" style="margin:0 4px">|</span>
+          <span class="muted">Due:</span> <b style="color:#dc2626">${money(gDue)}</b>
+        </div>
+      `;
+    }
   }
 
   $$('.sf-inp',box).forEach(inp=>{
@@ -1876,90 +1973,123 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
     inp.addEventListener('change',()=>saveCurrentPayroll(false));
   });
 
-  $$('[data-act="pay"]',box).forEach(btn=>{
-    btn.onclick=()=>{
+  box.onclick=e=>{
+    const btn=e.target.closest('[data-act="pay"]');
+    if(btn){
       saveCurrentPayroll(false);
       salPay(btn.dataset.id,ym,num(btn.dataset.bal));
-    };
-  });
-
-  /* Print Standard Salary Sheet */
-  $('#sf_pr').onclick=()=>{
-    saveCurrentPayroll(false);
-    let pRows='';let curD='';
-    staffItems.forEach((x)=>{
-      const isNew=x.dept!==curD;
-      if(isNew)curD=x.dept;
-      const dCell=isNew?`<td rowspan="${deptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};font-weight:700;font-size:11px;vertical-align:middle;text-align:center;border:1px solid #000;padding:4px">${esc(x.dept)}</td>`:'';
-      pRows+=`<tr>
-        ${dCell}
-        <td style="text-align:center;border:1px solid #000;padding:4px">${x.sl}</td>
-        <td style="border:1px solid #000;padding:4px"><b>${esc(x.s.name)}</b>${x.s.desig?` <span style="font-size:10px;color:#475569">(${esc(x.s.desig)})</span>`:''}</td>
-        <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.gross)}</td>
-        <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.daily)}</td>
-        <td style="text-align:center;border:1px solid #000;padding:4px"><b>${x.day}</b></td>
-        <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:600">${money(x.tot)}</td>
-        <td style="text-align:right;border:1px solid #000;padding:4px">${x.loan?money(x.loan):''}</td>
-        <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.bal)}</td>
-        <td style="border:1px solid #000;width:80px"></td>
-      </tr>`;
-    });
-
-    const pHtml=`
-      <div style="font-family:Arial,sans-serif;color:#000">
-        <div style="text-align:center;margin-bottom:12px">
-          <h2 style="margin:0;font-size:18px;text-transform:uppercase">${esc(S().name)}</h2>
-          <div style="font-size:14px;font-weight:700;margin-top:2px">Admin & Staff Salary — ${monthName(ym).toUpperCase()}</div>
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:11px">
-          <thead>
-            <tr style="background:#0f172a;color:#fff;font-weight:700">
-              <th style="border:1px solid #000;padding:6px;width:120px">Post</th>
-              <th style="border:1px solid #000;padding:6px;width:35px">SL</th>
-              <th style="border:1px solid #000;padding:6px">Name</th>
-              <th style="border:1px solid #000;padding:6px;width:75px;text-align:right">Salary</th>
-              <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Daily Salary</th>
-              <th style="border:1px solid #000;padding:6px;width:45px;text-align:center">Day</th>
-              <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Total Salary</th>
-              <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Loan</th>
-              <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Balance</th>
-              <th style="border:1px solid #000;padding:6px;width:80px">Signature</th>
-            </tr>
-          </thead>
-          <tbody>${pRows}</tbody>
-          <tfoot>
-            <tr style="background:#f1f5f9;font-weight:700">
-              <td colspan="3" style="border:1px solid #000;padding:6px;text-align:right">Total:</td>
-              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totGross)}</td>
-              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totDaily)}</td>
-              <td style="border:1px solid #000;padding:6px"></td>
-              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totSalary)}</td>
-              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totLoan)}</td>
-              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totBal)}</td>
-              <td style="border:1px solid #000"></td>
-            </tr>
-          </tfoot>
-        </table>
-        <div style="display:flex;justify-content:space-between;margin-top:45px;padding:0 20px;font-size:12px;font-weight:700">
-          <div style="border-top:1px solid #000;padding-top:4px;width:130px;text-align:center">Prepared by</div>
-          <div style="border-top:1px solid #000;padding-top:4px;width:130px;text-align:center">Accountant</div>
-          <div style="border-top:1px solid #000;padding-top:4px;width:150px;text-align:center">Managing Director</div>
-        </div>
-      </div>
-    `;
-    Print.go(pHtml,{land:true,page:'A4',title:'Salary_Sheet_'+ym});
+    }
   };
+
+  /* Print Salary Sheet */
+  const prBtn=$('#sf_pr',box);
+  if(prBtn){
+    prBtn.onclick=()=>{
+      saveCurrentPayroll(false);
+
+      // Read current on-screen values so any edited Day or Loan prints accurately
+      const curItems=[];
+      $$('#sf_tbody tr[data-id]').forEach((tr,idx)=>{
+        const id=tr.dataset.id;
+        const s=DB.get('staff',id);
+        if(!s)return;
+        const gross=num(s.salary);
+        const daily=Math.round((gross/30)*100)/100;
+        const day=num(tr.querySelector('.sf-day')?.value)||0;
+        const tot=Math.round(daily*day);
+        const loan=num(tr.querySelector('.sf-loan')?.value)||0;
+        const bal=Math.max(0,Math.round(tot-loan));
+        curItems.push({s,sl:idx+1,dept:s.dept||'Admin & Director',gross,daily,day,tot,loan,bal});
+      });
+
+      const printItems=curItems.length?curItems:staffItems;
+      const curDeptCounts={};
+      printItems.forEach(it=>{curDeptCounts[it.dept]=(curDeptCounts[it.dept]||0)+1});
+
+      const pTotGross=sum(printItems,x=>x.gross);
+      const pTotDaily=sum(printItems,x=>x.daily);
+      const pTotSalary=sum(printItems,x=>x.tot);
+      const pTotLoan=sum(printItems,x=>x.loan);
+      const pTotBal=sum(printItems,x=>x.bal);
+
+      let pRows='';let rDept='';
+      printItems.forEach(x=>{
+        const isNew=x.dept!==rDept;
+        if(isNew)rDept=x.dept;
+        const dCell=isNew?`<td rowspan="${curDeptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};font-weight:700;font-size:11px;vertical-align:middle;text-align:center;border:1px solid #000;padding:4px">${esc(x.dept)}</td>`:'';
+        pRows+=`<tr>
+          ${dCell}
+          <td style="text-align:center;border:1px solid #000;padding:4px">${x.sl}</td>
+          <td style="border:1px solid #000;padding:4px"><b>${esc(x.s.name)}</b>${x.s.desig?` <span style="font-size:10px;color:#475569">(${esc(x.s.desig)})</span>`:''}</td>
+          <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.gross)}</td>
+          <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.daily)}</td>
+          <td style="text-align:center;border:1px solid #000;padding:4px">${x.day}</td>
+          <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.tot)}</td>
+          <td style="text-align:right;border:1px solid #000;padding:4px">${x.loan?money(x.loan):'-'}</td>
+          <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.bal)}</td>
+        </tr>`;
+      });
+
+      const pHtml=`
+        <div style="font-family:Arial,sans-serif;color:#000">
+          ${Print.head(true)}
+          <div style="text-align:center;margin:8px 0 12px">
+            <div style="font-size:15px;font-weight:700;letter-spacing:0.5px">ADMIN & STAFF SALARY SHEET</div>
+            <div style="font-size:12px;color:#334155;margin-top:2px">Month: <b>${monthName(ym)}</b></div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead>
+              <tr style="background:#0f172a;color:#fff;font-weight:700">
+                <th style="border:1px solid #000;padding:6px;width:120px">Post</th>
+                <th style="border:1px solid #000;padding:6px;width:35px">SL</th>
+                <th style="border:1px solid #000;padding:6px">Name</th>
+                <th style="border:1px solid #000;padding:6px;width:75px;text-align:right">Salary</th>
+                <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Daily Salary</th>
+                <th style="border:1px solid #000;padding:6px;width:40px;text-align:center">Day</th>
+                <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Total Salary</th>
+                <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Loan</th>
+                <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${pRows}
+            </tbody>
+            <tfoot>
+              <tr style="font-weight:700;background:#f1f5f9">
+                <td colspan="3" style="border:1px solid #000;padding:6px;text-align:right">TOTAL:</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotGross)}</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotDaily)}</td>
+                <td style="border:1px solid #000;padding:6px;text-align:center">-</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotSalary)}</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotLoan)}</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotBal)}</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div style="margin-top:40px;display:flex;justify-content:space-between;padding:0 30px;font-size:12px;font-weight:700">
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Prepared by</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Accountant</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:140px;text-align:center">Managing Director</div>
+          </div>
+        </div>
+      `;
+      Print.go(pHtml,{page:'A4 landscape',land:true,title:'Salary_Sheet_'+ym});
+    };
+  }
 
   /* Excel Export */
-  $('#sf_xl').onclick=()=>{
-    saveCurrentPayroll(false);
-    const head=['Post / Dept','SL','Name','Designation','Gross Salary','Daily Salary','Day','Total Salary','Loan','Balance','Paid','Due'];
-    const rows=staffItems.map(x=>[
-      x.dept,x.sl,x.s.name,x.s.desig||'',x.gross,x.daily,x.day,x.tot,x.loan,x.bal,x.paid,x.due
-    ]);
-    rows.push(['TOTAL','','','',totGross,totDaily,'',totSalary,totLoan,totBal,totPaid,totDue]);
-    XLSX.download('Staff_Salary_'+ym+'.xlsx',[{name:'Salary_'+ym.replace('-','_'),rows:[['Admin & Staff Salary — '+monthName(ym)],head,...rows]}]);
-  };
+  const xlBtn=$('#sf_xl',box);
+  if(xlBtn){
+    xlBtn.onclick=()=>{
+      saveCurrentPayroll(false);
+      const head=['Post / Dept','SL','Name','Designation','Gross Salary','Daily Salary','Day','Total Salary','Loan','Balance','Paid','Due'];
+      const rows=staffItems.map(x=>[
+        x.dept,x.sl,x.s.name,x.s.desig||'',x.gross,x.daily,x.day,x.tot,x.loan,x.bal,x.paid,x.due
+      ]);
+      rows.push(['TOTAL','','','',totGross,totDaily,'',totSalary,totLoan,totBal,totPaid,totDue]);
+      XLSX.download('Staff_Salary_'+ym+'.xlsx',[{name:'Salary_'+ym.replace('-','_'),rows:[['Admin & Staff Salary — '+monthName(ym)],head,...rows]}]);
+    };
+  }
 }};
 
 
@@ -2332,10 +2462,10 @@ table{width:100%;border-collapse:collapse}.info{border:1px solid #000;margin-bot
 .sig img.sgi{height:14mm;max-width:45mm;object-fit:contain;display:block;margin:0 auto -2px}.qrv{display:flex;gap:8px;align-items:center;font-size:10px;line-height:1.3}.qrv svg{width:21mm;height:21mm;flex:none}.rfoot{display:flex;gap:12px;align-items:flex-end;margin-top:10px}.rp .tt td{font-weight:bold;padding-top:9px;border-bottom:1px solid #000;text-transform:uppercase;font-size:12.5px}
 .pos{width:72mm;font-size:11.5px}.pos .lh{display:block;text-align:center;border-bottom:1px dashed #000}.pos .lh img{height:40px}.pos .lh .nm{font-size:16px}.pos table td{padding:1px 2px}.pos .ttl span{font-size:12px;padding:2px 8px}`;
 const Print={
-  go(body,o={}){if(this._pdf&&typeof PDFX!=='undefined'){this._pdf=false;return PDFX.make(body,o)}if(typeof dpadApply==='function'){try{const r=dpadApply(body,o);body=r.body;o=r.o}catch(e){console.warn(e)}}const s=S();const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';document.body.appendChild(f);
+  go(body,o={}){if(this._pdf&&typeof PDFX!=='undefined'){this._pdf=false;return PDFX.make(body,o)}if(typeof dpadApply==='function'){try{const r=dpadApply(body,o);body=r.body;o=r.o}catch(e){console.warn(e)}}const s=S();const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0.01;pointer-events:none;z-index:-999';document.body.appendChild(f);
     const d=f.contentDocument||f.contentWindow.document;d.open();d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(o.title||s.name)}</title><style>@page{size:${o.page||'A4'};margin:${o.margin||'10mm 12mm'}}${PRINT_CSS}</style></head><body>${body}</body></html>`);d.close();
     let done=false;const fire=()=>{if(done)return;done=true;const ae=document.activeElement;try{f.contentWindow.focus();f.contentWindow.print()}catch(e){console.warn(e)}setTimeout(()=>{try{window.focus();if(ae&&ae.focus&&document.contains(ae))ae.focus()}catch(e){}},30);setTimeout(()=>f.remove(),2000)};
-    const imgs=[...d.images].filter(i=>!i.complete);if(imgs.length){let n=imgs.length;imgs.forEach(i=>i.onload=i.onerror=()=>{if(--n<=0)setTimeout(fire,100)});setTimeout(fire,1500)}else setTimeout(fire,250)},
+    const imgs=[...d.images].filter(i=>!i.complete);if(imgs.length){let n=imgs.length;imgs.forEach(i=>i.onload=i.onerror=()=>{if(--n<=0)setTimeout(fire,100)});setTimeout(fire,350)}else setTimeout(fire,60)},
   head(compact){const s=S();if(s.padMode&&!compact)return `<div style="height:${num(s.padTop)}mm"></div>`;
     return `<div class="lh">${s.logo?`<img src="${esc(s.logo)}" alt="">`:''}<div class="ct"><div class="nm">${esc(s.name)}</div>${s.tagline?`<div class="tg">${esc(s.tagline)}</div>`:''}<div class="ad">${esc(s.address)}</div><div class="ad">${[s.phone&&'Phone: '+s.phone,s.email&&'Email: '+s.email,s.web].filter(Boolean).map(esc).join(' | ')}</div>${s.regNo?`<div class="ad">Reg. No: ${esc(s.regNo)}</div>`:''}</div>${s.logo&&!compact?'<div style="width:80px"></div>':''}</div>`},
   foot(extra=''){return `<div class="foot">${extra?esc(extra)+' | ':''}Printed by ${esc(Auth.user?Auth.user.name:'')} on ${fmtDT(Date.now())} | ${APP.name}</div>`},
@@ -5180,7 +5310,7 @@ MODS.push({k:'books',t:'Accounts Books',g:'Business',ic:'books'},{k:'ledger',t:'
 DEF_PERMS.manager.push('books','ledger','recon','monthly');if(DEF_PERMS.accounts)DEF_PERMS.accounts.push('books','ledger','recon','monthly');
 {const P=PANELS.find(p=>p.k==='md');if(P&&Array.isArray(P.mods))P.mods.push('books','monthly')}
 
-/* ============ Accounts Books (Tally Day Book, Continuous Ledger, Monthly Summary) ============ */
+/* ============ Accounts Books (Day Book, Continuous Ledger, Monthly Summary) ============ */
 SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
   const fy=fyOf(today());
   const st=this.st=this.st||{
@@ -5191,7 +5321,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
   };
 
   el.innerHTML=tabsHtml(this.tab,[
-    ['day','Tally Day Book'],
+    ['day','Day Book'],
     ['cont','Continuous Daily Ledger'],
     ['summary','Monthly Daily Summary'],
     ['pl','Profit and Loss'],
@@ -5205,7 +5335,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
 
   let title='',sub='',html='',xl=null;
 
-  /* ================= 1) TALLY DAY BOOK ================= */
+  /* ================= 1) DAY BOOK ================= */
   if(this.tab==='day'){
     const isRange=st.from!==st.to;
     box.innerHTML=`
@@ -5241,7 +5371,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
     $('#dbk_f').onchange=e=>{st.from=e.target.value||today();if(!$('#dbk_isrng').checked)st.to=st.from;st.page=0;App.render()};
     $('#dbk_to').onchange=e=>{st.to=e.target.value||st.from;st.page=0;App.render()};
     $('#dbk_m').onchange=e=>{st.mode=e.target.value;st.page=0;App.render()};
-    $('#dbk_q').oninput=e=>{st.q=e.target.value;st.page=0;drawTallyTable()};
+    $('#dbk_q').oninput=e=>{st.q=e.target.value;st.page=0;drawDayBookTable()};
 
     const all=moneyEntries().filter(e=>!st.mode||e.mode===st.mode);
     const before=all.filter(e=>e.date<st.from);
@@ -5270,7 +5400,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       return e.inn>0?'<span class="bdg b-ok">Receipt</span>':'<span class="bdg b-cancelled">Payment</span>';
     };
 
-    function drawTallyTable(){
+    function drawDayBookTable(){
       const q=(st.q||'').trim().toLowerCase();
       const filtered=q?allPeriod.filter(e=>`${e.head} ${e.desc||''} ${e.mode} ${e.by||''}`.toLowerCase().includes(q)):allPeriod;
       const N=filtered.length;
@@ -5359,18 +5489,18 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
           const b=e.target.closest('[data-pg]');
           if(!b||b.disabled)return;
           st.page=+b.dataset.pg;
-          drawTallyTable();
+          drawDayBookTable();
         };
         const pSel=$('#dbk_per_sel');
-        if(pSel)pSel.onchange=e=>{st.per=num(e.target.value)||50;st.page=0;drawTallyTable()};
+        if(pSel)pSel.onchange=e=>{st.per=num(e.target.value)||50;st.page=0;drawDayBookTable()};
       }
     }
 
-    drawTallyTable();
+    drawDayBookTable();
 
-    title='TALLY DAY BOOK';
+    title='DAY BOOK';
     sub=st.from===st.to?fmtD(st.from):`${fmtD(st.from)} to ${fmtD(st.to)}`;
-    xl={name:'Tally_Day_Book',head:['#','Date','Particulars','Details','Type','Mode','Debit (Dr)','Credit (Cr)','Balance'],rows:allPeriod.map((e,i)=>[i+1,fmtD(e.date),e.head,e.desc||'',e.inn>0?'Receipt':'Payment',e.mode,num(e.inn),num(e.out),''])};
+    xl={name:'Day_Book',head:['#','Date','Particulars','Details','Type','Mode','Debit (Dr)','Credit (Cr)','Balance'],rows:allPeriod.map((e,i)=>[i+1,fmtD(e.date),e.head,e.desc||'',e.inn>0?'Receipt':'Payment',e.mode,num(e.inn),num(e.out),''])};
 
     $('#bk_pr').onclick=()=>{
       let prRows=allPeriod.map((e,i)=>{
@@ -5390,7 +5520,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
         <div style="font-family:Arial,sans-serif;color:#000">
           ${Print.head(true)}
           <div style="text-align:center;margin:10px 0 14px">
-            <div style="font-size:14px;font-weight:700;letter-spacing:0.5px">TALLY DAY BOOK — DAILY VOUCHER REGISTER</div>
+            <div style="font-size:14px;font-weight:700;letter-spacing:0.5px">DAY BOOK — DAILY VOUCHER REGISTER</div>
             <div style="font-size:12px;color:#475569;margin-top:2px">Period: ${esc(sub)}</div>
           </div>
           <table style="width:100%;border-collapse:collapse;font-size:11px">
@@ -5429,7 +5559,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
           </div>
         </div>
       `;
-      Print.go(prHtml,{land:false,page:'A4',title:'Tally_Day_Book'});
+      Print.go(prHtml,{land:false,page:'A4',title:'Day_Book'});
     };
 
     $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:xl.name.slice(0,30),rows:[[title+' — '+sub],xl.head,...xl.rows]}]);
@@ -7285,6 +7415,15 @@ const LAN_GUIDE=`<div id="cg_lan2" style="display:none"><ol style="padding-left:
   lanWire(el)}}
 /* opened from the server but not set up yet: suggest it */
 {const _sa=startApp;startApp=function(){_sa();try{if(lanServedHere()&&!Sync.enabled()&&Auth.user&&Auth.user.role==='admin')setTimeout(()=>toast('This software is open from the office server — set up sync: Backup and Cloud → Cloud setup → Local Server (LAN)','warn'),1500)}catch(e){}}}
+CHANGELOG.unshift({v:'2.5.0',d:'2026-11-27',n:[
+ 'Accounts Books: Statement 1 (Continuous Daily Cash & Expense Ledger) with rolling opening balances and itemized expenses',
+ 'Accounts Books: Statement 2 (Monthly Daily Summary) calendar day breakdown with monthly totals and daily averages',
+ 'Accounts Books: Day Book voucher register with date navigation, filters, and printable vouchers',
+ 'Staff and Salary: Standard Staff Salary Sheet with attendance, daily salary calc, loan deductions, and auto landscape print',
+ 'Staff and Salary: Staff Directory list with SL hierarchy ranking and print',
+ 'Setup: Licenses & Legal Documents Vault with PDF and image upload, embedded preview viewer, and expiry alerts'
+]});
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 CHANGELOG.unshift({v:'2.4.0',d:'2026-11-24',n:[
  'New: Local Server (LAN) — instead of an online cloud, a center can use its own server PC in the office. All computers sync with it over the office network; no internet is needed. Backup and Cloud → Cloud setup → Cloud server = "Local Server (LAN)" → server address (for example http://192.168.1.10:8787) and the same Secret Key on every computer',
  'The server program is "AMAZ Local Server" (one program for every AMAZ software): double-click to start, no installation; it keeps all data on the server PC and makes a backup every day (kept 30 days)',
