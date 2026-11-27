@@ -373,7 +373,7 @@ pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;max-hei
 <script>
 'use strict';
 /* ============ AMAZ Diagnostic — Core ============ */
-const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'2.5.2'};
+const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'2.5.3'};
 const CHANGELOG=[{v:'1.2.0',d:'2026-11-20',n:['Doctor portal: separate doctor login, own serial queue, view previous reports and prescriptions, e-prescription (drug list, templates, follow-up) and print','Tests advised by the doctor are added to the bill at reception in one click','Comparison with previous results (Delta check) with large-change alert','Critical value alert with notification log','Signature images: in settings and per user, placed automatically on Verify','QR code on reports and invoices','Online report portal: patients view reports on mobile and download PDF','Equipment and maintenance log (service / calibration reminders)','Cashier shift closing (note counting, short/excess, print)','PIN approval by Manager (over-limit discount, bill edit/cancel, report with due)','Business analysis (MIS): monthly comparison, trends, top tests/doctors, time and weekday analysis']},{v:'1.1.0',d:'2026-11-20',n:['New module: Corporate / Panel clients (auto discount, credit billing, bulk payment collection, statement)','New module: Staff and Salary (monthly salary sheet, payments go to accounts, print)','Service charge items (home collection, report copy): billed without report','WhatsApp messages: bill, report ready, due reminder, serial','Summary window after saving a bill (print / label / WhatsApp / new bill)','First-run setup wizard','Dashboard To-Do list (late reports, dues, backup reminder etc.)','Helpful tips on every page, font size control, menu button on mobile/tablet','Global search also finds patients (Ctrl+K)','Result entry: Save and Next, all tests of the same patient one after another']},{v:'1.0.0',d:'2026-11-20',n:['First release: patient registration and billing, lab worklist and result entry (auto flag and formula), report delivery, referrer commission, doctor serial, accounts and cash book, inventory (purchase, usage, auto reagent consumption), 16 reports, user roles and permissions, cloud sync, backup/restore','License system: 15-day trial, AMAZ1 license key (Settings → License), warning 10 days before expiry, 7-day grace period, PC count control (via cloud sync)']}];
 const MODES=['Cash','bKash','Nagad','Rocket','Card','Bank'];
 const STATUS={pending:'Pending',collected:'Sample Collected',done:'Result Ready',verified:'Verified',delivered:'Delivered',cancelled:'Cancelled'};
@@ -2073,13 +2073,17 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
       lpBtn.onclick=()=>{
         const pHtml=`
           <div style="font-family:Arial,sans-serif;color:#000">
-            ${Print.head(true)}
-            <div style="text-align:center;margin:10px 0 14px">
-              <div style="font-size:15px;font-weight:700;letter-spacing:0.5px">STAFF & EMPLOYEE DIRECTORY</div>
-              <div style="font-size:12px;color:#334155;margin-top:2px">Total Employees: ${rows.length} · Printed on: ${today()}</div>
-            </div>
             <table style="width:100%;border-collapse:collapse;font-size:11px">
-              <thead>
+              <thead style="display:table-header-group">
+                <tr>
+                  <td colspan="8" style="border:none;padding:0 0 6px">
+                    ${Print.head(true)}
+                    <div style="text-align:center;margin:6px 0 8px">
+                      <div style="font-size:15px;font-weight:700;letter-spacing:0.5px">STAFF &amp; EMPLOYEE DIRECTORY</div>
+                      <div style="font-size:12px;color:#334155;margin-top:2px">Total Employees: ${rows.length} · Printed on: ${today()}</div>
+                    </div>
+                  </td>
+                </tr>
                 <tr style="background:#0f172a;color:#fff;font-weight:700">
                   <th style="border:1px solid #000;padding:6px;width:35px;text-align:center">#</th>
                   <th style="border:1px solid #000;padding:6px;width:130px">Department</th>
@@ -2404,23 +2408,27 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
       });
 
       const pHtml=`
-        <div style="font-family:Arial,sans-serif;color:#000;padding:4px">
-          ${Print.head(true)}
-          <div style="text-align:center;margin:6px 0 8px">
-            <div style="font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase">ADMIN &amp; STAFF SALARY SHEET</div>
-            <div style="font-size:12px;color:#334155;margin-top:2px">Month: <b>${monthName(ym)}</b></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;padding:5px 10px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;font-size:11px">
-            <div>Total Staff: <b>${printItems.length}</b></div>
-            <div style="display:flex;gap:16px">
-              <span>Gross Total: <b>Tk ${money(pTotGross)}</b></span>
-              <span>Net Payable: <b style="color:#0f172a">Tk ${money(pTotBal)}</b></span>
-              <span>Total Paid: <b style="color:#15803d">Tk ${money(pTotPaid)}</b></span>
-              <span>Total Due: <b style="color:#dc2626">Tk ${money(pTotDue)}</b></span>
-            </div>
-          </div>
+        <div style="font-family:Arial,sans-serif;color:#000;padding:2px">
           <table style="width:100%;border-collapse:collapse;font-size:10px;border:1.5px solid #0f172a">
-            <thead>
+            <thead style="display:table-header-group">
+              <tr>
+                <td colspan="12" style="border:none;padding:0 0 6px">
+                  ${Print.head(true)}
+                  <div style="text-align:center;margin:4px 0 6px">
+                    <div style="font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase">ADMIN &amp; STAFF SALARY SHEET</div>
+                    <div style="font-size:11.5px;color:#334155;margin-top:1px">Month: <b>${monthName(ym)}</b></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;padding:4px 8px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;font-size:10.5px">
+                    <div>Total Staff: <b>${printItems.length}</b></div>
+                    <div style="display:flex;gap:14px">
+                      <span>Gross Total: <b>Tk ${money(pTotGross)}</b></span>
+                      <span>Net Payable: <b style="color:#0f172a">Tk ${money(pTotBal)}</b></span>
+                      <span>Total Paid: <b style="color:#15803d">Tk ${money(pTotPaid)}</b></span>
+                      <span>Total Due: <b style="color:#dc2626">Tk ${money(pTotDue)}</b></span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
               <tr style="background:#0f172a;color:#fff;font-weight:700">
                 <th style="border:1px solid #334155;padding:5px 4px;width:115px;text-align:center">Post / Dept</th>
                 <th style="border:1px solid #334155;padding:5px 3px;width:30px;text-align:center">SL</th>
@@ -2898,9 +2906,19 @@ const Print={
   },
 
   go(body,o={}){
-    const isPos = body.includes('class="pos"') || body.includes('class="lbl"') || o.skipDialog || o.pos;
-    if(isPos){
-      return this.rawGo(body,o);
+    // User Requirement: Invoice, Test Report, and Prescription do NOT need portrait/landscape choice
+    const k = String(this._kind || o.kind || '').toLowerCase();
+    const isSingleDoc = k==='inv'||k==='rcpt'||k==='bill'||k==='rx'||k==='presc'||k==='rpt'||k==='test';
+    const isReportOrInvoice = isSingleDoc ||
+      body.includes('INVOICE') || body.includes('MONEY RECEIPT') ||
+      body.includes('TEST REPORT') || body.includes('Online Test Report') ||
+      body.includes('PRESCRIPTION') || body.includes('APPOINTMENT SLIP') ||
+      body.includes('class="pos"') || body.includes('class="lbl"') ||
+      body.includes('data-pk="inv"') || body.includes('data-pk="rx"') || body.includes('data-pk="rpt"') ||
+      o.skipDialog || o.pos || o.promptOrient === false;
+
+    if(isReportOrInvoice){
+      return this.rawGo(body, o);
     }
 
     const isDefaultLand = /landscape/i.test(String(o.page||'')) || o.land === true;
@@ -3844,6 +3862,11 @@ function rxSuggest(patId){const box=$('#bf_chips');if(!box||!patId)return;$('#bf
 function refDocTypes(){const t=new Set(['Doctor','Hospital','Clinic','Agent','Other','RMP / PC']);DB.all('referrers').forEach(r=>{const x=r.type||'Doctor';if(x!=='Media'&&x!=='P.O')t.add(x)});return [...t]}
 /* ============ v1.3 — Panels, ribbon menu, new billing page, Media / P.O, edit requests, patient summary, balance statement ============ */
 APP.ver='1.3.0';COLS.push('holds','reqs');
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -3851,6 +3874,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.0',d:'2026-11-22',n:['Fully English user interface','Home page with panel icons (Managing Director, Administration, Reception and Billing, Report Delivery, Lab, X-Ray, Doctor) and a separate login page for each panel','Menus moved to a top tab bar (ribbon) - full width pages','New bill entry page: Y/M/D age, Media and P.O (Promotion Officer), urgent fee, Hold / resume bills, Last Invoice, Re-Print, Send SMS/WhatsApp','Edit Request workflow (basic info, Refd By, Media, P.O, refund, cancel) with approval by Administration / MD','Patient Summary page: one search box (name, ID, mobile, bill, referrer, media) with doctor / media / P.O / test / date / due filters, pay due from the list with automatic money receipt','Due List, Test Wise statement and Balance Statement (daily income report by account)','Report layout: test title rows removed, signatures fixed at the bottom of the page','Room directions printed on the invoice','Signatures fixed at the bottom of the page on every print: invoice (A4, A5, 2 copies), money receipt, prescription, statements and reports','Animated background on the home and login pages','Pre-printed pad settings for each print: Pathology report, Imaging report (X-Ray, USG, ECG), Invoice, Money Receipt, Prescription and Medical Certificate - each with its own top and bottom space and a Test print button','Pathology and Imaging reports print on separate pages so each uses its own pad','New: Medical / Fitness Certificate from the bill (purpose, passport / NID, findings, FIT / UNFIT opinion, doctor signature)']});
 
@@ -5335,6 +5363,11 @@ function rxListModal(){const u=Auth.user;const st={f:addDays(today(),-30),t:toda
   $('#st_pft',el).onclick=()=>{const cur=DB.get('settings','main')||DEF_SET;const bk={printFont:cur.printFont,printScale:cur.printScale,printDark:cur.printDark};DB.d.settings.main={...cur,printFont:$('#st_pf',el).value,printScale:$('#st_ps',el).value,printDark:$('#st_pd',el).checked};
     try{Print.go(`${Print.head(true)}<div class="ttl"><span>PRINT FONT TEST</span></div><table class="grid"><thead><tr><th>Investigation</th><th>Result</th><th>Unit</th><th>Reference Value</th></tr></thead><tbody><tr><td>Haemoglobin</td><td>13.5</td><td>g/dL</td><td>M: 13.0-17.0, F: 12.0-15.0</td></tr><tr><td>Total WBC Count</td><td>7,500</td><td>/cumm</td><td>4,000-11,000</td></tr><tr><td>Platelet Count</td><td>2,50,000</td><td>/cumm</td><td>1,50,000-4,50,000</td></tr></tbody></table><p style="font-size:12.5px">The quick brown fox jumps over the lazy dog. 0123456789</p><div class="sig"><div><b>Prepared By</b></div><div><b>Authorized Signature</b></div></div>${Print.foot()}`,{page:'A4',title:'Font test'})}finally{DB.d.settings.main={...DB.d.settings.main,...bk}}};
   const btn=$('#st_save'),orig=btn.onclick;btn.onclick=async()=>{const v={printFont:$('#st_pf',el).value,printScale:$('#st_ps',el).value,printDark:$('#st_pd',el).checked};await (orig&&orig());const cur=DB.get('settings','main')||DEF_SET;DB.put('settings',{...cur,id:'main',...v})}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -5342,6 +5375,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.1',d:'2026-11-22',n:['Full default test list: about 280 tests and packages (Hematology, Biochemistry, Hormones, Tumour markers, Serology, Cultures, PCR, Histopathology, X-Ray, USG, Doppler, CT, MRI, ECG / Echo / ETT, EEG / NCS, Endoscopy, PFT, BMD) - new tests can still be added in Test Setup','Default medicine list: about 600 Bangladeshi brands with generic name and company; new Medicine List page with add / edit / delete and Bulk Add','Doctor can search a medicine by brand, generic or company name','⚙ icon on dropdown lists (payment modes, P.O, doctors, departments, heads, sample types, doses, durations, certificate purpose etc.) to add / edit / delete items without leaving the page','Saved Prescriptions list in the Doctor page: search by date, patient, mobile, diagnosis or medicine; open, edit or reprint any old prescription','Clearer prints: choose the print font and text size, darker text option and a test print (Settings → Print Font)']});
 /* ============ Keyboard-only entry everywhere: Enter / Shift+Enter / arrows / add rows ============ */
@@ -5456,6 +5494,11 @@ document.head.insertAdjacentHTML('beforeend','<style>.pwr{text-align:center;font
 {const _pl=panelLogin;panelLogin=function(k,msg){_pl(k,msg);const rt=$('#login .rt');if(rt)rt.insertAdjacentHTML('beforeend',`<div style="font-size:11.5px;color:#94a3b8;margin-top:18px;text-align:center">${esc(APP.name)} v${esc(APP.ver)} · Powered by <b>${esc(APP.vendor)}</b></div>`)}}
 /* prints: version + Powered by in every footer */
 Print.foot=function(extra=''){return extra?`<div class="foot">${esc(extra)}</div>`:''};
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -5463,6 +5506,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.2',d:'2026-11-22',n:['Version number is now shown on the home page, every login page, inside the software and on every print, and goes up with every update','"Powered by AMAZ ERP Solution" on the home / login pages, inside the software and at the bottom of every print','License works like AMAZ Product Costing: 30-day trial; when the trial or license ends (after 7 days grace) the software becomes READ-ONLY - viewing, printing and backup still work, nothing is deleted','License bill: renewal notice 15 days before expiry, bill with every unpaid period and the total, pay-to details, Copy, WhatsApp the vendor and printable invoice','License banner on every page with View bill button; the bill opens automatically after sign-in when the software is read-only']});
 APP.ver=CHANGELOG[0].v;
@@ -5608,6 +5656,11 @@ document.addEventListener('keydown',e=>{if(!Auth.user||!$('#main'))return;const 
   if(e.key==='?'&&!typing&&!Modal.top()){e.preventDefault();shortcutModal();return}
   if(e.altKey&&!e.ctrlKey&&!e.metaKey&&/^Digit[1-9]$/.test(e.code||'')){const a=$$('#nav a[data-k]')[+e.code.slice(5)-1];if(a){e.preventDefault();if(!Modal.top())a.click()}}});
 {const _sa=startApp;startApp=function(){_sa();setTimeout(()=>{try{binPurge()}catch(e){}},4000);idleTouch()}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -5615,6 +5668,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.3',d:'2026-11-22',n:['Status bar at the bottom of the screen: signed-in user, panel, computer, center name, version and "Powered by AMAZ ERP Solution" (the standard place when there is no side menu); click the version for the About window (also in the user menu)','Login page: version badge on the sign-in card; version and Powered by line at the bottom of the home page','Every print: at the bottom of each page "Printed by (name and role) | Printed on" on the left and "Page x of y | Powered by AMAZ ERP Solution" on the right - like AMAZ Product Costing; on pre-printed pad and POS prints the same line is printed once above the pad footer; can be turned off in Settings','New: Recycle Bin - anything deleted stays 60 days and can be restored with one click','New: Login History - every sign-in and wrong password attempt with user, panel and computer, printable','New: Auto Logout after no activity (default 30 minutes, Settings → Auto Logout)','New: Auto Backup - once a day or after every N changes (Backup and Cloud page)','New: Weekly Summary (with previous-week comparison) and Year-End Summary (month by month, top tests, top referrers, department income) - English print','Keyboard: ? shows all shortcuts, Alt+1…9 opens the menus of the current tab']});
 APP.ver=CHANGELOG[0].v;
@@ -5816,6 +5874,11 @@ Object.assign(IC,{menu:IC.menu||'<path d="M4 6h16M4 12h16M4 18h16"/>',info:IC.in
 {const _r=App.render.bind(App);App.render=function(...a){const r=_r(...a);try{mnavDraw()}catch(e){}return r}}
 
 MODS.push({k:'conflicts',t:'Sync Conflicts',g:'Setup',ic:'conflicts'});HINTS.conflicts='Records changed on two computers at the same time. The copy that was replaced is kept here - compare and restore it if needed.';DEF_PERMS.manager.push('conflicts');
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -5823,6 +5886,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.4',d:'2026-11-22',n:['Undo on every page: Ctrl+Z or "↶ Undo" in the status bar brings back the last change (new, edit or delete - up to 30 steps)','Sync Conflicts: when the same record is changed on two computers before syncing, the replaced copy is kept - compare and restore it (Setup → Sync Conflicts)','Update notification: shows a notice when a newer version is published (Settings → Software Update, version.json link), with Download / Update now','Mobile: Android-app style - bottom tab bar, "+" button for a new bill, More menu with all pages, full-screen windows, bigger touch targets']});
 APP.ver=CHANGELOG[0].v;
@@ -5980,6 +6048,11 @@ const cloudWire=root=>{const pv=$('#cl_pv',root);if(!pv)return;const lab=()=>{co
 /* ---------- PWA for GitHub Pages / any https hosting (ignored on file://) ---------- */
 if(/^https?:$/.test(location.protocol)){document.head.insertAdjacentHTML('beforeend','<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f766e"><link rel="apple-touch-icon" href="app-icon-192.png">');
   if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -5987,6 +6060,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.5',d:'2026-11-22',n:['Cloud Sync: choose Google Apps Script (Google Sheet) OR Supabase (PostgreSQL) - setup guide and ready SQL / Apps Script code in Backup and Cloud','Supabase: data table is locked with Row Level Security, every call checks the Secret Key; the online report portal also works with Supabase','GitHub Pages package: index.html, version.json, manifest, service worker and icons - open the software from a link, install it like an app on mobile / desktop, works offline','Update notice works by itself on GitHub Pages: when version.json shows a newer version, "Update now" loads it']});
 APP.ver=CHANGELOG[0].v;
@@ -6021,6 +6099,11 @@ window.poDueBlock=function(j){const tel=String(j.phone||'').replace(/[^\d+]/g,''
   row.insertAdjacentHTML('afterend',`<div class="alert ${why?'w':'i'}" style="margin-top:10px">${why?'⚠ QR code is NOT printed on the invoice yet - '+esc(why)+'.':'✓ QR code "Get your report online" is printed on every A4 / A5 invoice.'}</div>`);
   row.insertAdjacentHTML('afterend',`<div class="g2" style="margin-top:10px">${fld('When the bill has a due amount',`<select id="st_pdue">${opts([['block','Report is not shown until full payment (payment message instead)'],['view','Patient can see the report, Download / Print after full payment'],['allow','Allow view and download even with due']],s.portalDue||'block')}</select>`)}${fld('Payment instruction shown to the patient (bKash / Nagad / counter)',`<textarea id="st_ppay" rows="2" placeholder="bKash / Nagad (Merchant): 01XXXXXXXXX\nReference: your Bill No">${esc(s.portalPay||'')}</textarea>`)}</div>`);
   const b=$('#st_save'),orig=b.onclick;b.onclick=async()=>{const pu=$('#st_pu',el);if($('#st_po',el).checked&&pu&&/username/i.test(pu.value))return toast('Portal page link: replace USERNAME with your real GitHub user name (e.g. https://farid.github.io/amaz-diagnostic/index.html)','err');const v={portalDue:$('#st_pdue',el).value,portalPay:$('#st_ppay',el).value.trim()};await (orig&&orig());const cur=DB.get('settings','main')||DEF_SET;DB.put('settings',{...cur,id:'main',...v})}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6028,10 +6111,20 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.6',d:'2026-11-22',n:['Online report: if the bill has a due amount the patient can see the report (with a "DUE" mark) but Download / Print shows "Please pay the due amount" with your bKash / Nagad / counter instruction; after full payment it downloads normally. Settings → Online Report Portal (also: block completely / allow)','Update the Apps Script code / Supabase SQL once (copy again from Backup and Cloud) to use this option']});
 APP.ver=CHANGELOG[0].v;
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6040,9 +6133,19 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.3.7',d:'2026-11-22',n:['Online report with a due amount is now NOT shown at all by default: the patient sees only "Your report is ready, but there is a due amount - Tk X" with Total / Paid, your payment instruction and a Call button; after full payment the same link shows and downloads the report','Settings → Online Report Portal: "Report is not shown until full payment" is the default (other choices: view only / allow)','Update the Apps Script code or Supabase SQL once more (Backup and Cloud) for this to work on the server']});
 APP.ver=CHANGELOG[0].v;
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6050,6 +6153,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.10',d:'2026-11-22',n:['Settings → Online Report Portal: the link is checked - a link that still has "USERNAME" in it is not accepted (QR codes would open a GitHub 404 page)']});
 APP.ver=CHANGELOG[0].v;
@@ -6065,6 +6173,11 @@ function scanHandle(code){const b=scanFind(code);
 document.addEventListener('keydown',e=>{if(!Auth.user||e.ctrlKey||e.altKey||e.metaKey)return;const t=e.target;const inField=t&&t.matches&&t.matches('input,textarea,select,[contenteditable]');if(inField)return;
   const now=Date.now();if(e.key==='Enter'){const fast=SCAN.buf.length>=5&&now-SCAN.t0<SCAN.buf.length*60+150;const code=SCAN.buf;SCAN.buf='';if(fast){e.preventDefault();e.stopPropagation();scanHandle(code)}return}
   if(e.key.length!==1)return;if(now-SCAN.last>80){SCAN.buf='';SCAN.t0=now}SCAN.buf+=e.key;SCAN.last=now},true);
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6072,10 +6185,20 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.8',d:'2026-11-22',n:['Barcode on the invoice now works with a barcode scanner on every page: scan the invoice and the bill opens at once (in Lab it marks the samples as collected); scanning a Patient ID opens Patient Summary','The bill number is printed under the invoice barcode so it can also be typed','Note: the invoice barcode is for a barcode scanner. The QR code ("Get your report online") is printed only when the Online Report Portal is on - the patient scans it with the phone camera to get the report']});
 APP.ver=CHANGELOG[0].v;
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6084,8 +6207,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.3.9',d:'2026-11-22',n:['Top menu tabs (Main / Lab / Business / Setup): clicking a tab now also opens that tab\'s page - the last page you used there, or the first one - so going back to Main no longer leaves the Setup page open']});
 APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6093,6 +6226,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.3.11',d:'2026-11-22',n:['Fix: the version number could show an older number (v1.3.9) after an update - the changelog is now always sorted by version, so the newest number is shown everywhere']});
 /* keep the changelog in version order no matter which file added an entry - APP.ver is always the newest */
@@ -6194,6 +6332,11 @@ function mAdapt(root){if(!isMob())return;root=root||document;
 document.addEventListener('click',e=>{if(!isMob()||!navigator.vibrate)return;if(e.target.closest('#mfab,#mnav a,.btn-a,.btn-p'))try{navigator.vibrate(8)}catch(x){}},true);
 {const _r=App.render.bind(App);App.render=function(...a){const r=_r(...a);try{mAppbar();mAdapt()}catch(e){}return r}}
 window.addEventListener('resize',()=>{try{mAppbar()}catch(e){}});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6201,6 +6344,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.4.0',d:'2026-11-22',n:['Mobile: looks and works like an Android app - green top app bar with page title, back arrow and search, bottom tab bar, round "+" button, full-screen dialogs with a fixed Save bar','Mobile: every list (bills, patients, tests, reports ...) shows as cards that are easy to read on a phone; forms use one column','Mobile: the phone Back button goes back - closes the open window / menu / search first, then the previous page','Mobile: pull down to refresh (syncs with the cloud), quick search of bills and patients, one message at a time (snackbar), small vibration on main buttons','Mobile home page: panels shown like app icons (3 in a row)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -6209,6 +6357,11 @@ Sync.stats={n:0,last:0,avg:0};
 {const _r=Sync._run.bind(Sync);Sync._run=async function(...a){const t0=performance.now();const r=await _r(...a);if(this.state==='ok'){const d=Math.round(performance.now()-t0);const s=this.stats;s.n++;s.last=d;s.avg=Math.round(s.avg?(s.avg*0.7+d*0.3):d);const el=$('#syncSt');if(el)el.title=`Last sync ${(d/1000).toFixed(1)} s · average ${(s.avg/1000).toFixed(1)} s`}return r}}
 Sync.schedule=function(){if(!this.enabled())return;clearTimeout(this.t);this.t=setTimeout(()=>this.run(),1200)};
 {const _b=SCREENS.backup.render;SCREENS.backup.render=function(el,p){_b.call(this,el,p);const s=Sync.stats;const st=[...$$('.card .muted',el)].find(x=>/Pending changes/.test(x.textContent));if(st&&s.n)st.insertAdjacentHTML('beforeend',` · Sync speed: last ${(s.last/1000).toFixed(1)} s, average ${(s.avg/1000).toFixed(1)} s${s.avg>8000?' <b style="color:#b45309">(slow - update the Apps Script code below and Deploy again)</b>':''}`)}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6216,11 +6369,21 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.4.1',d:'2026-11-22',n:['Cloud (Apps Script) much faster: the server now checks only the time column when nothing changed and no longer locks for reading, so syncs from many computers do not wait for each other - copy the new Apps Script code (Backup and Cloud) and Deploy → Manage deployments → Edit → New version','Changes are sent to the cloud faster (1 second after saving)','Backup and Cloud page shows the sync speed (last and average seconds)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 /* ---------- no blank last page in any print ---------- */
 {const _go=Print.go.bind(Print);Print.go=function(body,o={}){return _go(`<style>html,body{height:auto!important;margin:0!important}.page:last-of-type{break-after:auto!important;page-break-after:auto!important}</style>`+body,o)}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6228,9 +6391,19 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.4.2',d:'2026-11-22',n:['Fix: an extra blank page could come at the end of a report (and some other prints) on some printers / Windows - the page now keeps a little more space at the bottom and the last page never adds a page break']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6238,9 +6411,19 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.4.3',d:'2026-11-22',n:['Prints: one standard footer line in the middle at the bottom of every page: "Printed by: name · date time · Page x of y · Powered by AMAZ ERP Solution"; the second "Printed: ..." line on the prescription is removed, and on A5 prints the line is smaller so it stays on one line']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6249,8 +6432,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.4.4',d:'2026-11-22',n:['Prints: the footer is now a single line in the middle of the page bottom - Printed by · date time · Page x of y · Powered by AMAZ ERP Solution']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6258,6 +6451,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.4.5',d:'2026-11-22',n:['Prints: the center name is added at the start of the footer line - Center name · Printed by · date time · Page x of y · Powered by AMAZ ERP Solution']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -6312,6 +6510,11 @@ h1,h2,h3,h4{font-family:inherit}`;
   h.pages=`<style>${RPT_CSS}</style>`+tp.innerHTML;return h}}
 /* filing margin for the other full-page prints too (optional) */
 {const _go=Print.go.bind(Print);Print.go=function(body,o={}){const s=S();if(s.fileAll&&!body.includes('class="page"')&&/^(A4|Letter|Legal)\b/i.test(String(o.page||'A4'))&&!/landscape/i.test(String(o.page||''))&&!body.includes('class="lbl"')){const ms=String(o.margin||'10mm 12mm').trim().split(/\s+/);while(ms.length<4)ms.push(ms[ms.length===3?1:ms.length-2]||ms[0]);ms[3]=Math.max(5,num(s.fileMargin)||25)+'mm';o={...o,margin:ms.join(' ')}}return _go(body,o)}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6319,10 +6522,20 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.5.0',d:'2026-11-22',n:['Reports: 1 inch (25 mm) empty space on the left side for filing / punching - can be changed in Settings → Paper Size, and can also be used on invoices and statements','Reports: each test is separated - about 1 cm space between tests (for example ASO and CRP), a little space above and below every section','Reports: automatic spacing - a short report gets more space between lines, a long one (CBC, Lipid Profile ...) is made compact so it fits on the page','Prints: modern standard font Calibri (used by most diagnostic centers and hospitals) instead of Times New Roman; other fonts can still be chosen in Settings → Print Font']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6331,9 +6544,19 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.5.1',d:'2026-11-22',n:['Fix: a blank page could still come after the last report page in newer Chrome on Windows - reports now use one page setting (special page settings are used only when Pathology and Imaging pads have different margins), and the last page keeps a little more room']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -6341,6 +6564,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.5.2',d:'2026-11-22',n:['Settings → Paper for each print: choose the paper separately for Report, Invoice, Money Receipt, Prescription, Serial slip, Medical Certificate, Statements and the barcode sticker (A4, A5, Letter, Legal, Half Letter, POS 80 / 58 mm, sticker sizes)','New print font choices: Segoe UI and Open Sans']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -7709,6 +7937,11 @@ SCREENS.manual={t:'User Manual and Video Guide',render(el){const V=S().videos||[
   if(adm){$('#vd_add',el).onclick=()=>{const t=$('#vd_t',el).value.trim(),u=$('#vd_u',el).value.trim();if(!t||!/^https?:\/\//.test(u))return toast('Enter a title and a full link (https://...)','err');setSet({videos:V.concat([{t,u}])});App.render()};
     $$('[data-vx]',el).forEach(b=>b.onclick=()=>{const L=V.slice();L.splice(+b.dataset.vx,1);setSet({videos:L});App.render()})}}};
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -7716,6 +7949,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.6.0',d:'2026-11-23',n:[
  'Storage: the browser is asked to keep the data permanently (persistent storage) and Backup and Cloud shows a storage meter — total space, records, attached files',
@@ -7733,6 +7971,11 @@ CHANGELOG.unshift({v:'1.6.0',d:'2026-11-23',n:[
  'Direct PDF download (⬇ PDF on the bill, Shift + Print on any print), WhatsApp due reminder list',
  'Duplicate patient warning on new bills and a Duplicate Patients merge tool',
  'User Manual in English (print / PDF) and Video Guide links']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -7740,6 +7983,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.6.1',d:'2026-11-23',n:['Full check of every screen, role, print and mobile view','Purchase delete now waits for approval / respects the posting lock before removing its stock entries','PDF footer shows the separators correctly','Requests list: non-bill requests no longer open an empty bill']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -7969,6 +8217,11 @@ MANUAL.splice(MANUAL.length-1,0,['Lab QC','<p><b>Lab QC</b>: enter the control r
  ['Share holders','<p><b>Share Holders</b>: set total shares and face value, add holders with their shares, record capital invested and profit paid (these go into the cash book), distribute profit by shares, transfer shares and print each holder statement.</p>'],
  ['SMS','<p><b>SMS</b>: the admin enters the API link of the SMS company in Settings and sends a test SMS. Send to one number or to a group (due patients, recent patients, doctors, staff) with {name} and {due}. Automatic SMS can go on every new bill and when all reports of a bill are verified. The delivery report and SMS balance are kept.</p>'],
  ['Tasks and support','<p><b>Tasks, Reminders and Notes</b>: give tasks to users with a due time, set reminders (alert and 🔔 at the time) and keep notes. <b>Support Tickets</b> sends your problem with the version and recent errors to AMAZ by WhatsApp.</p>']);
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -7976,6 +8229,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.7.0',d:'2026-11-23',n:[
  'Lab QC: daily control entry (level, lot, target, SD, measured), automatic CV and Z-score, Westgard rules (1-2s, 1-3s, 2-2s, R-4s, 4-1s, 10x), pass / warning / fail, Levey-Jennings chart with print',
@@ -8081,6 +8339,11 @@ if(!document.getElementById('bfc_css'))document.head.insertAdjacentHTML('beforee
 
 document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.shiftKey||e.ctrlKey||e.altKey)return;const t=e.target;const frm=t&&t.closest&&t.closest('.bfc .frm');if(!frm||kPickOpen())return;
   const F=[...frm.querySelectorAll('input:not([type=hidden]):not([disabled]):not([readonly]),select:not([disabled])')].filter(x=>x.offsetParent!==null);if(F.indexOf(t)!==F.length-1)return;const ts=$('#tsrch');if(ts){e.preventDefault();e.stopImmediatePropagation();ts.focus()}},true);
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8088,6 +8351,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.7.1',d:'2026-11-23',n:['All Menu (F10): every screen and every report as big tiles in one page, with search','Notice Board (shows on Home), Complaint Box and Social Media Marketing (page links, share an offer on WhatsApp / Facebook / SMS)','Invoice and receipt: PAID / DUE stamp moved next to the barcode; DUE now shows the due amount','New Bill is compact — the whole form fits the screen; only the test list scrolls (Remarks, Payment Mode, Discount by and Card no moved into the form)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -8193,6 +8461,11 @@ XLSX.readAll=async function(file){const u=new Uint8Array(await file.arrayBuffer(
     const rows=[];[...P(x).getElementsByTagName('row')].forEach(rw=>{const row=[];[...rw.getElementsByTagName('c')].forEach(c=>{const ty=c.getAttribute('t');const v=c.getElementsByTagName('v')[0];let val=ty==='inlineStr'?[...c.getElementsByTagName('t')].map(z=>z.textContent).join(''):v?v.textContent:'';if(ty==='s')val=ss[+val]??'';row.push(val)});rows.push(row)});out.push({name:s1.getAttribute('name'),rows})}return out};
 QUICK.push(['P.O and doctors',[['podocs','Doctors under each P.O',()=>{SCREENS.podocs.tab='list'}],['podocs','P.O business and commission',()=>{SCREENS.podocs.tab='biz'}],['podocs','Import doctor list (Excel)',()=>{SCREENS.podocs.tab='imp'}]]]);
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8200,8 +8473,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.8.0',d:'2026-11-23',n:['Add tests to an existing bill: paste / type the Bill No in the New Bill search and press Enter (or "➕ Add tests" on the bill). Patient and doctor fill in, old tests are not shown, and the new tests go into the SAME bill and lab ID. New tests with the same sample (blood, urine...) are marked as collected automatically','↺ Reset button (Alt+R) on New Bill clears the form for a fresh bill','P.O and Doctors: put doctors under each P.O, import the doctor list from Excel (MBBS / RMP / PC sheets), P.O business and commission report; choosing a doctor on a bill fills his P.O automatically; "Under P.O" in the referrer form']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8210,7 +8493,17 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.8.2',d:'2026-11-23',n:['New Bill layout: Phone, Name, Age, Gender and Delivery date in the first line; Refd. By, Media, P.O, Corporate and Address in the second line (delivery time removed from the form, default time is kept)','Payment Mode, Discount by, Card no and Remarks moved under Due in the right column','The test list fills the free space (about 7 tests or more visible) and only the list scrolls; the totals stay fixed']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8218,6 +8511,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.8.1',d:'2026-11-23',n:['Doctor list Excel without a header row (only names, one per cell, any number of sheets) now imports from Setup → Excel Import / Export → Referrers as well as from P.O and Doctors → Import']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -8310,6 +8608,11 @@ updCheck=function(manual){const u=String(S().updUrl||'').trim()||(/^https?:$/.te
 setInterval(()=>{try{navigator.serviceWorker&&navigator.serviceWorker.getRegistration().then(r=>r&&r.update()).catch(()=>{})}catch(e){}},30*60e3);
 setTimeout(()=>{try{const v=sessionStorage.getItem('amazdiag_upd_target');if(!v)return;sessionStorage.removeItem('amazdiag_upd_target');if(verCmp(v,APP.ver)>0)setTimeout(()=>updApply(v),1500);else setTimeout(()=>toast('✓ Updated to v'+APP.ver),2500)}catch(e){}},500);
 
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8317,6 +8620,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.0',d:'2026-11-23',n:['Edit bill now opens only Patient Information: name, age, phone, gender, Refd. By, Media and P.O. Bill no and tests cannot be changed. Users without edit right send it for approval','Refund Request (test-wise): enter the Bill ID, tick the test(s), write the reason and send. Administration approves; then Reception presses "Complete refund" — the tests are removed, the bill amount and commission go down and the cash refund is recorded automatically','Full discount: "🎁 Free — no payment" under Due with a compulsory reason; report "Full discount (free) bills"','Software update: the app now checks every 10 minutes and when you come back to it, shows the "New version" notice while open, and "Update now" loads the new version at once (no need to close the app)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -8377,6 +8685,11 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
    <label class="chk"><input type="checkbox" id="rxs_on" ${rxStaffOk()?'checked':''}> Also allow other staff (assistant / admin) to write prescriptions for a doctor</label>
    <div class="muted" style="font-size:12.5px;margin-top:6px">Doctor logins: ${DB.all('users').filter(x=>x.role==='doctor').map(x=>`<b>${esc(x.name)}</b> → ${esc((DB.get('consultants',x.conId)||{}).name||'⚠ not linked')}`).join(' · ')||'none yet — add a user with role Doctor'}</div></div>`);
   $('#rxs_on',el).onchange=e=>{setSet({rxStaff:e.target.checked});log('Prescription writing',e.target.checked?'staff allowed':'doctor only');toast('Saved')}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8384,8 +8697,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.1',d:'2026-11-23',n:['Lists page (Setup → Lists, and All Menu → Lists): Doctor List, RMP / PC List, Media List, P.O List, Test List and Test Group / Department List — each with "+ Add new" and "View all" (search, edit, Excel)']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8393,8 +8716,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.2',d:'2026-11-23',n:['Full bug scan: every screen, tab, window and role checked','Fixed: New Bill — Enter on Address now goes to the test search (keyboard-only billing works again: Phone → ... → Address → Test → F9)','Fixed: Social Media page — Share on WhatsApp / Facebook buttons did not work']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8402,8 +8735,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.3',d:'2026-11-23',n:['All Menu uses the full screen width (no empty space on the right on big monitors)']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8412,7 +8755,17 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'1.9.4',d:'2026-11-23',n:['All Menu: the search box starts empty every time you open it','Notice on Home: "✕ Hide" (hide for me), "✕ Hide all", and for managers "⏹ End for all" and "⚙ Manage". A hidden notice shows again if it is edited']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8420,6 +8773,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.5',d:'2026-11-23',n:['Fixed: RMP / PC doctors could not be chosen in "Refd. By" on the bill, in edit requests and in the P.Summary doctor filter — now every doctor type works','Doctor Serial: "＋ Add a doctor from the Doctor List…" in the doctor box, and "⇩ From Doctor List" in Consultants / Doctors — a referring doctor becomes a chamber doctor in one click (then set the fee)','Lists page: new card "Chamber Doctor (Serial) List"']});
 CHANGELOG[0].n.push('Prescription: only the doctor, logged in with his own user ID, can write and save prescriptions — only for his own patients. Other users see and print only (Admin can allow staff in Users and Roles). A Doctor user must be linked to his Consultant profile');
@@ -8523,14 +8881,33 @@ function padPicLoad(file){return new Promise((res,rej)=>{const fr=new FileReader
   const btn=$('#st_save',el),prev=btn.onclick;btn.onclick=async()=>{await (prev&&prev());const cur=DB.get('settings','main')||DEF_SET;const P={...(cur.pad||{})};PAD_KINDS.forEach(([k])=>{const c=$('#pd_img_'+k,el);if(c)P[k]={...(P[k]||{}),img:c.checked}});
     DB.put('settings',{...cur,id:'main',pad:P,nameBn:$('#st_nbn',el)?$('#st_nbn',el).value.trim():(cur.nameBn||'')})}}}
 /* invoice / money receipt header like their old invoice: logo left; Bangla name, English name, Bangla address, mobile (Bangla + English mixed) */
-{const _h=Print.head.bind(Print);Print.head=function(compact){const k=this._kind;if(!compact||!(k==='inv'||k==='rcpt')||(this._pk&&padOf(this._pk).on))return _h(compact);const s=S();
-  const bnF="'Nirmala UI','Kalpurush','SolaimanLipi','Vrinda',";const addr=s.addrBn||s.address,ph=s.phoneBn?'মোবাইলঃ '+s.phoneBn:(s.phone?'Mobile: '+s.phone:'');
-  return `<div class="lh" style="justify-content:center;gap:12px;align-items:center;padding-bottom:6px">${s.logo?`<img src="${esc(s.logo)}" alt="" style="height:${Math.max(30,Math.min(130,num(logoCfg().pz)||70))+4}px;width:auto;max-width:130px;object-fit:contain">`:''}<div style="text-align:left;line-height:1.18">
-   ${s.nameBn?`<div style="font-family:${bnF}sans-serif;font-size:25px;font-weight:bold;color:#0b2545">${esc(s.nameBn)}</div>`:''}<div style="font-size:${s.nameBn?22:24}px;font-weight:bold;color:#0b2545">${esc(s.name)}</div>${s.tagline&&!s.nameBn?`<div class="tg">${esc(s.tagline)}</div>`:''}
-   <div style="font-family:${bnF}sans-serif;font-size:12.5px">${esc(addr)}</div>${ph?`<div style="font-family:${bnF}sans-serif;font-size:12.5px">☏ ${esc(ph)}${s.email?' | '+esc(s.email):''}</div>`:''}${s.regNo?`<div style="font-size:11px">Reg. No: ${esc(s.regNo)}</div>`:''}</div></div>`}}
+{const _h=Print.head.bind(Print);Print.head=function(compact){
+  if(this._pk && typeof padOf==='function' && padOf(this._pk).on)return '';
+  const s=S();
+  if(s.padMode && !compact)return `<div style="height:${num(s.padTop||40)}mm"></div>`;
+  const bnF="'Nirmala UI','Kalpurush','SolaimanLipi','Vrinda',";
+  const addr=s.addrBn||s.address||'', ph=s.phoneBn?'মোবাইলঃ '+s.phoneBn:(s.phone?'Mobile: '+s.phone:'');
+  const logoH=Math.max(40,Math.min(130,num(logoCfg().pz)||70))+4;
+  return `<div class="lh" style="display:flex;justify-content:center;align-items:center;gap:14px;border-bottom:2px solid #0b2545;padding-bottom:6px;margin-bottom:8px">
+    ${s.logo?`<img src="${esc(s.logo)}" alt="" style="height:${logoH}px;width:auto;max-width:130px;object-fit:contain;flex:none">`:''}
+    <div style="text-align:left;line-height:1.2;flex:none">
+      ${s.nameBn?`<div style="font-family:${bnF}sans-serif;font-size:23px;font-weight:bold;color:#0b2545">${esc(s.nameBn)}</div>`:''}
+      <div style="font-size:${s.nameBn?20:22}px;font-weight:bold;color:#0b2545">${esc(s.name)}</div>
+      ${s.tagline&&!s.nameBn?`<div class="tg" style="font-size:12px;color:#334155">${esc(s.tagline)}</div>`:''}
+      <div style="font-family:${bnF}sans-serif;font-size:12px;color:#334155">${esc(addr)}</div>
+      ${ph?`<div style="font-family:${bnF}sans-serif;font-size:12px;color:#334155">☏ ${esc(ph)}${s.email?' | '+esc(s.email):''}</div>`:''}
+      ${s.regNo?`<div style="font-size:11px;color:#475569">Reg. No: ${esc(s.regNo)}</div>`:''}
+    </div>
+  </div>`;
+}}
 {const _sr=SCREENS.settings.render;SCREENS.settings.render=function(el,p){_sr.call(this,el,p);const s=S();const nb=$('#st_nbn',el);if(!nb||$('#st_abn',el))return;
   nb.closest('label').insertAdjacentHTML('afterend',fld('Address in Bangla (optional — invoice header)',`<input id="st_abn" value="${esc(s.addrBn||'')}">`,'c2')+fld('Mobile numbers in Bangla (optional — invoice header)',`<input id="st_pbn" value="${esc(s.phoneBn||'')}" placeholder="০১৭৭৭৯৩৩৮১৯, ০১৮৫০৬৫৬৫২৫">`,'c2'));
   const btn=$('#st_save',el),prev=btn.onclick;btn.onclick=async()=>{await (prev&&prev());const cur=DB.get('settings','main')||DEF_SET;DB.put('settings',{...cur,id:'main',addrBn:$('#st_abn',el).value.trim(),phoneBn:$('#st_pbn',el).value.trim()})}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8538,6 +8915,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.7',d:'2026-11-23',n:['Lab report: patient details in the same compact style as the invoice (Patient Name · Bill No / Age · Gender · Patient ID · Collected / Specimen · Bill Date · Reported / Refd. By on one full line)','Digital pad: Settings → Pre-printed Pad → "Upload pad picture" (scan / photo of your blank pad). Tick "Print pad picture" for Pathology, Imaging, Invoice, Receipt, Prescription or Certificate — the pad design is printed together on plain paper. Top / bottom space is found automatically from the picture. Each print can also have its own picture (📷)','Invoice and Money Receipt header like your old invoice: logo on the left, then the name in Bangla and English, the address and mobile in Bangla (Settings → Organization: name / address / mobile in Bangla — optional)']});
 /* ===== v1.9.8 — Dhaka Digital Diagnostic Center: organization information from their printed pad (once) ===== */
@@ -8549,6 +8931,11 @@ const DDDC_LOGO='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
     addrBn:s.addrBn||'হাজী মহসিন রোড (মাতৃপীঠ স্কুলের পূর্ব পার্শ্বে), চাঁদপুর।',
     phone:(!ph||ph==='01918644409')?'01777-933819, 01850-656525':ph,phoneBn:s.phoneBn||'০১৭৭৭-৯৩৩৮১৯, ০১৮৫০-৬৫৬৫২৫',
     regNo:s.regNo||'8186',logo:s.logo||DDDC_LOGO});log('Organization information','filled from the printed pad')}catch(e){console.warn(e)}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8556,6 +8943,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.8',d:'2026-11-23',n:['Organization information filled in from your printed pad: name in Bangla, address (English + Bangla), mobile numbers (English + Bangla), Reg. No 8186 and the logo. Everything can be changed in Settings']});
 /* ===== v1.9.9 — cloud sync for big pictures: pad picture split into small parts; logo / signature kept small ===== */
@@ -8579,6 +8971,11 @@ function imgFit(u,lim){return new Promise(res=>{if(!u||u.length<=lim)return res(
       try{await this.pull()}finally{for(const c of COLS)for(const r of Object.values(DB.d[c]||{})){const k=c+'|'+r.id;if(num(r._u)===0&&orig.has(k))r._u=orig.get(k)}}
       DB.ver++;DB.sched()}finally{this._frx=false}}
   await _push();if(!DB.meta.synced1){DB.meta.synced1=1;DB.sched()}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8586,6 +8983,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.9',d:'2026-11-23',n:['Cloud sync: the logo, the letterhead / pad picture, signatures and panel pictures now reach every computer and phone — big pictures are sent in small parts (before, a picture over ~45 KB could not go to the cloud)','Fixed: a new computer / phone joining the cloud got the default settings ("Your Diagnostic Center", no logo) instead of the center\'s own — and could even send the defaults to the cloud. Now on the first sync of a new device the cloud data comes first','Fixed: a big logo could stop the whole Settings from syncing — the logo is now kept small automatically (also for existing logos)']});
 /* ===== v2.0.0 — Excel Import on every list (Doctor, RMP / PC, Media, P.O) ===== */
@@ -8611,6 +9013,11 @@ function mlImport(x){const cols=ML_TPL[x.k]||ML_TPL.doc;const P=mlRefs('P.O');
       log('Excel import',`${x.t}: ${L.length}`);toast(`${L.length} imported${newPo?` · ${newPo} new P.O added`:''}`);Modal.close(m);App.soft()}}}
 {const _r=SCREENS.mlist.render;SCREENS.mlist.render=function(el){_r.call(this,el);const x=ML.find(y=>y.k===this.k)||ML[0];const b=$('#ml_new',el);if(b&&!$('#ml_imp',el)){b.insertAdjacentHTML('beforebegin','<button class="btn btn-o btn-s" id="ml_imp" style="background:#fff">⬆ Excel Import</button>');$('#ml_imp',el).onclick=()=>mlImport(x)}}}
 {const _r=SCREENS.masters.render;SCREENS.masters.render=function(el){_r.call(this,el);$$('[data-view]',el).forEach(b=>{const x=ML.find(y=>y.k===b.dataset.view);if(x&&x.type&&!b.parentElement.querySelector('[data-mimp]')){b.insertAdjacentHTML('afterend',`<button class="btn btn-o btn-s" data-mimp="${x.k}">⬆ Excel Import</button>`)}});$$('[data-mimp]',el).forEach(b=>b.onclick=()=>mlImport(ML.find(y=>y.k===b.dataset.mimp)))}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8619,7 +9026,17 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.0.0',d:'2026-11-23',n:['Excel Import on every list — Doctor List, RMP / PC List, Media List and P.O List (button "⬆ Excel Import" on the list and on the Lists page). Works with a sheet with headings (Name, Degree, Phone, Email, Address, P/O, Commission %, Status — only Name is needed; a template can be downloaded) or a plain list of names. Names already in the list are skipped; P/O names are linked, and a new P.O is added automatically']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8627,6 +9044,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'1.9.6',d:'2026-11-23',n:[
  'Invoice: the PAID / DUE box sits next to the barcode, straight (not tilted) with a thin border — "DUE" and below it "TK- amount"',
@@ -8722,6 +9144,11 @@ async function roleDel(r){const n=DB.all('users').filter(u=>u.role===r).length;i
       ${isA?`<div class="row" style="gap:6px"><button class="btn btn-o btn-s" data-re="${r}">${r==='admin'?'👁 View':'✎ Permissions'}</button><button class="btn btn-o btn-s" data-rc="${r}" title="Make a new role from this one">⧉ Copy</button>${isCustomRole(r)?`<button class="ib d" data-rd="${r}" title="Delete role">🗑</button>`:''}</div>`:''}</div>`).join('')}</div></div>`);
   const det=document.createElement('details');det.innerHTML='<summary style="cursor:pointer;font-weight:600;padding:4px 0">📊 Compare all roles in one table</summary>';old.parentNode.insertBefore(det,old);det.appendChild(old);
   if(!isA)return;$('#ro_new',el).onclick=()=>roleNew('');$$('[data-re]',el).forEach(b=>b.onclick=()=>roleEdit(b.dataset.re));$$('[data-rc]',el).forEach(b=>b.onclick=()=>roleNew(b.dataset.rc));$$('[data-rd]',el).forEach(b=>b.onclick=()=>roleDel(b.dataset.rd))}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8730,7 +9157,17 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.1.0',d:'2026-11-23',n:['Users and Roles → Roles and Permissions: a card for every role (users, pages, actions) with ✎ Permissions, ⧉ Copy and (for your own roles) 🗑 Delete','+ New Role: make your own roles (for example Cashier, Senior Lab, Marketing) — choose its pages, actions, Settings sections, the page that opens after login and the login panel tile','Role editor in three tabs: 📄 Pages (grouped by menu, All / None), ⚙ Actions, 🛠 Settings sections (which parts of Settings the role sees) — with search','New action permissions: Full discount, Add tests to an existing bill, Collect due, Export to Excel, Excel import, Print lists / statements, See money on the Dashboard. Existing roles keep everything they could do before','Home page after login for every role (for example Lab opens Lab Worklist directly)','The old tick table is still there: "📊 Compare all roles in one table"']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8738,6 +9175,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.1.1',d:'2026-11-23',n:['Fixed: All Menu → "Doctor List — Add new" (and every other All Menu tile) opened the form several times on top of each other, so Cancel / ✕ had to be clicked many times — every time All Menu was opened one more copy was added. Now one click = one window','Fixed: Recycle Bin "select all" could stop working after opening the page several times','Every list (Doctor, RMP / PC, Media, P.O, bills, patients, tests …): page-wise table like a standard data table — "Showing 51–100 of 691", Rows 10 / 25 / 50 / 100 / 500, « ‹ 1 2 3 › » buttons, header stays on top, row highlight on hover (no more "Show more")','Doctor / RMP / Media / P.O lists: fixed column widths and one line per row — long names end with … (hover to see the full name), the table no longer jumps while scrolling']});
 /* ===== v2.1.3 — Logo adjustable (screen and print) ===== */
@@ -8778,6 +9220,11 @@ try{logoApply()}catch(e){}
 {const _s=SCREENS.settings.render;SCREENS.settings.render=function(el,p){_s.call(this,el,p);const rn=$('#st_rn',el);if(!rn||$('#st_rtp',el))return;const s=S();
   rn.closest('label').insertAdjacentHTML('afterend',fld('Report top title — Pathology',`<input id="st_rtp" value="${esc(s.rptTopPath||'DEPARTMENT OF LABORATORY MEDICINE')}">`)+fld('Report top title — Imaging',`<input id="st_rtr" value="${esc(s.rptTopRad||'DEPARTMENT OF RADIOLOGY & IMAGING')}">`));
   const btn=$('#st_save',el),prev=btn.onclick;btn.onclick=async()=>{await (prev&&prev());const cur=DB.get('settings','main')||DEF_SET;DB.put('settings',{...cur,id:'main',rptTopPath:$('#st_rtp',el).value.trim(),rptTopRad:$('#st_rtr',el).value.trim()})}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8785,8 +9232,18 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.1.4',d:'2026-11-23',n:['Lab report patient details like the big Dhaka labs: barcode on both sides with the title in the middle ("DEPARTMENT OF LABORATORY MEDICINE" / "DEPARTMENT OF RADIOLOGY & IMAGING" — can be changed in Settings → Lab Report); Bill No, Patient ID, Name, Age / Gender and Refd. By one under the other with the same alignment on the left; Invoice Date, Collected and Reported on the right; Specimen in its own box','Invoice patient details in the same aligned style: Bill No, Patient ID, Name, Age / Gender and Refd. By on the left, Date, Mobile and Delivery on the right','Coming back to a page from another menu now opens it fresh: Report Delivery no longer shows the last patient\'s reports, search boxes in lists start empty, P.O and Doctors starts from the first P.O (dates, filters and a doctor\'s unsaved prescription are kept)']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8795,7 +9252,17 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
 ]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.1.3',d:'2026-11-23',n:['Logo adjustable: Settings → Organization → 🖼 Logo adjust — show the whole logo or fill the box, background (white / none / theme colour), shape (rounded / circle / square), zoom, move left-right / up-down, and the logo size on prints. Live preview; saved settings go to every computer. By default the whole logo is now shown (it was cut at the edges on the login page)']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8803,6 +9270,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.1.2',d:'2026-11-23',n:['Lab report: no empty gap under the Patient Name line — the barcode now sits across the first two lines; a long patient name, specimen or doctor name goes to a second line instead of being cut with …; Bill Date / Collected / Reported are shown in full']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -8890,6 +9362,11 @@ document.head.insertAdjacentHTML('beforeend',`<style>@media(max-width:760px){
   }}}
 /* the + button only where it helps; hide it on other pages so it never covers fields */
 {const _r=App.render.bind(App);App.render=function(){const r=_r.apply(App,arguments);try{document.body.classList.toggle('mfab-hide',!['dash','bills','patients'].includes(App.cur))}catch(e){}return r}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8897,6 +9374,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
  'Security: passwords are now stored with strong protection (salted and stretched 2000 times) — old passwords are upgraded automatically at the next sign-in',
@@ -8912,6 +9394,11 @@ CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
  'Mobile: the + (New Bill) button shows only on Home, Bill List and Patients, so it does not cover fields and search boxes',
  'Mobile: New Bill header buttons (Refund Req, Edit) wrap to the next line instead of being cut',
  'Report Delivery: tap anywhere on a test (card) to tick it; bigger tick boxes; a clear message when no report is ready yet (results not entered / not verified) instead of "Select reports"']});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8919,6 +9406,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.2.1',d:'2026-11-24',n:['Offline: the installed app (Chrome / phone) now always opens without internet after it has been opened once with internet. Before, if one small file (an icon) could not be saved, nothing was saved and the app showed "This site can\'t be reached". অফলাইন: একবার ইন্টারনেট সহ খোলার পর অ্যাপটি এখন সবসময় ইন্টারনেট ছাড়াও খোলে।','Offline: when the internet is slow the app opens from the saved copy after 3.5 seconds instead of waiting','Offline: if the app was never opened with internet, a clear message with a Try again button is shown instead of an error page']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -8978,6 +9470,11 @@ if(!MODS.find(m=>m.k==='cashcol')){const i=MODS.findIndex(m=>m.k==='balance');MO
 Object.keys(DEF_PERMS).forEach(r=>{const a=DEF_PERMS[r];if(Array.isArray(a)&&(a.includes('balance')||a.includes('shift'))&&!a.includes('cashcol'))a.push('cashcol')});
 {const _sa=startApp;startApp=function(){try{const s=DB.get('settings','main');if(s&&s.perms&&!s.ccV1){const P=JSON.parse(JSON.stringify(s.perms));Object.keys(P).forEach(r=>{if(Array.isArray(P[r])&&(P[r].includes('balance')||P[r].includes('shift'))&&!P[r].includes('cashcol'))P[r].push('cashcol')});DB.put('settings',{...s,perms:P,ccV1:1})}}catch(e){}return _sa.apply(this,arguments)}}
 try{const g=QUICK.find(x=>/daily/i.test(x[0]));if(g&&!g[1].find(x=>x[0]==='cashcol'))g[1].push(['cashcol','Central Cash Collection'])}catch(e){}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -8985,6 +9482,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.3.0',d:'2026-11-24',n:[
  'P.Summary and Due List: smaller filter boxes in two short lines (Search · Doctor · Media · P/O · Test, then the dates and buttons) — more room for the list',
@@ -8997,6 +9499,11 @@ const bfFields=()=>$$('#main input,#main select,#main textarea').filter(x=>!x.di
 document.addEventListener('keydown',e=>{if(e.key!=='Tab'||e.defaultPrevented||e.ctrlKey||e.altKey||App.cur!=='bill'||Modal.top())return;const L=bfFields();if(!L.length)return;
   const i=L.indexOf(document.activeElement);let n;if(i<0){const all=$$('#main *');const pos=all.indexOf(document.activeElement);n=e.shiftKey?[...L].reverse().find(x=>all.indexOf(x)<pos)||L[L.length-1]:L.find(x=>all.indexOf(x)>pos)||L[0]}
   else n=L[(i+(e.shiftKey?-1:1)+L.length)%L.length];e.preventDefault();n.focus();try{if(n.select&&/^(text|tel|number|search|email)$/i.test(n.type||''))n.select()}catch(x){}});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -9004,6 +9511,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.3.1',d:'2026-11-24',n:['New Bill: the Phone box is empty (no demo number 01XXXXXXXXX)','New Bill: the Tab key moves only through the entry boxes (Phone → Name → Age → … → Remarks); "+ Add New", the test chips and the other buttons are skipped — use the mouse for them. Shift+Tab goes back']});
 /* ===== v2.3.2 — bill items header in the menu-button colour; standard P.Summary / Due List table ===== */
@@ -9015,6 +9527,11 @@ document.head.insertAdjacentHTML('beforeend',`<style id="v232_css">
  #ps_tb .tbl tfoot td{background:#f1f5f9;font-weight:700;border-top:2px solid #94a3b8}
  .psab{display:flex;gap:4px;justify-content:center}.pa{width:30px;height:28px;border:0;border-radius:6px;cursor:pointer;font-size:14px;line-height:1;color:#fff;display:grid;place-items:center}
  .pa-v{background:#0ea5e9}.pa-e{background:#f59e0b}.pa-t{background:#10b981}.pa-p{background:#dc2626;font-weight:700}.pa:hover{filter:brightness(.92)}th.psact{text-align:center}</style>`);
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -9022,6 +9539,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.3.2',d:'2026-11-24',n:['Invoice: the room numbers at the bottom are now separate boxes (Blood Collection · X-Ray · Ultrasonogram · E.C.G · Echo-Cardio · Others) with the room number large','New Bill: the test table heading has the same light blue colour as the menu buttons','P.Summary and Due List: standard table — light blue heading, cell borders, striped rows, numbers on one line; the Action column is small coloured buttons: 👁 Bill details, ✎ Edit, 🧪 Test details, ৳ Collect due (hover shows the name)']});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
@@ -9073,6 +9595,11 @@ const LAN_GUIDE=`<div id="cg_lan2" style="display:none"><ol style="padding-left:
   lanWire(el)}}
 /* opened from the server but not set up yet: suggest it */
 {const _sa=startApp;startApp=function(){_sa();try{if(lanServedHere()&&!Sync.enabled()&&Auth.user&&Auth.user.role==='admin')setTimeout(()=>toast('This software is open from the office server — set up sync: Backup and Cloud → Cloud setup → Local Server (LAN)','warn'),1500)}catch(e){}}}
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -9080,6 +9607,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.5.1',d:'2026-11-27',n:[
  'Doctor Serial: all 690+ doctors from Doctor List automatically available without adding to Consultants first',
@@ -9089,6 +9621,11 @@ CHANGELOG.unshift({v:'2.5.1',d:'2026-11-27',n:[
  'Staff and Salary: standard printed salary sheet with staff signature box, Net Payable, Paid, Due, and 4-block signatures (Prepared by, Accountant, Admin/HR, Managing Director)'
 ]});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -9096,6 +9633,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.5.0',d:'2026-11-27',n:[
  'Accounts Books: Statement 1 (Continuous Daily Cash & Expense Ledger) with rolling opening balances and itemized expenses',
@@ -9106,6 +9648,11 @@ CHANGELOG.unshift({v:'2.5.0',d:'2026-11-27',n:[
  'Setup: Licenses & Legal Documents Vault with PDF and image upload, embedded preview viewer, and expiry alerts'
 ]});
 CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
+]});
 CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents (Salary sheet, staff directory, day books, ledgers, reports)',
   'Printing: Print Options dialog with instant Portrait or Landscape selection before printing',
@@ -9113,6 +9660,11 @@ CHANGELOG.unshift({v:'2.5.2',d:'2026-11-27',n:[
   'Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column',
   'Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor',
   'Mobile View: Fixed user profile menu font color so all options are clearly visible'
+]});
+CHANGELOG.unshift({v:'2.5.3',d:'2026-11-27',n:[
+  'Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing',
+  'Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)',
+  'Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog'
 ]});
 CHANGELOG.unshift({v:'2.4.0',d:'2026-11-24',n:[
  'New: Local Server (LAN) — instead of an online cloud, a center can use its own server PC in the office. All computers sync with it over the office network; no internet is needed. Backup and Cloud → Cloud setup → Cloud server = "Local Server (LAN)" → server address (for example http://192.168.1.10:8787) and the same Secret Key on every computer',
