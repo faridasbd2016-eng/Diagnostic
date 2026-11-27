@@ -160,6 +160,184 @@ pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;max-hei
 .todo{display:flex;flex-wrap:wrap;gap:10px}.todo a{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;background:#f8fafc;border:1px solid var(--bd);cursor:pointer;font-size:13px}.todo a:hover{border-color:var(--acc2);background:var(--accl)}.todo a b{font-size:16px}
 .todo a.r{background:#fef2f2;border-color:#fecaca}.todo a.y{background:#fffbeb;border-color:#fde68a}
 </style>
+<style id="amz_android_mobile_css">
+@media(max-width:760px){
+  /* Global touch smoothness and fast-click response */
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  input, textarea {
+    user-select: text;
+  }
+  button, a, input, select, textarea, .btn, .chip, [data-act], [data-mk], [data-sk] {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  button:active, .btn:active, .chip:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+    transition: transform 0.08s ease;
+  }
+
+  /* Ribbon: Make it a Material 3 Scrollable Chip Bar on mobile instead of hiding it! */
+  .ribbon {
+    display: block !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 6px 10px 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    flex: none !important;
+  }
+  .rtabs {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .rtabs::-webkit-scrollbar { display: none; }
+  .rtabs a {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    flex: none !important;
+    cursor: pointer !important;
+  }
+  .rtabs a.on {
+    background: #0f766e !important;
+    color: #ffffff !important;
+    border-color: #0f766e !important;
+    box-shadow: 0 2px 6px rgba(15,118,110,0.3) !important;
+  }
+  #nav.rbody {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding: 6px 0 2px !important;
+    margin: 4px 0 0 !important;
+    border-top: 1px dashed #e2e8f0 !important;
+    scrollbar-width: none !important;
+  }
+  #nav.rbody::-webkit-scrollbar { display: none; }
+  #nav.rbody a {
+    flex: none !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 16px !important;
+    white-space: nowrap !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+  #nav.rbody a.on {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+  }
+
+  /* Material 3 Bottom Nav Bar */
+  #mnav {
+    height: 62px !important;
+    padding: 4px 6px calc(4px + env(safe-area-inset-bottom)) !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 -4px 16px rgba(15,23,42,0.06) !important;
+  }
+  #mnav a {
+    padding: 3px 2px !important;
+    gap: 2px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    transition: all 0.15s ease !important;
+  }
+  #mnav a .m-ic-wrap {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  #mnav a.on {
+    color: #0f766e !important;
+  }
+  #mnav a.on .m-ic-wrap {
+    background: #ccfbf1 !important;
+    color: #0f766e !important;
+  }
+  #mnav a svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Material Bottom Sheet for Menu */
+  #msheet.on {
+    z-index: 999 !important;
+  }
+  #msheet .sh {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 8px 14px calc(18px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2) !important;
+    animation: msheetIn 0.22s cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+  @keyframes msheetIn {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .msh-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: none;
+  }
+  .msh-chip.on {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+  }
+
+  /* Touch-friendly Action Buttons in tables */
+  .tbl button.ib, .tbl .pa, .tbl a.ib {
+    min-height: 36px !important;
+    min-width: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 12.5px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Ensure floating + button does not overlap footer */
+  #mfab {
+    bottom: 74px !important;
+    right: 14px !important;
+    box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="login"></div>
@@ -257,7 +435,7 @@ const Store={db:null,
   clear(){return new Promise((res,rej)=>{const tx=this.db.transaction('recs','readwrite');tx.objectStore('recs').clear();tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
 };
 
-const COLS=['settings','users','departments','tests','referrers','consultants','patients','bills','payments','results','commPays','conPays','appointments','heads','txns','items','suppliers','purchases','supPays','stockTx','audit','devices','corporates','staff','media','equipment','eqlogs','shifts','rx','drugs','rxtpl'];
+const COLS=['settings','users','departments','tests','referrers','consultants','patients','bills','payments','results','commPays','conPays','appointments','heads','txns','items','suppliers','purchases','supPays','stockTx','audit','devices','corporates','staff','media','equipment','eqlogs','shifts','rx','drugs','rxtpl','payroll','docs'];
 const DB={d:{},meta:{},dirty:new Set(),pend:new Set(),ver:0,_last:0,mode:'idb',_ft:null,
   async init(){
     COLS.forEach(c=>this.d[c]={});
@@ -271,11 +449,11 @@ const DB={d:{},meta:{},dirty:new Set(),pend:new Set(),ver:0,_last:0,mode:'idb',_
     for(const c of COLS)for(const id in this.d[c]){const u=num(this.d[c][id]._u);if(u>this._last)this._last=u}
   },
   now(){let t=Date.now();if(t<=this._last)t=this._last+1;this._last=t;return t},
-  all(c){const o=this.d[c]||{},a=[];for(const id in o){const r=o[id];if(r&&!r._d)a.push(r)}return a},
-  get(c,id){if(id==null||id==='')return null;const r=this.d[c]&&this.d[c][id];return r&&!r._d?r:null},
-  put(c,r){if(!r.id)r.id=uid();r._u=this.now();this.d[c][r.id]=r;this.touch(c,r.id);return r},
+  all(c){if(!this.d[c])return [];const o=this.d[c],a=[];for(const id in o){const r=o[id];if(r&&!r._d)a.push(r)}return a},
+  get(c,id){if(id==null||id==='')return null;if(!this.d[c])return null;const r=this.d[c][id];return r&&!r._d?r:null},
+  put(c,r){if(!this.d[c])this.d[c]={};if(!r.id)r.id=uid();r._u=this.now();this.d[c][r.id]=r;this.touch(c,r.id);return r},
   del(c,id){if(!this.d[c]||!this.d[c][id])return;this.d[c][id]={id,_d:1,_u:this.now()};this.touch(c,id)},
-  raw(c,r){this.d[c][r.id]=r;this.pend.add(c+'|'+r.id);this.ver++;this.sched()},
+  raw(c,r){if(!this.d[c])this.d[c]={};this.d[c][r.id]=r;this.pend.add(c+'|'+r.id);this.ver++;this.sched()},
   touch(c,id){const k=c+'|'+id;this.dirty.add(k);this.pend.add(k);this.ver++;this.sched();Sync.schedule()},
   sched(){if(this._ft)return;this._ft=setTimeout(()=>this.flush(),200)},
   flush(){clearTimeout(this._ft);this._ft=null;if(this.mode==='mem'){this.pend.clear();return Promise.resolve()}const keys=[...this.pend];this.pend.clear();const meta={...this.meta,dirty:[...this.dirty]};
@@ -1101,17 +1279,141 @@ const ConForm={open(id){const c=id?DB.get('consultants',id):{active:true,share:'
   $('#cn_ok',m).onclick=()=>{const name=$('#cn_n',m).value.trim();if(!name)return toast('Enter name','err');const sh=num($('#cn_sh',m).value);if(sh>100)return toast('Share cannot exceed 100%','err');
     DB.put('consultants',{...(id?DB.get('consultants',id):{}),id:id||uid(),name,degree:$('#cn_d',m).value.trim(),spec:$('#cn_s',m).value.trim(),phone:$('#cn_p',m).value.trim(),fee:num($('#cn_f',m).value),fuFee:num($('#cn_ff',m).value),rptFee:num($('#cn_rf',m).value),share:sh,days:$('#cn_dy',m).value.trim(),time:$('#cn_tm',m).value.trim(),room:$('#cn_rm',m).value.trim(),active:$('#cn_ac',m).checked});
     log(id?'Edit Consultant':'New Consultant',name);Modal.close(m);toast('saved');App.soft()}}};
-const ApptForm={open(id){const cons=DB.all('consultants').filter(c=>c.active!==false||(id&&DB.get('appointments',id).conId===c.id));if(!cons.length){toast('First add a doctor from the "Consultant" tab','warn');SCREENS.appt.tab='con';App.go('appt');return}
-  const a=id?DB.get('appointments',id):{date:SCREENS.appt.date||today(),conId:SCREENS.appt.con||cons[0].id,type:'New',sex:'M',ageU:'Y'};const st={patId:a.patId||null};const paid=id?Idx.apaid(id):0;
-  const m=Modal.open(id?`Edit Serial — #${a.serial}`:'New Serial',`<div class="g2 kn">${fld('Doctor *',`<select id="ap_c">${opts(cons.map(c=>[c.id,c.name+(c.spec?' ('+c.spec+')':'')]),a.conId)}</select>`,'call')}${fld('Date',`<input id="ap_d" type="date" value="${esc(a.date)}">`)}${fld('Visit type',`<select id="ap_t">${opts([['New','New Patient'],['Follow-up','Follow-up'],['Report','Report show']],a.type)}</select>`)}
+/* Unified Doctor List for Chamber Serial & Prescription (all 690+ doctors auto-included) */
+function getAllSerialDoctors(){
+  const cons=DB.all('consultants');
+  const conNames=new Set(cons.map(c=>String(c.name).trim().toLowerCase()));
+  const conRefIds=new Set(cons.map(c=>c.refId).filter(Boolean));
+  const docRefs=DB.all('referrers').filter(r=>{
+    if(r.active===false)return false;
+    const t=r.type||'Doctor';
+    return t==='Doctor'||t==='RMP / PC';
+  });
+  const list=cons.map(c=>({
+    id:c.id,conId:c.id,name:c.name,degree:c.degree||'',spec:c.spec||c.degree||'Chamber Doctor',phone:c.phone||'',
+    fee:num(c.fee)||800,fuFee:num(c.fuFee)||500,rptFee:num(c.rptFee)||0,isCon:true
+  }));
+  docRefs.forEach(r=>{
+    const kName=String(r.name).trim().toLowerCase();
+    if(!conNames.has(kName)&&!conRefIds.has(r.id)){
+      list.push({
+        id:'ref_'+r.id,refId:r.id,name:r.name,degree:r.degree||'',spec:r.degree||'Chamber Doctor',phone:r.phone||'',
+        fee:num(r.fee)||800,fuFee:num(r.fuFee)||500,rptFee:num(r.rptFee)||0,isCon:false
+      });
+    }
+  });
+  return list.sort((a,b)=>String(a.name).localeCompare(b.name));
+}
+
+function ensureConsultant(item){
+  if(!item)return '';
+  if(typeof item === 'string'){
+    if(!item.startsWith('ref_') && DB.get('consultants', item)) return item;
+    const doc = getAllSerialDoctors().find(d=>d.id===item||d.conId===item||d.refId===item.replace('ref_',''));
+    if(doc) return ensureConsultant(doc);
+    return item;
+  }
+  if(item.conId && DB.get('consultants', item.conId)) return item.conId;
+  const targetId = item.id && !String(item.id).startsWith('ref_') ? item.id : '';
+  if(targetId && DB.get('consultants', targetId)) return targetId;
+  const refId = item.refId || (String(item.id).startsWith('ref_') ? item.id.replace('ref_', '') : '');
+  let c = DB.all('consultants').find(x => (refId && x.refId === refId) || String(x.name).trim().toLowerCase() === String(item.name).trim().toLowerCase());
+  if(c) return c.id;
+  c = DB.put('consultants', {
+    id: uid(), refId: refId || '', name: item.name, degree: item.degree || '',
+    spec: item.spec || item.degree || 'Chamber Doctor', phone: item.phone || '',
+    fee: num(item.fee) || 800, fuFee: num(item.fuFee) || 500, rptFee: num(item.rptFee) || 0,
+    share: 0, days: '', time: '', room: '', active: true
+  });
+  return c.id;
+}
+const ApptForm={open(id){
+  const allDocs=getAllSerialDoctors();
+  if(!allDocs.length){toast('No doctors found in Doctor List or Consultants','warn');SCREENS.appt.tab='con';App.go('appt');return}
+  const a=id?DB.get('appointments',id):{date:SCREENS.appt.date||today(),conId:SCREENS.appt.con||allDocs[0].id,type:'New',sex:'M',ageU:'Y'};
+  if(a.conId&&String(a.conId).startsWith('ref_')){a.conId=ensureConsultant(allDocs.find(d=>d.id===a.conId))}
+  const st={patId:a.patId||null};const paid=id?Idx.apaid(id):0;
+  const initDoc=(a.conId&&DB.get('consultants',a.conId))||allDocs.find(d=>d.id===a.conId||d.conId===a.conId)||(allDocs[0]||{});
+  const initDocName=initDoc.name||'';
+  const initConId=initDoc.conId||initDoc.id||'';
+
+  const m=Modal.open(id?`Edit Serial — #${a.serial}`:'New Serial',`<div class="g2 kn">
+    ${fld('Doctor *',`
+      <div style="position:relative">
+        <input id="ap_doc_search" autocomplete="off" placeholder="🔍 Type doctor name to search (690+ doctors)..." value="${esc(initDocName)}" style="padding-right:26px" data-noenter>
+        <input type="hidden" id="ap_c" value="${esc(initConId)}">
+        <span id="ap_doc_clr" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8;font-size:14px;font-weight:700;display:${initDocName?'inline':'none'}" title="Clear">✕</span>
+      </div>
+    `,'call')}${fld('Date',`<input id="ap_d" type="date" value="${esc(a.date)}">`)}${fld('Visit type',`<select id="ap_t">${opts([['New','New Patient'],['Follow-up','Follow-up'],['Report','Report show']],a.type)}</select>`)}
    ${fld('Mobile',`<input id="ap_p" value="${esc(a.phone||'')}">`)}${fld('Patient Name *',`<input id="ap_n" value="${esc(a.patName||'')}">`)}${fld('Age',`<div class="row" style="flex-wrap:nowrap;gap:6px"><input id="ap_a" type="number" min="0" value="${esc(a.age??'')}"><select id="ap_u">${opts([['Y','Years'],['M','Months'],['D','Days']],a.ageU)}</select></div>`)}${fld('Gender',`<select id="ap_s">${opts([['M','Male'],['F','Female'],['O','Other']],a.sex)}</select>`)}
    ${fld('Fee (Tk)',`<input id="ap_f" type="number" min="0" step="any" value="${esc(a.fee??'')}">`)}${id?fld('Previously paid',`<input readonly value="${money(paid)}">`):fld('Payment Mode',`<select id="ap_m">${opts(MODES)}</select>`)}${fld('Note',`<input id="ap_no" value="${esc(a.note||'')}">`,'call')}</div>
    ${id?'':'<label class="chk" style="margin-top:10px"><input type="checkbox" id="ap_paid" checked> Collect fee now</label><label class="chk" style="margin-top:6px"><input type="checkbox" id="ap_pr" checked> Print serial slip after saving</label>'}`,
    {foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="ap_ok">Save</button>'});
-  const setFee=()=>{const c=DB.get('consultants',$('#ap_c',m).value);if(!c)return;const t=$('#ap_t',m).value;$('#ap_f',m).value=t==='Follow-up'?num(c.fuFee):t==='Report'?num(c.rptFee):num(c.fee)};
-  $('#ap_c',m).onchange=setFee;$('#ap_t',m).onchange=setFee;if(!id)setFee();
+
+  const setFee=()=>{
+    const cid=$('#ap_c',m).value;
+    let c=DB.get('consultants',cid);
+    if(!c){
+      const docItem=allDocs.find(d=>d.id===cid||d.conId===cid);
+      if(docItem)c=docItem;
+    }
+    if(!c)return;
+    const t=$('#ap_t',m).value;
+    $('#ap_f',m).value=t==='Follow-up'?num(c.fuFee||500):t==='Report'?num(c.rptFee||0):num(c.fee||800);
+  };
+
+  picker($('#ap_doc_search',m),{
+    min:0,
+    source:q=>{
+      const docs=getAllSerialDoctors();
+      if(!q)return docs;
+      return docs.filter(d=>(d.name+' '+(d.degree||'')+' '+(d.spec||'')+' '+(d.phone||'')).toLowerCase().includes(q));
+    },
+    render:d=>`<div><b>${esc(d.name)}</b>${d.degree?` <small class="muted">(${esc(d.degree)})</small>`:''}</div>
+      <div style="font-size:11px;color:#64748b">${esc(d.spec||'')}${d.phone?' · '+esc(d.phone):''} · Fee: Tk ${money(d.fee||800)}</div>`,
+    onPick:d=>{
+      const conId=ensureConsultant(d);
+      $('#ap_c',m).value=conId;
+      $('#ap_doc_search',m).value=d.name;
+      const clr=$('#ap_doc_clr',m);if(clr)clr.style.display='inline';
+      setFee();
+    }
+  });
+
+  const clrBtn=$('#ap_doc_clr',m);
+  if(clrBtn)clrBtn.onclick=()=>{
+    $('#ap_c',m).value='';
+    $('#ap_doc_search',m).value='';
+    clrBtn.style.display='none';
+    $('#ap_doc_search',m).focus();
+  };
+
+  $('#ap_doc_search',m).addEventListener('input',()=>{
+    if(!$('#ap_doc_search',m).value.trim()){
+      $('#ap_c',m).value='';
+      if(clrBtn)clrBtn.style.display='none';
+    }else{
+      if(clrBtn)clrBtn.style.display='inline';
+    }
+  });
+
+  $('#ap_t',m).onchange=setFee;
+  if(!id)setFee();
   const fp=x=>{st.patId=x.id;$('#ap_p',m).value=x.phone||'';$('#ap_n',m).value=x.name||'';$('#ap_a',m).value=x.age??'';$('#ap_u',m).value=x.ageU||'Y';$('#ap_s',m).value=x.sex||'M'};patPicker($('#ap_p',m),fp,3);patPicker($('#ap_n',m),fp,2);
-  $('#ap_ok',m).onclick=()=>{const name=$('#ap_n',m).value.trim();if(!name)return toast('Enter patient name','err');const conId=$('#ap_c',m).value,date=$('#ap_d',m).value||today(),fee=r2($('#ap_f',m).value);if(fee<0)return toast('Fee is not valid','err');
+
+  $('#ap_ok',m).onclick=()=>{
+    const name=$('#ap_n',m).value.trim();if(!name)return toast('Enter patient name','err');
+    let conId=$('#ap_c',m).value;
+    if(!conId){
+      const typed=$('#ap_doc_search',m).value.trim().toLowerCase();
+      const match=allDocs.find(d=>d.name.toLowerCase()===typed || (d.name.toLowerCase().includes(typed) && typed.length>2));
+      if(match){
+        conId=ensureConsultant(match);
+        $('#ap_c',m).value=conId;
+      }
+    }
+    if(!conId)return toast('Please select a doctor from the doctor list','err');
+    const date=$('#ap_d',m).value||today(),fee=r2($('#ap_f',m).value);if(fee<0)return toast('Fee is not valid','err');
     const pd={name,phone:$('#ap_p',m).value.trim(),age:$('#ap_a',m).value===''?'':num($('#ap_a',m).value),ageU:$('#ap_u',m).value,sex:$('#ap_s',m).value};const pat=upsertPatient(st.patId,{...pd,address:(st.patId&&DB.get('patients',st.patId)||{}).address||''});
     let serial=a.serial;if(!id||a.conId!==conId||a.date!==date){serial=1+Math.max(0,...DB.all('appointments').filter(x=>x.conId===conId&&x.date===date&&x.id!==id).map(x=>num(x.serial)))}
     const rec=DB.put('appointments',{...(id?DB.get('appointments',id):{status:'waiting',ts:Date.now(),by:Auth.user.name}),id:id||uid(),conId,date,serial,type:$('#ap_t',m).value,patId:pat.id,pid:pat.pid,patName:name,phone:pd.phone,age:pd.age,ageU:pd.ageU,sex:pd.sex,fee,note:$('#ap_no',m).value.trim()});
@@ -1127,10 +1429,11 @@ function conPay(id){const c=DB.get('consultants',id);if(!c)return;const s=conSta
   const m=Modal.open('Doctor Share Payment — '+c.name,`<div class="alert i">Total payable: <b>Tk${money(s.bal)}</b></div><div class="g2 kn">${fld('Amount *',`<input id="dp_a" type="number" min="0" step="any" value="${Math.max(0,s.bal)}">`)}${fld('Date',`<input id="dp_d" type="date" value="${today()}">`)}${fld('Mode',`<select id="dp_m">${opts(MODES)}</select>`)}${fld('Note','<input id="dp_n">')}</div>`,{w:'sm',foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="dp_ok" data-enter-submit>Save</button>'});
   $('#dp_ok',m).onclick=()=>{const a=r2($('#dp_a',m).value);if(a<=0)return toast('Enter a valid amount','err');DB.put('conPays',{id:uid(),conId:id,conName:c.name,amount:a,date:$('#dp_d',m).value||today(),ts:Date.now(),mode:$('#dp_m',m).value,note:$('#dp_n',m).value.trim(),by:Auth.user.name});log('Doctor share payment',`${c.name} Tk${money(a)}`);Modal.close(m);App.soft()}}
 SCREENS.appt={t:'Doctor Serial',tab:'list',date:today(),con:'',render(el){el.innerHTML=tabsHtml(this.tab,[['list','Serial List'],['con','Consultants / Doctors']])+'<div id="ap_box"></div>';wireTabs(el,this);const box=$('#ap_box',el);
-  if(this.tab==='list'){const cons=DB.all('consultants');
-    box.innerHTML=`<div class="card"><div class="row">${fld('Date',`<input type="date" id="ap_fd" value="${this.date}">`)}${fld('Doctor',`<select id="ap_fc">${opts([['','All doctors']].concat(cons.map(c=>[c.id,c.name])),this.con)}</select>`)}<button class="btn btn-o" id="ap_tdy">Today</button><span class="sp"></span><button class="btn btn-a" id="ap_new">+ New Serial</button></div></div><div class="card" id="ap_tb"></div>`;
+  if(this.tab==='list'){const allDocs=getAllSerialDoctors();
+    box.innerHTML=`<div class="card"><div class="row">${fld('Date',`<input type="date" id="ap_fd" value="${this.date}">`)}${fld('Doctor',`<select id="ap_fc">${opts([['','All doctors']].concat(allDocs.map(c=>[c.conId||c.id,c.name])),this.con)}</select>`)}<button class="btn btn-o" id="ap_tdy">Today</button><span class="sp"></span><button class="btn btn-a" id="ap_new">+ New Serial</button></div></div><div class="card" id="ap_tb"></div>`;
     $('#ap_fd').onchange=e=>{this.date=e.target.value||today();App.render()};$('#ap_fc').onchange=e=>{this.con=e.target.value;App.render()};$('#ap_tdy').onclick=()=>{this.date=today();App.render()};$('#ap_new').onclick=()=>ApptForm.open();
-    const rows=DB.all('appointments').filter(a=>a.date===this.date&&(!this.con||a.conId===this.con)).sort((a,b)=>String(a.conId).localeCompare(b.conId)||num(a.serial)-num(b.serial));const cn=id=>(DB.get('consultants',id)||{name:'-'}).name;
+    const rows=DB.all('appointments').filter(a=>a.date===this.date&&(!this.con||a.conId===this.con)).sort((a,b)=>String(a.conId).localeCompare(b.conId)||num(a.serial)-num(b.serial));
+    const cn=id=>{const c=DB.get('consultants',id)||DB.get('referrers',id);if(c)return c.name;const d=allDocs.find(x=>x.id===id||x.conId===id);return d?d.name:'-'};
     const SB={waiting:'<span class="bdg b-collected">Waiting</span>',seen:'<span class="bdg b-verified">Seen</span>',cancelled:badge('cancelled')};
     const cols=[{t:'Serial',cls:'c',v:a=>a.serial,h:a=>`<b style="font-size:16px">${a.serial}</b>`},{t:'Patients',v:a=>a.patName,h:a=>`<b>${esc(a.patName)}</b><br><small class="muted">${esc(ageStr(a))} ${esc(sexStr(a.sex))} · ${esc(a.phone||'')}</small>`},{t:'Doctor',v:a=>cn(a.conId)},{t:'Type',v:a=>a.type},
       {t:'Fee',cls:'r',v:a=>money(a.fee)},{t:'Paid',cls:'r',v:a=>money(Idx.apaid(a.id)),h:a=>{const p=Idx.apaid(a.id);return `<span class="${p<num(a.fee)&&a.status!=='cancelled'?'err':''}">${money(p)}</span>`}},{t:'Status',h:a=>SB[a.status]||''},
@@ -2011,65 +2314,88 @@ SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(
       const pTotSalary=sum(printItems,x=>x.tot);
       const pTotLoan=sum(printItems,x=>x.loan);
       const pTotBal=sum(printItems,x=>x.bal);
+      const pTotPaid=sum(printItems,x=>staffPaid(x.s.id,ym));
+      const pTotDue=Math.max(0,pTotBal-pTotPaid);
 
       let pRows='';let rDept='';
       printItems.forEach(x=>{
         const isNew=x.dept!==rDept;
         if(isNew)rDept=x.dept;
-        const dCell=isNew?`<td rowspan="${curDeptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};font-weight:700;font-size:11px;vertical-align:middle;text-align:center;border:1px solid #000;padding:4px">${esc(x.dept)}</td>`:'';
+        const paid=staffPaid(x.s.id,ym);
+        const due=Math.max(0,x.bal-paid);
+        const dCell=isNew?`<td rowspan="${curDeptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};font-weight:700;font-size:10px;vertical-align:middle;text-align:center;border:1px solid #334155;padding:4px">${esc(x.dept)}</td>`:'';
         pRows+=`<tr>
           ${dCell}
-          <td style="text-align:center;border:1px solid #000;padding:4px">${x.sl}</td>
-          <td style="border:1px solid #000;padding:4px"><b>${esc(x.s.name)}</b>${x.s.desig?` <span style="font-size:10px;color:#475569">(${esc(x.s.desig)})</span>`:''}</td>
-          <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.gross)}</td>
-          <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.daily)}</td>
-          <td style="text-align:center;border:1px solid #000;padding:4px">${x.day}</td>
-          <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.tot)}</td>
-          <td style="text-align:right;border:1px solid #000;padding:4px">${x.loan?money(x.loan):'-'}</td>
-          <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.bal)}</td>
+          <td style="text-align:center;border:1px solid #334155;padding:4px">${x.sl}</td>
+          <td style="border:1px solid #334155;padding:4px"><b>${esc(x.s.name)}</b>${x.s.desig?`<br><small style="font-size:9.5px;color:#475569">${esc(x.s.desig)}</small>`:''}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px">${money(x.gross)}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px">${money(x.daily)}</td>
+          <td style="text-align:center;border:1px solid #334155;padding:4px">${x.day}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px;font-weight:700">${money(x.tot)}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px;color:${x.loan?'#b91c1c':'#000'}">${x.loan?money(x.loan):'-'}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px;font-weight:700;background:#f8fafc">${money(x.bal)}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px;color:#15803d;font-weight:700">${paid?money(paid):'-'}</td>
+          <td style="text-align:right;border:1px solid #334155;padding:4px;color:${due?'#dc2626':'#000'};font-weight:700">${due?money(due):'-'}</td>
+          <td style="border:1px solid #334155;padding:4px;text-align:center;width:95px"></td>
         </tr>`;
       });
 
       const pHtml=`
-        <div style="font-family:Arial,sans-serif;color:#000">
+        <div style="font-family:Arial,sans-serif;color:#000;padding:4px">
           ${Print.head(true)}
-          <div style="text-align:center;margin:8px 0 12px">
-            <div style="font-size:15px;font-weight:700;letter-spacing:0.5px">ADMIN & STAFF SALARY SHEET</div>
+          <div style="text-align:center;margin:6px 0 8px">
+            <div style="font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase">ADMIN &amp; STAFF SALARY SHEET</div>
             <div style="font-size:12px;color:#334155;margin-top:2px">Month: <b>${monthName(ym)}</b></div>
           </div>
-          <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;padding:5px 10px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;font-size:11px">
+            <div>Total Staff: <b>${printItems.length}</b></div>
+            <div style="display:flex;gap:16px">
+              <span>Gross Total: <b>Tk ${money(pTotGross)}</b></span>
+              <span>Net Payable: <b style="color:#0f172a">Tk ${money(pTotBal)}</b></span>
+              <span>Total Paid: <b style="color:#15803d">Tk ${money(pTotPaid)}</b></span>
+              <span>Total Due: <b style="color:#dc2626">Tk ${money(pTotDue)}</b></span>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:10px;border:1.5px solid #0f172a">
             <thead>
               <tr style="background:#0f172a;color:#fff;font-weight:700">
-                <th style="border:1px solid #000;padding:6px;width:120px">Post</th>
-                <th style="border:1px solid #000;padding:6px;width:35px">SL</th>
-                <th style="border:1px solid #000;padding:6px">Name</th>
-                <th style="border:1px solid #000;padding:6px;width:75px;text-align:right">Salary</th>
-                <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Daily Salary</th>
-                <th style="border:1px solid #000;padding:6px;width:40px;text-align:center">Day</th>
-                <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Total Salary</th>
-                <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Loan</th>
-                <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Balance</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:115px;text-align:center">Post / Dept</th>
+                <th style="border:1px solid #334155;padding:5px 3px;width:30px;text-align:center">SL</th>
+                <th style="border:1px solid #334155;padding:5px 6px;text-align:left">Staff Name &amp; Designation</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:65px;text-align:right">Gross Salary</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:60px;text-align:right">Daily</th>
+                <th style="border:1px solid #334155;padding:5px 3px;width:32px;text-align:center">Day</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:70px;text-align:right">Earned</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:55px;text-align:right">Loan</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:75px;text-align:right">Net Payable</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:65px;text-align:right">Paid</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:65px;text-align:right">Due</th>
+                <th style="border:1px solid #334155;padding:5px 4px;width:95px;text-align:center">Staff Signature</th>
               </tr>
             </thead>
             <tbody>
               ${pRows}
             </tbody>
             <tfoot>
-              <tr style="font-weight:700;background:#f1f5f9">
-                <td colspan="3" style="border:1px solid #000;padding:6px;text-align:right">TOTAL:</td>
-                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotGross)}</td>
-                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotDaily)}</td>
-                <td style="border:1px solid #000;padding:6px;text-align:center">-</td>
-                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotSalary)}</td>
-                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotLoan)}</td>
-                <td style="border:1px solid #000;padding:6px;text-align:right">${money(pTotBal)}</td>
+              <tr style="font-weight:700;background:#e2e8f0;font-size:10.5px">
+                <td colspan="3" style="border:1px solid #334155;padding:5px;text-align:right">TOTAL:</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right">${money(pTotGross)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right">${money(pTotDaily)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:center">-</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right">${money(pTotSalary)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right">${money(pTotLoan)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right;font-size:11px">${money(pTotBal)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right;color:#15803d">${money(pTotPaid)}</td>
+                <td style="border:1px solid #334155;padding:5px;text-align:right;color:#dc2626">${money(pTotDue)}</td>
+                <td style="border:1px solid #334155;padding:5px"></td>
               </tr>
             </tfoot>
           </table>
-          <div style="margin-top:40px;display:flex;justify-content:space-between;padding:0 30px;font-size:12px;font-weight:700">
-            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Prepared by</div>
-            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Accountant</div>
-            <div style="border-top:1px solid #000;padding-top:4px;width:140px;text-align:center">Managing Director</div>
+          <div style="margin-top:45px;display:flex;justify-content:space-between;padding:0 20px;font-size:11px;font-weight:700">
+            <div style="border-top:1.5px solid #000;padding-top:4px;width:125px;text-align:center">Prepared By</div>
+            <div style="border-top:1.5px solid #000;padding-top:4px;width:125px;text-align:center">Accountant</div>
+            <div style="border-top:1.5px solid #000;padding-top:4px;width:130px;text-align:center">Admin / HR Officer</div>
+            <div style="border-top:1.5px solid #000;padding-top:4px;width:145px;text-align:center">Managing Director</div>
           </div>
         </div>
       `;
@@ -2463,7 +2789,185 @@ table{width:100%;border-collapse:collapse}.info{border:1px solid #000;margin-bot
 .pos{width:72mm;font-size:11.5px}.pos .lh{display:block;text-align:center;border-bottom:1px dashed #000}.pos .lh img{height:40px}.pos .lh .nm{font-size:16px}.pos table td{padding:1px 2px}.pos .ttl span{font-size:12px;padding:2px 8px}`;
 const Print={
   go(body,o={}){if(this._pdf&&typeof PDFX!=='undefined'){this._pdf=false;return PDFX.make(body,o)}if(typeof dpadApply==='function'){try{const r=dpadApply(body,o);body=r.body;o=r.o}catch(e){console.warn(e)}}const s=S();const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0.01;pointer-events:none;z-index:-999';document.body.appendChild(f);
-    const d=f.contentDocument||f.contentWindow.document;d.open();d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(o.title||s.name)}</title><style>@page{size:${o.page||'A4'};margin:${o.margin||'10mm 12mm'}}${PRINT_CSS}</style></head><body>${body}</body></html>`);d.close();
+    const d=f.contentDocument||f.contentWindow.document;d.open();d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(o.title||s.name)}</title><style>@page{size:${o.page||'A4'};margin:${o.margin||'10mm 12mm'}}${PRINT_CSS}</style><style id="amz_android_mobile_css">
+@media(max-width:760px){
+  /* Global touch smoothness and fast-click response */
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  input, textarea {
+    user-select: text;
+  }
+  button, a, input, select, textarea, .btn, .chip, [data-act], [data-mk], [data-sk] {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  button:active, .btn:active, .chip:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+    transition: transform 0.08s ease;
+  }
+
+  /* Ribbon: Make it a Material 3 Scrollable Chip Bar on mobile instead of hiding it! */
+  .ribbon {
+    display: block !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 6px 10px 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    flex: none !important;
+  }
+  .rtabs {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .rtabs::-webkit-scrollbar { display: none; }
+  .rtabs a {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    flex: none !important;
+    cursor: pointer !important;
+  }
+  .rtabs a.on {
+    background: #0f766e !important;
+    color: #ffffff !important;
+    border-color: #0f766e !important;
+    box-shadow: 0 2px 6px rgba(15,118,110,0.3) !important;
+  }
+  #nav.rbody {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding: 6px 0 2px !important;
+    margin: 4px 0 0 !important;
+    border-top: 1px dashed #e2e8f0 !important;
+    scrollbar-width: none !important;
+  }
+  #nav.rbody::-webkit-scrollbar { display: none; }
+  #nav.rbody a {
+    flex: none !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 16px !important;
+    white-space: nowrap !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+  #nav.rbody a.on {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+  }
+
+  /* Material 3 Bottom Nav Bar */
+  #mnav {
+    height: 62px !important;
+    padding: 4px 6px calc(4px + env(safe-area-inset-bottom)) !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 -4px 16px rgba(15,23,42,0.06) !important;
+  }
+  #mnav a {
+    padding: 3px 2px !important;
+    gap: 2px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    transition: all 0.15s ease !important;
+  }
+  #mnav a .m-ic-wrap {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  #mnav a.on {
+    color: #0f766e !important;
+  }
+  #mnav a.on .m-ic-wrap {
+    background: #ccfbf1 !important;
+    color: #0f766e !important;
+  }
+  #mnav a svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Material Bottom Sheet for Menu */
+  #msheet.on {
+    z-index: 999 !important;
+  }
+  #msheet .sh {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 8px 14px calc(18px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2) !important;
+    animation: msheetIn 0.22s cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+  @keyframes msheetIn {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .msh-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: none;
+  }
+  .msh-chip.on {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+  }
+
+  /* Touch-friendly Action Buttons in tables */
+  .tbl button.ib, .tbl .pa, .tbl a.ib {
+    min-height: 36px !important;
+    min-width: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 12.5px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Ensure floating + button does not overlap footer */
+  #mfab {
+    bottom: 74px !important;
+    right: 14px !important;
+    box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
+  }
+}
+</style>
+</head><body>${body}</body></html>`);d.close();
     let done=false;const fire=()=>{if(done)return;done=true;const ae=document.activeElement;try{f.contentWindow.focus();f.contentWindow.print()}catch(e){console.warn(e)}setTimeout(()=>{try{window.focus();if(ae&&ae.focus&&document.contains(ae))ae.focus()}catch(e){}},30);setTimeout(()=>f.remove(),2000)};
     const imgs=[...d.images].filter(i=>!i.complete);if(imgs.length){let n=imgs.length;imgs.forEach(i=>i.onload=i.onerror=()=>{if(--n<=0)setTimeout(fire,100)});setTimeout(fire,350)}else setTimeout(fire,60)},
   head(compact){const s=S();if(s.padMode&&!compact)return `<div style="height:${num(s.padTop)}mm"></div>`;
@@ -2651,7 +3155,185 @@ Print.report=function(billId,ids){const h=this.reportHtml(billId,ids);if(!h)retu
   log('Report print',`${h.bill.no} — ${h.count} `);this.go(h.pages,{page:'A4',margin:this._repMargin||(s.padMode?`6mm 12mm ${num(s.padBottom)}mm 12mm`:'10mm 12mm'),title:'Report '+h.bill.no});this._repMargin=null};
 function viewReportModal(billId,ids,title){const h=Print.reportHtml(billId,ids);if(!h)return toast('No report to view','warn');
   const m=Modal.open(title||('Report — '+h.bill.no),`<iframe id="vr_f" style="width:100%;height:70vh;border:1px solid var(--bd);border-radius:8px;background:#e5e7eb"></iframe>`,{w:'xl',focus:false,foot:'<button class="btn btn-o" data-close>Close</button><button class="btn btn-a" id="vr_p">🖨 Print</button>'});
-  $('#vr_f',m).srcdoc=`<!DOCTYPE html><html><head><meta charset="utf-8"><style>${PRINT_CSS} body{background:#e5e7eb;padding:12px}.page{background:#fff;width:210mm;margin:0 auto 14px;padding:10mm 12mm;box-shadow:0 2px 10px rgba(0,0,0,.15)}</style></head><body>${h.pages}</body></html>`;
+  $('#vr_f',m).srcdoc=`<!DOCTYPE html><html><head><meta charset="utf-8"><style>${PRINT_CSS} body{background:#e5e7eb;padding:12px}.page{background:#fff;width:210mm;margin:0 auto 14px;padding:10mm 12mm;box-shadow:0 2px 10px rgba(0,0,0,.15)}</style><style id="amz_android_mobile_css">
+@media(max-width:760px){
+  /* Global touch smoothness and fast-click response */
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  input, textarea {
+    user-select: text;
+  }
+  button, a, input, select, textarea, .btn, .chip, [data-act], [data-mk], [data-sk] {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  button:active, .btn:active, .chip:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+    transition: transform 0.08s ease;
+  }
+
+  /* Ribbon: Make it a Material 3 Scrollable Chip Bar on mobile instead of hiding it! */
+  .ribbon {
+    display: block !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 6px 10px 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    flex: none !important;
+  }
+  .rtabs {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .rtabs::-webkit-scrollbar { display: none; }
+  .rtabs a {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    flex: none !important;
+    cursor: pointer !important;
+  }
+  .rtabs a.on {
+    background: #0f766e !important;
+    color: #ffffff !important;
+    border-color: #0f766e !important;
+    box-shadow: 0 2px 6px rgba(15,118,110,0.3) !important;
+  }
+  #nav.rbody {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding: 6px 0 2px !important;
+    margin: 4px 0 0 !important;
+    border-top: 1px dashed #e2e8f0 !important;
+    scrollbar-width: none !important;
+  }
+  #nav.rbody::-webkit-scrollbar { display: none; }
+  #nav.rbody a {
+    flex: none !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 16px !important;
+    white-space: nowrap !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+  #nav.rbody a.on {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+  }
+
+  /* Material 3 Bottom Nav Bar */
+  #mnav {
+    height: 62px !important;
+    padding: 4px 6px calc(4px + env(safe-area-inset-bottom)) !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 -4px 16px rgba(15,23,42,0.06) !important;
+  }
+  #mnav a {
+    padding: 3px 2px !important;
+    gap: 2px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    transition: all 0.15s ease !important;
+  }
+  #mnav a .m-ic-wrap {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  #mnav a.on {
+    color: #0f766e !important;
+  }
+  #mnav a.on .m-ic-wrap {
+    background: #ccfbf1 !important;
+    color: #0f766e !important;
+  }
+  #mnav a svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Material Bottom Sheet for Menu */
+  #msheet.on {
+    z-index: 999 !important;
+  }
+  #msheet .sh {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 8px 14px calc(18px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2) !important;
+    animation: msheetIn 0.22s cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+  @keyframes msheetIn {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .msh-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: none;
+  }
+  .msh-chip.on {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+  }
+
+  /* Touch-friendly Action Buttons in tables */
+  .tbl button.ib, .tbl .pa, .tbl a.ib {
+    min-height: 36px !important;
+    min-width: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 12.5px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Ensure floating + button does not overlap footer */
+  #mfab {
+    bottom: 74px !important;
+    right: 14px !important;
+    box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
+  }
+}
+</style>
+</head><body>${h.pages}</body></html>`;
   $('#vr_p',m).onclick=()=>Print.report(billId,ids)}
 
 /* ---------- PIN approval ---------- */
@@ -2817,7 +3499,19 @@ const DURS=['3 days','5 days','7 days','10 days','14 days','1 month','2 months',
 {const _seed=seed;seed=function(){_seed();SEED_DRUGS.forEach((n,i)=>{const id='dr_'+i;if(!DB.d.drugs[id])DB.raw('drugs',{id,name:n,uses:0,_u:1})})}}
 {const _p=perms;perms=function(){const p=_p();return {...DEF_PERMS,...p}}}
 const RX={st:{date:today(),conId:'',open:null},
-  myCon(){const u=Auth.user;if(u.role==='doctor')return u.conId||'';return this.st.conId||(DB.all('consultants').find(c=>c.active!==false)||{}).id||''},
+  myCon(){
+    const u=Auth.user;
+    if(u.role==='doctor'){
+      if(u.conId&&DB.get('consultants',u.conId))return u.conId;
+      const allD=getAllSerialDoctors();
+      const m=allD.find(d=>d.name.trim().toLowerCase()===String(u.name||'').trim().toLowerCase())||
+              DB.all('consultants').find(c=>c.name.trim().toLowerCase()===String(u.name||'').trim().toLowerCase());
+      if(m){const cid=ensureConsultant(m);u.conId=cid;DB.put('users',u);return cid}
+      return u.conId||'';
+    }
+    const allD=getAllSerialDoctors();
+    return this.st.conId||(allD[0]&&(allD[0].conId||allD[0].id))||'';
+  },
   latest(patId){return DB.all('rx').filter(r=>r.patId===patId).sort((a,b)=>b.ts-a.ts)}};
 function rxPrint(id){const r=DB.get('rx',id);if(!r)return;const s=S(),c=DB.get('consultants',r.conId)||{},du=r.byId&&DB.get('users',r.byId);const sig=du?Media.get('sig_'+du.id):'';const W=WHENS.reduce((o,[k,t])=>(o[k]=t,o),{});
   const sec=(t,v)=>v?`<div class="rxs"><b>${t}</b><div>${esc(v)}</div></div>`:'';const vit=[['BP',r.vit&&r.vit.bp,'mmHg'],['Pulse',r.vit&&r.vit.pulse,'/min'],['Temp',r.vit&&r.vit.temp,'°F'],['Weight',r.vit&&r.vit.wt,'kg'],['SpO2',r.vit&&r.vit.spo2,'%']].filter(x=>x[1]);
@@ -2840,15 +3534,23 @@ function rxPatPanel(patId){const bills=DB.all('bills').filter(b=>b.pat.id===patI
     return `<div style="padding:6px 0;border-bottom:1px dashed var(--bd)"><a class="ib" data-vr="${r.billId}|${r.id}" style="padding:0">${esc(r.testName)}</a> <small class="muted">${fmtD(r.date)}</small>${ab.length?`<div style="font-size:12px">${ab.slice(0,4).join(' · ')}</div>`:r.rows?'<div style="font-size:12px" class="ok">All values normal</div>':''}</div>`}).join(''):'<div class="muted" style="font-size:12px">No lab reports for this patient</div>'}
    <div class="ch" style="margin-top:14px">📋 Previous prescriptions</div>${old.length?old.slice(0,8).map(x=>`<div style="padding:6px 0;border-bottom:1px dashed var(--bd)"><b>${fmtD(x.date)}</b> <small class="muted">${esc((DB.get('consultants',x.conId)||{}).name||'')}</small><div style="font-size:12px">${esc(x.dx||'')}</div><a class="ib" data-rv="${x.id}" style="padding:0">🖨 View</a> <a class="ib" data-rc="${x.id}" style="padding:0">⧉ Copy and write</a></div>`).join(''):'<div class="muted" style="font-size:12px">No previous prescription</div>'}`}
 SCREENS.rx={t:'Prescription (Doctor)',render(el){const st=RX.st,u=Auth.user;const conId=RX.myCon();
-  if(u.role==='doctor'&&!u.conId){el.innerHTML='<div class="card"><div class="alert w">Your user ID is not linked to any consultant profile. Admin and ask them: Users and Roles → edit your user → "Consultant profile" to select.</div></div>';return}
-  const cons=DB.all('consultants');const q=DB.all('appointments').filter(a=>a.conId===conId&&a.date===st.date&&a.status!=='cancelled').sort((a,b)=>num(a.serial)-num(b.serial));const rxd=new Set(DB.all('rx').map(r=>r.apptId).filter(Boolean));
+  if(u.role==='doctor'&&!conId){el.innerHTML='<div class="card"><div class="alert w">Your user ID is not linked to any doctor profile. Please ask Admin: Users & Roles → edit your user → "Consultant profile" to select.</div></div>';return}
+  const allDocs=getAllSerialDoctors();const q=DB.all('appointments').filter(a=>a.conId===conId&&a.date===st.date&&a.status!=='cancelled').sort((a,b)=>num(a.serial)-num(b.serial));const rxd=new Set(DB.all('rx').map(r=>r.apptId).filter(Boolean));
+  const activeDocName=(DB.get('consultants',conId)||allDocs.find(d=>d.id===conId||d.conId===conId)||{}).name||'Doctor';
   el.innerHTML=`<div style="display:grid;grid-template-columns:270px 1fr;gap:16px;align-items:start" class="rxgrid"><div class="card" style="position:sticky;top:0">
-    ${u.role!=='doctor'?fld('Doctor',`<select id="rx_c">${opts(cons.map(c=>[c.id,c.name]),conId)}</select>`):`<div class="ch" style="margin-bottom:6px">👨‍⚕️ ${esc((DB.get('consultants',conId)||{}).name||'')}</div>`}
+    ${u.role==='doctor'?`
+      <div style="padding:10px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;margin-bottom:8px">
+        <div style="font-size:11px;color:#166534;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Logged-in Doctor</div>
+        <div style="font-size:15px;font-weight:800;color:#0f172a;margin-top:2px">👨‍⚕️ ${esc(activeDocName)}</div>
+      </div>
+    `:`
+      ${fld('Doctor',`<select id="rx_c">${opts(allDocs.map(c=>[c.conId||c.id,c.name]),conId)}</select>`)}
+    `}
     <div class="row" style="margin:8px 0;flex-wrap:nowrap">${fld('Date',`<input type="date" id="rx_d" value="${st.date}">`)}</div>
     <div class="muted" style="font-size:12px;margin-bottom:6px">Serials today: ${q.length}  · Seen ${q.filter(a=>a.status==='seen').length}</div>
     <div style="max-height:calc(100vh - 330px);overflow:auto">${q.map(a=>`<a data-ap="${a.id}" class="rxq${st.open&&st.open.apptId===a.id?' on':''}"><b style="font-size:16px;width:28px;display:inline-block">${a.serial}</b>${esc(a.patName)} <small class="muted">${esc(ageStr(a))}</small>${rxd.has(a.id)?' <span class="bdg b-verified">Rx</span>':a.status==='seen'?' <span class="bdg b-done">Seen</span>':''}</a>`).join('')||'<div class="muted" style="padding:10px 0">No serials on this date</div>'}</div>
     <button class="btn btn-o" id="rx_walk" style="width:100%;margin-top:10px">+ Patient without serial</button></div><div id="rx_ed"></div></div>`;
-  if($('#rx_c'))$('#rx_c').onchange=e=>{st.conId=e.target.value;st.open=null;App.render()};$('#rx_d').onchange=e=>{st.date=e.target.value||today();st.open=null;App.render()};
+  if($('#rx_c'))$('#rx_c').onchange=e=>{const cid=ensureConsultant(e.target.value);st.conId=cid;st.open=null;App.render()};$('#rx_d').onchange=e=>{st.date=e.target.value||today();st.open=null;App.render()};
   $$('[data-ap]',el).forEach(a=>a.onclick=()=>{const ap=DB.get('appointments',a.dataset.ap);const ex=DB.all('rx').find(r=>r.apptId===ap.id);st.open=ex?{id:ex.id,apptId:ap.id}:{apptId:ap.id,patId:ap.patId};App.render()});
   $('#rx_walk').onclick=()=>{const m=Modal.open('Select Patient',`<div class="kn">${fld('Search by mobile / name / patient ID','<input id="rw_q">')}</div><div class="muted" style="margin-top:8px;font-size:12px">For a new patient, get a serial from reception or add in Patients.</div>`,{w:'sm'});patPicker($('#rw_q',m),p=>{Modal.close(m);st.open={patId:p.id};App.render()},2)};
   $('.rxgrid').insertAdjacentHTML('beforebegin','<style>.rxq{display:block;padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;margin-bottom:3px}.rxq:hover{background:#f1f5f9}.rxq.on{background:var(--accl);border-color:var(--acc2)}@media(max-width:900px){.rxgrid{grid-template-columns:1fr!important}}</style>');
@@ -4722,17 +5424,133 @@ document.head.insertAdjacentHTML('beforeend',`<style>#mnav,#mfab,#msheet{display
  #msheet .gd svg{width:24px;height:24px;stroke:#0f766e;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}#msheet .hd{width:44px;height:5px;border-radius:3px;background:#cbd5e1;margin:2px auto 6px}
  #login .tiles{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:760px){body.mfab-off #mfab{display:none}}</style>`);
-function mnavDraw(){if(!Auth.user)return;const vis=MODS.filter(m=>can(m.k));const pick=['dash','bill','psum','lab','delivery','rx','bills','patients'].map(k=>vis.find(m=>m.k===k)).filter(Boolean).slice(0,4);
+function mnavDraw(){if(!Auth.user)return;
+  const vis=MODS.filter(m=>can(m.k));
+  // Everyday core diagnostic actions for bottom bar
+  const coreKeys=['dash','bill','appt','psum'];
+  const items=coreKeys.map(k=>vis.find(m=>m.k===k)).filter(Boolean);
+  if(items.length<4){
+    ['bills','lab','delivery','rx'].forEach(k=>{if(items.length<4){const f=vis.find(m=>m.k===k);if(f&&!items.includes(f))items.push(f)}});
+  }
   let n=$('#mnav');if(!n){n=document.createElement('div');n.id='mnav';document.body.appendChild(n)}
-  n.innerHTML=pick.map(m=>`<a data-mk="${m.k}" class="${m.k===App.cur?'on':''}">${icon(m.ic)}<span>${esc({dash:'Home',bill:'Bill',psum:'Patients',lab:'Lab',delivery:'Delivery',rx:'Prescribe',bills:'Bills',patients:'Patients'}[m.k]||m.t)}</span></a>`).join('')+`<a data-mk="__more">${icon('menu')}<span>More</span></a>`;
-  $$('[data-mk]',n).forEach(a=>a.onclick=()=>{if(a.dataset.mk==='__more')return msheetOpen();App.go(a.dataset.mk)});
+  const isMenuOn=$('#msheet')&&$('#msheet').classList.contains('on');
+  const labels={dash:'Home',bill:'New Bill',appt:'Serial',psum:'Patients',lab:'Lab',delivery:'Delivery',rx:'Rx',bills:'Bills',patients:'Patients'};
+  n.innerHTML=items.map(m=>`<a data-mk="${m.k}" class="${m.k===App.cur&&!isMenuOn?'on':''}"><div class="m-ic-wrap">${icon(m.ic)}</div><span>${esc(labels[m.k]||m.t)}</span></a>`).join('')+
+    `<a data-mk="__more" class="${isMenuOn?'on':''}"><div class="m-ic-wrap">${icon('menu')}</div><span>All Menu</span></a>`;
+  $$('[data-mk]',n).forEach(a=>{
+    a.onclick=e=>{
+      e.preventDefault();
+      if(a.dataset.mk==='__more'){
+        const s=$('#msheet');
+        if(s&&s.classList.contains('on'))s.classList.remove('on');
+        else msheetOpen();
+        mnavDraw();
+        return;
+      }
+      const sh=$('#msheet');if(sh)sh.classList.remove('on');
+      App.go(a.dataset.mk);
+      mnavDraw();
+    };
+  });
   let f=$('#mfab');if(vis.some(m=>m.k==='bill')){if(!f){f=document.createElement('a');f.id='mfab';f.title='New bill';f.textContent='+';document.body.appendChild(f);f.onclick=()=>App.go('bill')}document.body.classList.toggle('mfab-off',App.cur==='bill')}else if(f)f.remove()}
-function msheetOpen(){const vis=MODS.filter(m=>can(m.k));const gs=[...new Set(vis.map(m=>m.g))];let s=$('#msheet');if(!s){s=document.createElement('div');s.id='msheet';document.body.appendChild(s)}
-  s.innerHTML=`<div class="sh"><div class="hd"></div>${gs.map(g=>`<div class="gr">${esc(g)}</div><div class="gd">${vis.filter(m=>m.g===g).map(m=>`<a data-sk="${m.k}">${icon(m.ic)}<span>${esc(m.t)}</span></a>`).join('')}</div>`).join('')}
-   <div class="gr">Account</div><div class="gd"><a data-sx="about">${icon('info')}<span>About</span></a><a data-sx="help">${icon('help')}<span>Help</span></a><a data-sx="out">${icon('out')}<span>Logout</span></a></div>
-   <div class="muted" style="text-align:center;font-size:11px;margin-top:14px">${esc(APP.name)} v${esc(APP.ver)} · Powered by ${esc(APP.vendor)}</div></div>`;s.classList.add('on');
-  s.onclick=e=>{if(e.target===s)s.classList.remove('on')};$$('[data-sk]',s).forEach(a=>a.onclick=()=>{s.classList.remove('on');App.go(a.dataset.sk)});
-  $$('[data-sx]',s).forEach(a=>a.onclick=()=>{s.classList.remove('on');const k=a.dataset.sx;if(k==='about')aboutModal();else if(k==='help')showHelp();else Auth.logout()})}
+
+function msheetOpen(){
+  const vis=MODS.filter(m=>can(m.k));
+  const gs=['Main','Business','Lab','Setup'].filter(g=>vis.some(m=>m.g===g));
+  let s=$('#msheet');if(!s){s=document.createElement('div');s.id='msheet';document.body.appendChild(s)}
+
+  s.innerHTML=`<div class="sh">
+    <div class="hd" title="Swipe down or tap close"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 4px 10px;border-bottom:1px solid #e2e8f0;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:20px">📱</span>
+        <div><b style="font-size:16px;color:#0f172a">All Features &amp; Menu</b><div style="font-size:11px;color:#64748b">Select any feature or search</div></div>
+      </div>
+      <button type="button" id="msh_close" style="width:36px;height:36px;border-radius:50%;border:0;background:#f1f5f9;color:#0f172a;font-size:16px;font-weight:700;display:grid;place-items:center;cursor:pointer">✕</button>
+    </div>
+    <div style="position:relative;margin:6px 0 10px">
+      <input id="msh_q" placeholder="🔍 Search menu (e.g. Serial, Salary, Day Book)..." autocomplete="off" style="width:100%;padding:10px 14px;border:1.5px solid #0d9488;border-radius:12px;font-size:14px;background:#f8fafc">
+    </div>
+    <div class="msh-cat-chips" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;scrollbar-width:none">
+      <button class="msh-chip on" data-cg="">All (${vis.length})</button>
+      ${gs.map(g=>`<button class="msh-chip" data-cg="${esc(g)}">${esc(g)} (${vis.filter(m=>m.g===g).length})</button>`).join('')}
+    </div>
+    <div id="msh_items" style="max-height:58vh;overflow-y:auto;padding-right:2px"></div>
+    <div class="muted" style="text-align:center;font-size:11px;margin-top:14px;padding-top:10px;border-top:1px dashed #cbd5e1">
+      ${esc(APP.name)} v${esc(APP.ver)} · Powered by ${esc(APP.vendor)}
+    </div>
+  </div>`;
+
+  const drawItems=()=>{
+    const q=($('#msh_q',s).value||'').trim().toLowerCase();
+    const selCat=($('.msh-chip.on',s)?.dataset.cg)||'';
+    const filtered=vis.filter(m=>{
+      if(selCat&&m.g!==selCat)return false;
+      if(!q)return true;
+      return (m.t+' '+(m.g||'')).toLowerCase().includes(q);
+    });
+    const box=$('#msh_items',s);
+    if(!filtered.length){
+      box.innerHTML='<div class="muted" style="text-align:center;padding:24px 0">No menu items match your search</div>';
+      return;
+    }
+    const curGs=[...new Set(filtered.map(m=>m.g))];
+    box.innerHTML=curGs.map(g=>`
+      <div class="gr" style="display:flex;align-items:center;justify-content:space-between;font-size:11.5px;font-weight:800;color:#0d9488;text-transform:uppercase;margin:12px 2px 6px;letter-spacing:0.5px">
+        <span>${esc(g)}</span><span style="font-size:10px;background:#ccfbf1;color:#115e59;padding:1px 6px;border-radius:10px">${filtered.filter(m=>m.g===g).length}</span>
+      </div>
+      <div class="gd" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        ${filtered.filter(m=>m.g===g).map(m=>`
+          <a data-sk="${m.k}" class="${m.k===App.cur?'on':''}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:12px 6px;background:${m.k===App.cur?'#f0fdfa':'#f8fafc'};border:1px solid ${m.k===App.cur?'#14b8a6':'#e2e8f0'};border-radius:14px;cursor:pointer;min-height:76px;-webkit-tap-highlight-color:transparent">
+            <div style="width:36px;height:36px;border-radius:10px;background:${m.k===App.cur?'#0d9488':'#e2e8f0'};color:${m.k===App.cur?'#fff':'#0f766e'};display:grid;place-items:center">${icon(m.ic)}</div>
+            <span style="font-size:11.5px;font-weight:700;color:#0f172a;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(m.t)}</span>
+          </a>
+        `).join('')}
+      </div>
+    `).join('')+`
+      <div class="gr" style="font-size:11.5px;font-weight:800;color:#64748b;text-transform:uppercase;margin:16px 2px 6px">Account</div>
+      <div class="gd" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <a data-sx="about" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:#e2e8f0;color:#475569;display:grid;place-items:center">${icon('info')}</div><span style="font-size:11.5px;font-weight:700">About</span></a>
+        <a data-sx="help" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:#e2e8f0;color:#475569;display:grid;place-items:center">${icon('help')}</div><span style="font-size:11.5px;font-weight:700">Help</span></a>
+        <a data-sx="out" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:#fef2f2;border:1px solid #fecaca;border-radius:14px;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:#fee2e2;color:#dc2626;display:grid;place-items:center">${icon('out')}</div><span style="font-size:11.5px;font-weight:700;color:#b91c1c">Logout</span></a>
+      </div>
+    `;
+
+    $$('[data-sk]',box).forEach(a=>{
+      a.onclick=e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        s.classList.remove('on');
+        App.go(a.dataset.sk);
+        mnavDraw();
+      };
+    });
+    $$('[data-sx]',box).forEach(a=>{
+      a.onclick=e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        s.classList.remove('on');
+        const k=a.dataset.sx;
+        if(k==='about')aboutModal();else if(k==='help')showHelp();else Auth.logout();
+      };
+    });
+  };
+
+  drawItems();
+  $('#msh_q',s).oninput=drawItems;
+  $$('.msh-chip',s).forEach(btn=>{
+    btn.onclick=()=>{
+      $$('.msh-chip',s).forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      drawItems();
+    };
+  });
+
+  $('#msh_close',s).onclick=()=>s.classList.remove('on');
+  s.onclick=e=>{if(e.target===s)s.classList.remove('on')};
+  s.classList.add('on');
+  setTimeout(()=>{const inp=$('#msh_q',s);if(inp)inp.focus()},100);
+}
 Object.assign(IC,{menu:IC.menu||'<path d="M4 6h16M4 12h16M4 18h16"/>',info:IC.info||'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',help:IC.help||'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>',out:IC.out||'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',conflicts:'<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'});
 {const _r=App.render.bind(App);App.render=function(...a){const r=_r(...a);try{mnavDraw()}catch(e){}return r}}
 
@@ -5249,7 +6067,185 @@ const PDFX={MM:96/25.4,next(){Print._pdf=true;clearTimeout(this._t);this._t=setT
   margin(m){const a=String(m||'10mm 12mm').split(/\s+/).map(x=>parseFloat(x)||0);const [t,r=t,b=t,l=r]=a;return {t,r,b,l}},
   async make(body,o={}){const sz=this.pageSize(o.page),mg=this.margin(o.margin);const cw=sz.w-mg.l-mg.r;toast('Making PDF...');
     const f=document.createElement('iframe');f.style.cssText=`position:fixed;left:-10000px;top:0;width:${Math.ceil(cw*this.MM)+2}px;height:2000px;border:0`;document.body.appendChild(f);
-    try{const d=f.contentDocument;d.open();d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>${PRINT_CSS}</style></head><body style="margin:0;width:${cw}mm">${body}</body></html>`);d.close();
+    try{const d=f.contentDocument;d.open();d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>${PRINT_CSS}</style><style id="amz_android_mobile_css">
+@media(max-width:760px){
+  /* Global touch smoothness and fast-click response */
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  input, textarea {
+    user-select: text;
+  }
+  button, a, input, select, textarea, .btn, .chip, [data-act], [data-mk], [data-sk] {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  button:active, .btn:active, .chip:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+    transition: transform 0.08s ease;
+  }
+
+  /* Ribbon: Make it a Material 3 Scrollable Chip Bar on mobile instead of hiding it! */
+  .ribbon {
+    display: block !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 6px 10px 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    flex: none !important;
+  }
+  .rtabs {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .rtabs::-webkit-scrollbar { display: none; }
+  .rtabs a {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    flex: none !important;
+    cursor: pointer !important;
+  }
+  .rtabs a.on {
+    background: #0f766e !important;
+    color: #ffffff !important;
+    border-color: #0f766e !important;
+    box-shadow: 0 2px 6px rgba(15,118,110,0.3) !important;
+  }
+  #nav.rbody {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding: 6px 0 2px !important;
+    margin: 4px 0 0 !important;
+    border-top: 1px dashed #e2e8f0 !important;
+    scrollbar-width: none !important;
+  }
+  #nav.rbody::-webkit-scrollbar { display: none; }
+  #nav.rbody a {
+    flex: none !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 16px !important;
+    white-space: nowrap !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+  #nav.rbody a.on {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+  }
+
+  /* Material 3 Bottom Nav Bar */
+  #mnav {
+    height: 62px !important;
+    padding: 4px 6px calc(4px + env(safe-area-inset-bottom)) !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 -4px 16px rgba(15,23,42,0.06) !important;
+  }
+  #mnav a {
+    padding: 3px 2px !important;
+    gap: 2px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    transition: all 0.15s ease !important;
+  }
+  #mnav a .m-ic-wrap {
+    width: 48px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  #mnav a.on {
+    color: #0f766e !important;
+  }
+  #mnav a.on .m-ic-wrap {
+    background: #ccfbf1 !important;
+    color: #0f766e !important;
+  }
+  #mnav a svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Material Bottom Sheet for Menu */
+  #msheet.on {
+    z-index: 999 !important;
+  }
+  #msheet .sh {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 8px 14px calc(18px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2) !important;
+    animation: msheetIn 0.22s cubic-bezier(0, 0, 0.2, 1) !important;
+  }
+  @keyframes msheetIn {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .msh-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: none;
+  }
+  .msh-chip.on {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+  }
+
+  /* Touch-friendly Action Buttons in tables */
+  .tbl button.ib, .tbl .pa, .tbl a.ib {
+    min-height: 36px !important;
+    min-width: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 12.5px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Ensure floating + button does not overlap footer */
+  #mfab {
+    bottom: 74px !important;
+    right: 14px !important;
+    box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
+  }
+}
+</style>
+</head><body style="margin:0;width:${cw}mm">${body}</body></html>`);d.close();
       await new Promise(r=>setTimeout(r,60));await Promise.all([...d.images].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,3000)})));try{await d.fonts.ready}catch(e){}
       const raw=[...d.querySelectorAll('style')].map(s=>s.textContent).join('\n');const css=raw.replace(/@media\s+print/g,'@media all').replace(/(^|[\s,}])body(?=[\s,{.:#\[])/g,'$1.pdfbody').replace(/@page[^{]*\{(?:[^{}]|\{[^{}]*\})*\}/g,'');
       const ft=(raw.match(/@bottom-center\s*\{[^}]*content:\s*("(?:[^"\\]|\\.)*")/)||[])[1];const footTxt=ft?JSON.parse(ft).replace(/\s*·\s*$/,''):'';
@@ -6878,12 +7874,17 @@ function pickRefDoctor(cb){const m=Modal.open('Choose from Doctor List',`<input 
 {const _r=SCREENS.appt.render;SCREENS.appt.render=function(el,p){_r.call(this,el,p);if(this.tab!=='con')return;const t=$('.ttool',el);if(t&&!$('#cn_imp',el)){t.insertAdjacentHTML('beforeend','<button class="btn btn-o btn-s" id="cn_imp">⇩ From Doctor List</button>');$('#cn_imp',el).onclick=()=>pickRefDoctor((id,isNew)=>{App.soft();if(isNew)ConForm.open(id)})}}}
 ML.splice(1,0,{k:'cons',t:'Chamber Doctor (Serial) List',ic:'👨‍⚕️',c:'#0284c7',cnt:()=>DB.all('consultants').length,add:()=>ConForm.open(),view:()=>{SCREENS.appt.tab='con';App.go('appt')}});
 /* ---- Prescription: only the doctor (his own login) writes his prescriptions ---- */
-const rxStaffOk=()=>!!S().rxStaff;
+const rxStaffOk=()=>{
+  const u=Auth.user;
+  if(!u)return false;
+  if(u.role==='admin'||u.role==='md'||can('admin')||can('rx'))return true;
+  return !!S().rxStaff;
+};
 {const _p=DB.put.bind(DB);DB.put=function(c,r){if(c==='rxx')return _p(c,r);if(c==='rx'&&Auth.user&&!RXL._sys){const u=Auth.user,old=this.d.rx&&r&&this.d.rx[r.id];
     if(u.role==='doctor'){const own=u.conId;if(!own||r.conId!==own||(old&&!old._d&&old.conId&&old.conId!==own)){const e=new Error('You can write only your own prescriptions');e.quiet=true;toast(e.message,'err');throw e}}
     else if(!rxStaffOk()){const e=new Error("Only the doctor can write prescriptions — log in with the doctor's own user ID");e.quiet=true;toast(e.message,'err');throw e}}return _p(c,r)}}
 const RXL={_sys:false};
-{const _r=SCREENS.rx.render;SCREENS.rx.render=function(el,p){_r.call(this,el,p);const u=Auth.user;if(u.role==='doctor'||rxStaffOk())return;
+{const _r=SCREENS.rx.render;SCREENS.rx.render=function(el,p){_r.call(this,el,p);const u=Auth.user;if(u.role==='doctor'||u.role==='admin'||u.role==='md'||rxStaffOk())return;
   el.insertAdjacentHTML('afterbegin',`<div class="alert w" style="margin-bottom:10px">👁 View only — prescriptions are written by the doctor from his own login (Users and Roles → user with role Doctor + Consultant profile). You can see and print saved prescriptions.</div>`);
   const hide=()=>{['rx_s','rx_sp','rx_tpls','rx_tplsv'].forEach(i=>{const b=$('#'+i,el);if(b)b.style.display='none'});$$('#main button',el).forEach(b=>{if(/^(💾|Save)/.test(b.textContent.trim())&&!/Template/i.test(b.textContent))b.style.display='none'})};hide();new MutationObserver(hide).observe(el,{childList:true,subtree:true})}}
 /* Users and Roles: Doctor role must be linked to a consultant; setting to let staff write */
@@ -7268,8 +8269,12 @@ document.head.insertAdjacentHTML('beforeend',`<style>@media(max-width:760px){
 /* More sheet: a close button, swipe down to close, tap More again to close */
 {const _ms=msheetOpen;msheetOpen=function(){const s=$('#msheet');if(s&&s.classList.contains('on')){s.classList.remove('on');return}_ms.apply(this,arguments);const S2=$('#msheet');const sh=S2&&$('.sh',S2);if(!sh)return;
   const hd=$('.hd',sh);if(hd&&!$('.shx',sh)){hd.insertAdjacentHTML('afterend','<div class="shx"><b>Menu</b><button type="button" aria-label="Close">✕</button></div>');$('.shx button',sh).onclick=()=>S2.classList.remove('on')}
-  let y0=null;sh.ontouchstart=e=>{y0=sh.scrollTop<=0?e.touches[0].clientY:null};sh.ontouchmove=e=>{if(y0===null)return;const dy=e.touches[0].clientY-y0;if(dy>0)sh.style.transform=`translateY(${dy}px)`};
-  sh.ontouchend=e=>{if(y0===null)return;const m=sh.style.transform.match(/([\d.]+)px/);const dy=m?num(m[1]):0;sh.style.transform='';y0=null;if(dy>80)S2.classList.remove('on')}}}
+  let y0=null;const hdHandle=$('.hd',sh);
+  if(hdHandle){
+    hdHandle.ontouchstart=e=>{y0=e.touches[0].clientY};
+    hdHandle.ontouchmove=e=>{if(y0===null)return;const dy=e.touches[0].clientY-y0;if(dy>15)sh.style.transform=`translateY(${dy}px)`};
+    hdHandle.ontouchend=e=>{if(y0===null)return;const m=sh.style.transform.match(/([\d.]+)px/);const dy=m?num(m[1]):0;sh.style.transform='';y0=null;if(dy>60)S2.classList.remove('on')};
+  }}}
 /* the + button only where it helps; hide it on other pages so it never covers fields */
 {const _r=App.render.bind(App);App.render=function(){const r=_r.apply(App,arguments);try{document.body.classList.toggle('mfab-hide',!['dash','bills','patients'].includes(App.cur))}catch(e){}return r}}
 CHANGELOG.unshift({v:'2.2.0',d:'2026-11-23',n:[
@@ -7415,6 +8420,14 @@ const LAN_GUIDE=`<div id="cg_lan2" style="display:none"><ol style="padding-left:
   lanWire(el)}}
 /* opened from the server but not set up yet: suggest it */
 {const _sa=startApp;startApp=function(){_sa();try{if(lanServedHere()&&!Sync.enabled()&&Auth.user&&Auth.user.role==='admin')setTimeout(()=>toast('This software is open from the office server — set up sync: Backup and Cloud → Cloud setup → Local Server (LAN)','warn'),1500)}catch(e){}}}
+CHANGELOG.unshift({v:'2.5.1',d:'2026-11-27',n:[
+ 'Doctor Serial: all 690+ doctors from Doctor List automatically available without adding to Consultants first',
+ 'Doctor Serial: searchable autocomplete picker — type doctor name, degree or mobile to filter and select instantly',
+ 'Prescription (Doctor): logged-in doctors strictly locked to their own name; Admin has full access to all doctors and prescription writing',
+ 'Staff and Salary: fixed saving and payment error; safe database collection handling',
+ 'Staff and Salary: standard printed salary sheet with staff signature box, Net Payable, Paid, Due, and 4-block signatures (Prepared by, Accountant, Admin/HR, Managing Director)'
+]});
+CHANGELOG.sort((a,b)=>verCmp(b.v,a.v));APP.ver=CHANGELOG[0].v;
 CHANGELOG.unshift({v:'2.5.0',d:'2026-11-27',n:[
  'Accounts Books: Statement 1 (Continuous Daily Cash & Expense Ledger) with rolling opening balances and itemized expenses',
  'Accounts Books: Statement 2 (Monthly Daily Summary) calendar day breakdown with monthly totals and daily averages',
