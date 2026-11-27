@@ -1,6 +1,13 @@
 ﻿{
-  "version": "2.5.1",
-  "date": "2026-11-27",
-  "notes": "Doctor Serial 690+ autocomplete picker, Prescription doctor lock & Admin access, Staff & Salary save fix, Standard Salary Sheet printout",
-  "url": "https://faridasbd2016-eng.github.io/Diagnostic-Center/index.html"
+  "version": "2.5.2",
+  "name": "AMAZ Diagnostic",
+  "released": "2026-11-27",
+  "changelog": [
+    "Printing: Company Letterhead and pad margin now repeats on every page for multi-page documents",
+    "Printing: Print Options dialog with instant Portrait or Landscape selection before printing",
+    "Staff & Salary: All staff automatically categorized into clean departments based on designation, with clean Department dropdown",
+    "Doctor List & Test List: Interactive 1-click Active/Inactive toggle directly in the Status column",
+    "Doctor Serial: Doctor field starts unselected with live search instead of defaulting to 1st doctor",
+    "Mobile View: Fixed user profile menu font color so all options are clearly visible"
+  ]
 }
