@@ -1,7 +1,7 @@
-/* AMAZ Diagnostic — service worker
+﻿/* AMAZ Diagnostic — service worker
    Opens offline after it has been opened once with internet; loads the newest index.html when online. */
 const PREFIX='amaz-diagnostic-v';
-const CACHE=PREFIX+'11';
+const CACHE=PREFIX+'12';
 const LIBS='amaz-diagnostic-libs-v1';            /* CDN libraries — kept across versions */
 const SHELL=['./index.html','./manifest.webmanifest','./app-icon-192.png','./app-icon-512.png','./app-icon-maskable-192.png','./app-icon-maskable-512.png'];
 const CDN=/^https:\/\/(cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;

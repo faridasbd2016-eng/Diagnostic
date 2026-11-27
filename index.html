@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -73,13 +73,13 @@ textarea{resize:vertical}
 .ttool{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
 .tsearch{max-width:280px}
 .tcount{color:var(--mut);font-size:12px}
-.twrap{overflow:auto;border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 230px)}
+.twrap{overflow:auto;border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 220px);background:#fff;position:relative}
 .pgr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 2px 0;font-size:13px}.pgr .btn{min-width:32px;padding:4px 9px}.pgr select{width:auto;padding:3px 6px}.tbl tbody tr:hover td{background:#f1f5f9}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{background:#f8fafc;text-align:left;font-weight:700;color:#334155;padding:9px 10px;border-bottom:1px solid var(--bd);white-space:nowrap;position:sticky;top:0;z-index:1}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.tbl th{background:#f8fafc;text-align:left;font-weight:700;color:#0f172a;padding:9px 10px;border-bottom:2px solid var(--bd);white-space:nowrap;position:sticky;top:0;z-index:10;box-shadow:inset 0 -2px 0 var(--bd),0 2px 3px rgba(0,0,0,0.04)}
 .tbl td{padding:7px 10px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
-.tbl tbody tr:hover{background:#f8fafc}
-.tbl tfoot td{font-weight:700;background:#f8fafc;border-top:1px solid var(--bd);position:sticky;bottom:0}
+.tbl tbody tr:hover td{background:#f8fafc}
+.tbl tfoot td,.tbl tfoot th{font-weight:700;background:#f8fafc;border-top:2px solid var(--bd);position:sticky;bottom:0;z-index:10;box-shadow:inset 0 2px 0 var(--bd),0 -2px 3px rgba(0,0,0,0.04)}
 .tbl .r,.r{text-align:right}.tbl .c,.c{text-align:center}
 .tbl td.empty{text-align:center;color:var(--mut);padding:26px}
 .tbl input,.tbl select{padding:4px 7px;border-radius:6px}
@@ -324,8 +324,8 @@ const MODS=[
  {k:'tests',t:'Test Setup',g:'Setup',ic:'tests'},{k:'settings',t:'Settings',g:'Setup',ic:'settings'},{k:'users',t:'Users and Roles',g:'Setup',ic:'users'},
  {k:'backup',t:'Backup and Cloud',g:'Setup',ic:'backup'},{k:'log',t:'Activity Log',g:'Setup',ic:'log'}];
 const XPERMS=[{k:'x_edit',t:'Bill edit / cancel'},{k:'x_verify',t:'Report Verify'},{k:'x_delete',t:'Delete records'},{k:'x_disc',t:'Discount above limit'},{k:'x_duepr',t:'Deliver report with due'}];
-const DEF_PERMS={manager:['dash','bill','bills','patients','appt','lab','delivery','ref','acc','inv','reports','tests','settings','backup','log','x_edit','x_verify','x_delete','x_disc','x_duepr','corp','staff'],
-  reception:['dash','bill','bills','patients','appt','delivery'],lab:['dash','lab','delivery','inv','x_verify'],accounts:['dash','bills','patients','ref','acc','inv','reports','corp','staff']};
+const DEF_PERMS={manager:['dash','bill','bills','patients','appt','lab','delivery','ref','acc','inv','reports','tests','settings','backup','log','x_edit','x_verify','x_delete','x_disc','x_duepr','corp','staff','docs'],
+  reception:['dash','bill','bills','patients','appt','delivery'],lab:['dash','lab','delivery','inv','x_verify'],accounts:['dash','bills','patients','ref','acc','inv','reports','corp','staff','docs']};
 function perms(){const p=S().perms;return p&&typeof p==='object'?p:DEF_PERMS}
 function can(k){const u=Auth.user;if(!u)return false;if(u.role==='admin')return true;return (perms()[u.role]||[]).includes(k)}
 
@@ -482,7 +482,8 @@ const rtypeOf=(t,dep)=>(t&&t.rtype)||(dep&&dep.rtype)||'param';
 const refLabel=b=>b.refId?(DB.get('referrers',b.refId)||{name:b.refName||'-'}).name:'Self';
 
 /* ---------- Icons ---------- */
-const IC={dash:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+const IC={docs:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>',
+dash:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
  bill:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/>',
  bills:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
  patients:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
@@ -1620,36 +1621,571 @@ SCREENS.corp={t:'Corporate clients',render(el){const S2=corpStats();const g=id=>
   dataTable($('#co_tb',el),{key:'corp',rows:DB.all('corporates').sort((a,b)=>String(a.name).localeCompare(b.name)),cols,empty:'No corporate clients — "+ New" click',tools:'<button class="btn btn-a btn-s" data-act="new">+ New Corporate Client</button>',
     on:{new:()=>CorpForm.open(),e:id=>CorpForm.open(id),st:id=>corpStatement(id),pay:id=>corpReceive(id)},foot:rs=>footRow(cols,['Total','','',sum(rs,c=>g(c.id).n),money(sum(rs,c=>g(c.id).billed)),money(sum(rs,c=>g(c.id).paid)),money(sum(rs,c=>g(c.id).due)),''])})}};
 
-/* ============ Staff & salary ============ */
+/* ============ Staff & salary (Standard Salary Sheet System) ============ */
 function salaryHead(){let h=DB.all('heads').find(x=>x.type==='out'&&x.name==='Staff Salary');if(!h)h=DB.put('heads',{id:uid(),type:'out',name:'Staff Salary'});return h.id}
 const monthName=ym=>{const [y,mm]=String(ym).split('-');return ['January','February','March','April','May','June','July','August','September','October','November','December'][(+mm||1)-1]+' '+y};
-const StaffForm={open(id){const s=id?DB.get('staff',id):{active:true,join:today()};
-  const m=Modal.open(id?'Edit Staff':'New Staff',`<div class="g2 kn">${fld('Name *',`<input id="sf_n" value="${esc(s.name||'')}">`,'call')}${fld('Designation',`<input id="sf_d" list="sf_dl" value="${esc(s.desig||'')}"><datalist id="sf_dl">${['Receptionist','Lab Technologist','Lab Assistant','Radiographer','Sonologist','Nurse','Cashier','Accountant','Manager','Marketing Officer','Cleaner','Guard'].map(x=>`<option value="${x}">`).join('')}</datalist>`)}${fld('Mobile',`<input id="sf_p" value="${esc(s.phone||'')}">`)}
-   ${fld('Monthly salary (Tk)',`<input id="sf_s" type="number" min="0" step="any" value="${esc(s.salary??'')}">`)}${fld('Joining date',`<input id="sf_j" type="date" value="${esc(s.join||'')}">`)}${fld('Address',`<input id="sf_a" value="${esc(s.address||'')}">`,'call')}</div><label class="chk" style="margin-top:10px"><input type="checkbox" id="sf_ac"${s.active!==false?' checked':''}> Working (active)</label>`,
+
+const STAFF_DEPTS=[
+  {id:'admin',name:'Admin & Director',rank:1,bg:'#eefcf2',fg:'#166534'},
+  {id:'rec',name:'Receptionist',rank:2,bg:'#fefce8',fg:'#854d0e'},
+  {id:'mkt',name:'Marketing Officer (FO)',rank:3,bg:'#fff7ed',fg:'#9a3412'},
+  {id:'lab_tech_o',name:'Lab Technologist',rank:4,bg:'#eff6ff',fg:'#1e40af'},
+  {id:'lab_tech_i',name:'Lab Technician',rank:5,bg:'#f0fdfa',fg:'#115e59'},
+  {id:'xray',name:'X-Ray Technician',rank:6,bg:'#f5f3ff',fg:'#5b21b6'},
+  {id:'comp',name:'Computer Operator',rank:7,bg:'#fffbeb',fg:'#b45309'},
+  {id:'oa',name:'Office Assistant',rank:8,bg:'#fef9c3',fg:'#713f12'},
+  {id:'clean',name:'Cleaner',rank:9,bg:'#f3e8ff',fg:'#6b21a8'},
+  {id:'sec',name:'Security Guard',rank:10,bg:'#ffe4e6',fg:'#9f1239'},
+  {id:'others',name:'Others',rank:11,bg:'#f8fafc',fg:'#475569'}
+];
+function staffDeptRank(d){const f=STAFF_DEPTS.find(x=>x.name.toLowerCase()===String(d||'').toLowerCase()||x.id===d);return f?f.rank:99}
+function staffDeptBg(d){const f=STAFF_DEPTS.find(x=>x.name.toLowerCase()===String(d||'').toLowerCase()||x.id===d);return f?f.bg:'#ffffff'}
+function staffDeptFg(d){const f=STAFF_DEPTS.find(x=>x.name.toLowerCase()===String(d||'').toLowerCase()||x.id===d);return f?f.fg:'#334155'}
+
+const StaffForm={open(id){const s=id?DB.get('staff',id):{active:true,join:today(),dept:'Admin & Director',rank:1};
+  const deptOpts=STAFF_DEPTS.map(d=>[d.name,d.name]);
+  const m=Modal.open(id?'Edit Staff':'New Staff',`<div class="g2 kn">
+    ${fld('Name *',`<input id="sf_n" value="${esc(s.name||'')}">`,'call')}
+    ${fld('Department / Category',`<select id="sf_dept">${opts(deptOpts,s.dept||'Admin & Director')}</select>`)}
+    ${fld('Designation',`<input id="sf_d" list="sf_dl" value="${esc(s.desig||'')}"><datalist id="sf_dl">${['Managing Director','Director','Admin Officer','Senior Receptionist','Receptionist','Marketing Officer (FO)','Medical Technologist (Lab)','Lab Technician','Radiographer / X-Ray Tech','Computer Operator','Office Assistant','Cleaner','Security Guard','Driver'].map(x=>`<option value="${x}">`).join('')}</datalist>`)}
+    ${fld('Hierarchy Level / Rank',`<input id="sf_rk" type="number" min="1" step="1" value="${s.rank??staffDeptRank(s.dept)}" placeholder="1=Top, 2, 3...">`)}
+    ${fld('Gross Monthly Salary (Tk) *',`<input id="sf_s" type="number" min="0" step="any" value="${esc(s.salary??'')}">`)}
+    ${fld('Mobile',`<input id="sf_p" value="${esc(s.phone||'')}">`)}
+    ${fld('Joining date',`<input id="sf_j" type="date" value="${esc(s.join||'')}">`)}
+    ${fld('Address',`<input id="sf_a" value="${esc(s.address||'')}">`,'call')}
+  </div>
+  <label class="chk" style="margin-top:10px"><input type="checkbox" id="sf_ac"${s.active!==false?' checked':''}> Working (active)</label>`,
    {foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="sf_ok" data-enter-submit>Save</button>'});
-  $('#sf_ok',m).onclick=()=>{const n=$('#sf_n',m).value.trim();if(!n)return toast('Enter name','err');DB.put('staff',{...(id?DB.get('staff',id):{}),id:id||uid(),name:n,desig:$('#sf_d',m).value.trim(),phone:$('#sf_p',m).value.trim(),salary:num($('#sf_s',m).value),join:$('#sf_j',m).value,address:$('#sf_a',m).value.trim(),active:$('#sf_ac',m).checked});log(id?'Edit Staff':'New Staff',n);Modal.close(m);toast('saved');App.soft()}}};
+  $('#sf_dept',m).onchange=()=>{const rk=$('#sf_rk',m);if(rk)rk.value=staffDeptRank($('#sf_dept',m).value)};
+  $('#sf_ok',m).onclick=()=>{const n=$('#sf_n',m).value.trim();if(!n)return toast('Enter name','err');
+    const dept=$('#sf_dept',m).value.trim();
+    const rank=num($('#sf_rk',m).value)||staffDeptRank(dept);
+    DB.put('staff',{...(id?DB.get('staff',id):{}),id:id||uid(),name:n,dept,desig:$('#sf_d',m).value.trim(),rank,phone:$('#sf_p',m).value.trim(),salary:num($('#sf_s',m).value),join:$('#sf_j',m).value,address:$('#sf_a',m).value.trim(),active:$('#sf_ac',m).checked});
+    log(id?'Edit Staff':'New Staff',n);Modal.close(m);toast('saved');App.soft()}}};
+
 const staffPaid=(sid,ym)=>sum(DB.all('txns').filter(t=>t.staffId===sid&&t.month===ym),t=>t.amount);
-function salPay(sid,ym){const s=DB.get('staff',sid);if(!s)return;const due=r2(num(s.salary)-staffPaid(sid,ym));
-  const m=Modal.open(`Salary Payment — ${s.name} (${monthName(ym)})`,`<div class="alert i">Monthly salary Tk${money(s.salary)} · Paid Tk${money(staffPaid(sid,ym))} · Balance <b>Tk${money(Math.max(0,due))}</b></div><div class="g2 kn">${fld('Amount *',`<input id="sp_a" type="number" min="0" step="any" value="${Math.max(0,due)}">`)}${fld('Type',`<select id="sp_t">${opts(getList('saltypes'))}</select>`)}${fld('Date',`<input id="sp_d" type="date" value="${today()}">`)}${fld('Mode',`<select id="sp_m">${opts(MODES)}</select>`)}</div>`,
+
+function salPay(sid,ym,dueAmt){const s=DB.get('staff',sid);if(!s)return;
+  const pd=staffPaid(sid,ym);
+  const defAmt=dueAmt!=null?Math.max(0,r2(dueAmt)):Math.max(0,r2(num(s.salary)-pd));
+  const m=Modal.open(`Salary Payment — ${s.name} (${monthName(ym)})`,`<div class="alert i">Gross salary: Tk ${money(s.salary)} · Already Paid: Tk ${money(pd)} · Due: <b>Tk ${money(defAmt)}</b></div>
+  <div class="g2 kn">${fld('Amount to Pay *',`<input id="sp_a" type="number" min="0" step="any" value="${defAmt}">`)}${fld('Type',`<select id="sp_t">${opts(getList('saltypes'))}</select>`)}${fld('Date',`<input id="sp_d" type="date" value="${today()}">`)}${fld('Mode',`<select id="sp_m">${opts(MODES)}</select>`)}</div>`,
    {w:'sm',foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="sp_ok" data-enter-submit>Paid</button>'});
   $('#sp_ok',m).onclick=()=>{const a=r2($('#sp_a',m).value);if(a<=0)return toast('Enter a valid amount','err');const ty=$('#sp_t',m).value;
     DB.put('txns',{id:uid(),type:'out',headId:salaryHead(),amount:a,mode:$('#sp_m',m).value,date:$('#sp_d',m).value||today(),ts:Date.now(),by:Auth.user.name,note:`${ty} ${monthName(ym)} — ${s.name}`,staffId:sid,month:ym});
-    log('Salary Payment',`${s.name} ${ym} Tk${money(a)}`);Modal.close(m);toast('Paid - added to Accounts');App.soft()}}
-SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(el){el.innerHTML=tabsHtml(this.tab,[['sheet','Salary Sheet'],['list','Staff List']])+'<div id="sf_box"></div>';wireTabs(el,this);const box=$('#sf_box',el);
-  if(this.tab==='list'){box.innerHTML='<div class="card" id="sf_tb"></div>';dataTable($('#sf_tb'),{key:'staff',rows:DB.all('staff').sort((a,b)=>(b.active!==false)-(a.active!==false)||String(a.name).localeCompare(b.name)),empty:'No staff — "+ New Staff" click',tools:'<button class="btn btn-a btn-s" data-act="new">+ New Staff</button>',
-    cols:[{t:'Name',v:s=>s.name,h:s=>`<b>${esc(s.name)}</b>${s.active===false?' <span class="bdg b-cancelled">Released</span>':''}`},{t:'Designation',v:s=>s.desig},{t:'Mobile',v:s=>s.phone},{t:'Joined',v:s=>fmtD(s.join)},{t:'Monthly salary',cls:'r',v:s=>money(s.salary)},{t:'',cls:'r',h:s=>`<button class="ib" data-act="e" data-id="${s.id}">Edit</button>`}],on:{new:()=>StaffForm.open(),e:id=>StaffForm.open(id)}});return}
-  const ym=this.month;const rows=DB.all('staff').filter(s=>s.active!==false||staffPaid(s.id,ym)>0).sort((a,b)=>String(a.name).localeCompare(b.name)).map(s=>({s,paid:staffPaid(s.id,ym)})).map(x=>({...x,due:r2(num(x.s.salary)-x.paid)}));
-  box.innerHTML=`<div class="card"><div class="row">${fld('Months',`<input type="month" id="sf_m" value="${ym}">`)}<span class="sp"></span><button class="btn btn-o" id="sf_new">+ New Staff</button><button class="btn btn-a" id="sf_pr">🖨 Print salary sheet</button></div></div>
-   <div class="kpis"><div class="kpi"><small>Total salary</small><b>Tk ${money(sum(rows,x=>x.s.salary))}</b></div><div class="kpi" style="--c:#dcfce7"><small>Paid</small><b>Tk ${money(sum(rows,x=>x.paid))}</b></div><div class="kpi" style="--c:#fee2e2"><small>Balance</small><b>Tk ${money(sum(rows,x=>Math.max(0,x.due)))}</b></div></div><div class="card" id="sf_tb"></div>`;
-  $('#sf_m').onchange=e=>{this.month=e.target.value||today().slice(0,7);App.render()};$('#sf_new').onclick=()=>StaffForm.open();
-  const cols=[{t:'Name',v:x=>x.s.name,h:x=>`<b>${esc(x.s.name)}</b><br><small class="muted">${esc(x.s.desig||'')}</small>`},{t:'Salary',cls:'r',v:x=>money(x.s.salary)},{t:'Paid',cls:'r',v:x=>money(x.paid)},{t:'Balance',cls:'r',v:x=>money(x.due),h:x=>`<b class="${x.due>0?'err':'ok'}">${money(x.due)}</b>`},{t:'Status',h:x=>x.due<=0?'<span class="bdg b-paid">Paid</span>':x.paid>0?'<span class="bdg b-done">Partial</span>':'<span class="bdg b-pending">Balance</span>'},
-    {t:'',cls:'r',h:x=>`<button class="ib" data-act="pay" data-id="${x.s.id}">Tk Pay</button>`}];
-  dataTable($('#sf_tb'),{key:'sal',rows,cols,empty:'No staff — "+ New Staff" click',on:{pay:id=>salPay(id,ym)},foot:rs=>footRow(cols,['Total',money(sum(rs,x=>x.s.salary)),money(sum(rs,x=>x.paid)),money(sum(rs,x=>x.due)),'',''])});
-  $('#sf_pr').onclick=()=>Print.table({title:'Salary Sheet',sub:'Month: '+monthName(ym),cols:[{t:'Name',k:'name'},{t:'Designation',k:'desig'},{t:'Salary',k:'sal',m:1},{t:'Paid',k:'paid',m:1},{t:'Balance',k:'due',m:1},{t:'Signature',k:'sig'}],
-    rows:rows.map(x=>({name:x.s.name,desig:x.s.desig||'',sal:x.s.salary,paid:x.paid,due:x.due,sig:''})),total:{name:'Total',sal:sum(rows,x=>x.s.salary),paid:sum(rows,x=>x.paid),due:sum(rows,x=>x.due)}})}};
+    log('Salary Payment',`${s.name} ${ym} Tk${money(a)}`);Modal.close(m);toast('Paid - added to Accounts');App.soft()}};
+
+SCREENS.staff={t:'Staff and Salary',tab:'sheet',month:today().slice(0,7),render(el){
+  el.innerHTML=tabsHtml(this.tab,[['sheet','Standard Salary Sheet'],['list','Staff List']])+'<div id="sf_box"></div>';
+  wireTabs(el,this);const box=$('#sf_box',el);
+  if(this.tab==='list'){
+    box.innerHTML='<div class="card" id="sf_tb"></div>';
+    const rows=DB.all('staff').sort((a,b)=>{
+      const rA=num(a.rank)||staffDeptRank(a.dept);const rB=num(b.rank)||staffDeptRank(b.dept);
+      if(rA!==rB)return rA-rB;
+      return String(a.name).localeCompare(b.name);
+    });
+    dataTable($('#sf_tb'),{key:'staff',rows,empty:'No staff — click "+ New Staff"',tools:'<button class="btn btn-a btn-s" data-act="new">+ New Staff</button>',
+      cols:[
+        {t:'SL',v:(s,i)=>i+1,w:'50px'},
+        {t:'Department',v:s=>s.dept||'Admin & Director',h:s=>`<span class="bdg" style="background:${staffDeptBg(s.dept)};color:${staffDeptFg(s.dept)};font-weight:700">${esc(s.dept||'Admin & Director')}</span>`},
+        {t:'Name',v:s=>s.name,h:s=>`<b>${esc(s.name)}</b>${s.active===false?' <span class="bdg b-cancelled">Inactive</span>':''}`},
+        {t:'Designation',v:s=>s.desig||'—'},
+        {t:'Rank/Level',cls:'c',v:s=>s.rank??staffDeptRank(s.dept)},
+        {t:'Gross Salary',cls:'r',v:s=>money(s.salary)},
+        {t:'Mobile',v:s=>s.phone||'—'},
+        {t:'Joined',v:s=>fmtD(s.join)},
+        {t:'',cls:'r',h:s=>`<button class="ib" data-act="e" data-id="${s.id}">Edit</button>`}
+      ],
+      on:{new:()=>StaffForm.open(),e:id=>StaffForm.open(id)}
+    });
+    return;
+  }
+
+  /* ---------- Standard Salary Sheet ---------- */
+  const ym=this.month;
+  const payRec=DB.get('payroll',ym)||{id:ym,month:ym,rows:{}};
+  payRec.rows=payRec.rows||{};
+
+  const activeStaff=DB.all('staff').filter(s=>s.active!==false||staffPaid(s.id,ym)>0).sort((a,b)=>{
+    const rA=num(a.rank)||staffDeptRank(a.dept);const rB=num(b.rank)||staffDeptRank(b.dept);
+    if(rA!==rB)return rA-rB;
+    const dA=String(a.dept||'Admin & Director').localeCompare(String(b.dept||'Admin & Director'));
+    if(dA!==0)return dA;
+    return String(a.name).localeCompare(b.name);
+  });
+
+  const staffItems=activeStaff.map((s,idx)=>{
+    const saved=payRec.rows[s.id]||{};
+    const gross=num(s.salary);
+    const daily=Math.round((gross/30)*100)/100;
+    const day=saved.day!==undefined?num(saved.day):30;
+    const tot=Math.round(daily*day);
+    const loan=saved.loan!==undefined?num(saved.loan):0;
+    const bal=Math.max(0,Math.round(tot-loan));
+    const paid=staffPaid(s.id,ym);
+    const due=Math.max(0,bal-paid);
+    return {s,sl:idx+1,dept:s.dept||'Admin & Director',gross,daily,day,tot,loan,bal,paid,due};
+  });
+
+  const deptCounts={};
+  staffItems.forEach(it=>{deptCounts[it.dept]=(deptCounts[it.dept]||0)+1});
+
+  const totGross=sum(staffItems,x=>x.gross);
+  const totDaily=sum(staffItems,x=>x.daily);
+  const totSalary=sum(staffItems,x=>x.tot);
+  const totLoan=sum(staffItems,x=>x.loan);
+  const totBal=sum(staffItems,x=>x.bal);
+  const totPaid=sum(staffItems,x=>x.paid);
+  const totDue=sum(staffItems,x=>x.due);
+
+  box.innerHTML=`
+    <div class="card" style="margin-bottom:12px">
+      <div class="row" style="align-items:flex-end;gap:12px;flex-wrap:wrap">
+        ${fld('Month',`<input type="month" id="sf_m" value="${ym}">`)}
+        <span class="sp"></span>
+        <button class="btn btn-o" id="sf_new">+ New Staff</button>
+        <button class="btn btn-o" id="sf_sv">💾 Save Sheet</button>
+        <button class="btn btn-o" id="sf_xl">⬇ Excel</button>
+        <button class="btn btn-p" id="sf_pr">🖨️ Print Salary Sheet</button>
+      </div>
+    </div>
+
+    <div class="kpis" id="sf_kpis" style="margin-bottom:12px">
+      <div class="kpi"><small>Total Gross</small><b>Tk ${money(totGross)}</b></div>
+      <div class="kpi" style="--c:#fef3c7"><small>Daily Salary Sum</small><b>Tk ${money(totDaily)}</b></div>
+      <div class="kpi" style="--c:#e0e7ff"><small>Total Earned</small><b>Tk ${money(totSalary)}</b></div>
+      <div class="kpi" style="--c:#fee2e2"><small>Loan Deducted</small><b style="color:#b91c1c">Tk ${money(totLoan)}</b></div>
+      <div class="kpi" style="--c:#dcfce7"><small>Net Payable</small><b style="color:#15803d">Tk ${money(totBal)}</b></div>
+      <div class="kpi" style="--c:#f1f5f9"><small>Paid / Due</small><b>${money(totPaid)} / <span style="color:#dc2626">${money(totDue)}</span></b></div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--bd)">
+      <div class="twrap" style="max-height:calc(100vh - 300px);overflow:auto">
+        <table class="tbl kn sal-table" style="margin:0;width:100%;border-collapse:collapse" id="sf_tbl">
+          <thead>
+            <tr style="position:sticky;top:0;z-index:10;background:#0f172a;color:#fff">
+              <th style="padding:10px 8px;min-width:130px;background:#0f172a;color:#fff">Post / Dept</th>
+              <th style="padding:10px 4px;width:45px;text-align:center;background:#0f172a;color:#fff">SL</th>
+              <th style="padding:10px 8px;min-width:160px;background:#0f172a;color:#fff">Name</th>
+              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Salary (Gross)</th>
+              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Daily Salary</th>
+              <th style="padding:10px 6px;text-align:center;width:75px;background:#0f172a;color:#fff">Day</th>
+              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Total Salary</th>
+              <th style="padding:10px 6px;text-align:right;width:95px;background:#0f172a;color:#fff">Loan</th>
+              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Balance</th>
+              <th style="padding:10px 8px;text-align:right;background:#0f172a;color:#fff">Paid</th>
+              <th style="padding:10px 6px;text-align:center;background:#0f172a;color:#fff">Action</th>
+            </tr>
+          </thead>
+          <tbody id="sf_tbody">
+            ${(()=>{
+              let renderedDept='';let html='';
+              staffItems.forEach((x,i)=>{
+                const isNewDept=x.dept!==renderedDept;
+                if(isNewDept)renderedDept=x.dept;
+                const deptCell=isNewDept?`<td rowspan="${deptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};color:${staffDeptFg(x.dept)};font-weight:700;font-size:12.5px;vertical-align:middle;text-align:center;border-right:2px solid var(--bd);padding:8px 6px;line-height:1.3">${esc(x.dept)}</td>`:'';
+                html+=`<tr data-id="${x.s.id}" data-idx="${i}">
+                  ${deptCell}
+                  <td style="text-align:center;font-weight:600">${x.sl}</td>
+                  <td><b>${esc(x.s.name)}</b>${x.s.desig?`<br><small class="muted">${esc(x.s.desig)}</small>`:''}</td>
+                  <td class="r" style="font-weight:600">${money(x.gross)}</td>
+                  <td class="r text-daily">${money(x.daily)}</td>
+                  <td style="text-align:center;padding:4px"><input type="number" step="0.5" min="0" max="31" class="sf-inp sf-day" data-id="${x.s.id}" value="${x.day}" style="width:62px;text-align:center;font-weight:700;padding:4px"></td>
+                  <td class="r font-bold text-tot">${money(x.tot)}</td>
+                  <td class="r" style="padding:4px"><input type="number" step="any" min="0" class="sf-inp sf-loan" data-id="${x.s.id}" value="${x.loan||''}" placeholder="0" style="width:85px;text-align:right;padding:4px"></td>
+                  <td class="r font-bold text-bal" style="color:${x.due>0?'#b91c1c':'#15803d'}">${money(x.bal)}</td>
+                  <td class="r text-paid">${money(x.paid)}</td>
+                  <td style="text-align:center">${x.due>0?`<button class="btn btn-a btn-s" data-act="pay" data-id="${x.s.id}" data-bal="${x.due}">Tk Pay</button>`:`<span class="bdg b-paid">Paid</span>`}</td>
+                </tr>`;
+              });
+              return html||'<tr><td colspan="11" class="empty">No staff added yet</td></tr>';
+            })()}
+          </tbody>
+          <tfoot>
+            <tr style="position:sticky;bottom:0;z-index:10;background:#f8fafc;font-weight:700;border-top:2px solid var(--bd)">
+              <td colspan="3" style="padding:10px 8px;text-align:right;background:#f8fafc">Total:</td>
+              <td class="r" id="tf_gross" style="background:#f8fafc">${money(totGross)}</td>
+              <td class="r" id="tf_daily" style="background:#f8fafc">${money(totDaily)}</td>
+              <td style="background:#f8fafc"></td>
+              <td class="r" id="tf_tot" style="background:#f8fafc">${money(totSalary)}</td>
+              <td class="r" id="tf_loan" style="background:#f8fafc">${money(totLoan)}</td>
+              <td class="r" id="tf_bal" style="background:#f8fafc;color:#15803d">${money(totBal)}</td>
+              <td class="r" id="tf_paid" style="background:#f8fafc">${money(totPaid)}</td>
+              <td class="r" id="tf_due" style="background:#f8fafc;color:#b91c1c">${money(totDue)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  `;
+
+  $('#sf_m').onchange=e=>{this.month=e.target.value||today().slice(0,7);App.render()};
+  $('#sf_new').onclick=()=>StaffForm.open();
+
+  function saveCurrentPayroll(notify){
+    const rows={};
+    $$('#sf_tbody tr[data-id]').forEach(tr=>{
+      const id=tr.dataset.id;
+      const dInp=tr.querySelector('.sf-day');
+      const lInp=tr.querySelector('.sf-loan');
+      if(id&&dInp)rows[id]={day:num(dInp.value)||0,loan:num(lInp.value)||0};
+    });
+    DB.put('payroll',{id:ym,month:ym,rows,updated:Date.now()});
+    if(notify)toast('Salary sheet saved ✓');
+  }
+
+  $('#sf_sv').onclick=()=>saveCurrentPayroll(true);
+
+  function recalcRows(){
+    let gG=0,gD=0,gT=0,gL=0,gB=0,gP=0,gDue=0;
+    $$('#sf_tbody tr[data-id]').forEach(tr=>{
+      const id=tr.dataset.id;
+      const s=DB.get('staff',id);
+      if(!s)return;
+      const gross=num(s.salary);
+      const daily=Math.round((gross/30)*100)/100;
+      const day=num(tr.querySelector('.sf-day').value)||0;
+      const tot=Math.round(daily*day);
+      const loan=num(tr.querySelector('.sf-loan').value)||0;
+      const bal=Math.max(0,Math.round(tot-loan));
+      const paid=staffPaid(id,ym);
+      const due=Math.max(0,bal-paid);
+
+      tr.querySelector('.text-tot').textContent=money(tot);
+      const balEl=tr.querySelector('.text-bal');
+      balEl.textContent=money(bal);
+      balEl.style.color=due>0?'#b91c1c':'#15803d';
+
+      const payBtn=tr.querySelector('[data-act="pay"]');
+      if(payBtn)payBtn.dataset.bal=due;
+
+      gG+=gross;gD+=daily;gT+=tot;gL+=loan;gB+=bal;gP+=paid;gDue+=due;
+    });
+    $('#tf_gross').textContent=money(gG);
+    $('#tf_daily').textContent=money(gD);
+    $('#tf_tot').textContent=money(gT);
+    $('#tf_loan').textContent=money(gL);
+    $('#tf_bal').textContent=money(gB);
+    $('#tf_paid').textContent=money(gP);
+    $('#tf_due').textContent=money(gDue);
+  }
+
+  $$('.sf-inp',box).forEach(inp=>{
+    inp.addEventListener('input',recalcRows);
+    inp.addEventListener('change',()=>saveCurrentPayroll(false));
+  });
+
+  $$('[data-act="pay"]',box).forEach(btn=>{
+    btn.onclick=()=>{
+      saveCurrentPayroll(false);
+      salPay(btn.dataset.id,ym,num(btn.dataset.bal));
+    };
+  });
+
+  /* Print Standard Salary Sheet */
+  $('#sf_pr').onclick=()=>{
+    saveCurrentPayroll(false);
+    let pRows='';let curD='';
+    staffItems.forEach((x)=>{
+      const isNew=x.dept!==curD;
+      if(isNew)curD=x.dept;
+      const dCell=isNew?`<td rowspan="${deptCounts[x.dept]}" style="background:${staffDeptBg(x.dept)};font-weight:700;font-size:11px;vertical-align:middle;text-align:center;border:1px solid #000;padding:4px">${esc(x.dept)}</td>`:'';
+      pRows+=`<tr>
+        ${dCell}
+        <td style="text-align:center;border:1px solid #000;padding:4px">${x.sl}</td>
+        <td style="border:1px solid #000;padding:4px"><b>${esc(x.s.name)}</b>${x.s.desig?` <span style="font-size:10px;color:#475569">(${esc(x.s.desig)})</span>`:''}</td>
+        <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.gross)}</td>
+        <td style="text-align:right;border:1px solid #000;padding:4px">${money(x.daily)}</td>
+        <td style="text-align:center;border:1px solid #000;padding:4px"><b>${x.day}</b></td>
+        <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:600">${money(x.tot)}</td>
+        <td style="text-align:right;border:1px solid #000;padding:4px">${x.loan?money(x.loan):''}</td>
+        <td style="text-align:right;border:1px solid #000;padding:4px;font-weight:700">${money(x.bal)}</td>
+        <td style="border:1px solid #000;width:80px"></td>
+      </tr>`;
+    });
+
+    const pHtml=`
+      <div style="font-family:Arial,sans-serif;color:#000">
+        <div style="text-align:center;margin-bottom:12px">
+          <h2 style="margin:0;font-size:18px;text-transform:uppercase">${esc(S().name)}</h2>
+          <div style="font-size:14px;font-weight:700;margin-top:2px">Admin & Staff Salary — ${monthName(ym).toUpperCase()}</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead>
+            <tr style="background:#0f172a;color:#fff;font-weight:700">
+              <th style="border:1px solid #000;padding:6px;width:120px">Post</th>
+              <th style="border:1px solid #000;padding:6px;width:35px">SL</th>
+              <th style="border:1px solid #000;padding:6px">Name</th>
+              <th style="border:1px solid #000;padding:6px;width:75px;text-align:right">Salary</th>
+              <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Daily Salary</th>
+              <th style="border:1px solid #000;padding:6px;width:45px;text-align:center">Day</th>
+              <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Total Salary</th>
+              <th style="border:1px solid #000;padding:6px;width:65px;text-align:right">Loan</th>
+              <th style="border:1px solid #000;padding:6px;width:80px;text-align:right">Balance</th>
+              <th style="border:1px solid #000;padding:6px;width:80px">Signature</th>
+            </tr>
+          </thead>
+          <tbody>${pRows}</tbody>
+          <tfoot>
+            <tr style="background:#f1f5f9;font-weight:700">
+              <td colspan="3" style="border:1px solid #000;padding:6px;text-align:right">Total:</td>
+              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totGross)}</td>
+              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totDaily)}</td>
+              <td style="border:1px solid #000;padding:6px"></td>
+              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totSalary)}</td>
+              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totLoan)}</td>
+              <td style="border:1px solid #000;padding:6px;text-align:right">${money(totBal)}</td>
+              <td style="border:1px solid #000"></td>
+            </tr>
+          </tfoot>
+        </table>
+        <div style="display:flex;justify-content:space-between;margin-top:45px;padding:0 20px;font-size:12px;font-weight:700">
+          <div style="border-top:1px solid #000;padding-top:4px;width:130px;text-align:center">Prepared by</div>
+          <div style="border-top:1px solid #000;padding-top:4px;width:130px;text-align:center">Accountant</div>
+          <div style="border-top:1px solid #000;padding-top:4px;width:150px;text-align:center">Managing Director</div>
+        </div>
+      </div>
+    `;
+    Print.go(pHtml,{land:true,page:'A4',title:'Salary_Sheet_'+ym});
+  };
+
+  /* Excel Export */
+  $('#sf_xl').onclick=()=>{
+    saveCurrentPayroll(false);
+    const head=['Post / Dept','SL','Name','Designation','Gross Salary','Daily Salary','Day','Total Salary','Loan','Balance','Paid','Due'];
+    const rows=staffItems.map(x=>[
+      x.dept,x.sl,x.s.name,x.s.desig||'',x.gross,x.daily,x.day,x.tot,x.loan,x.bal,x.paid,x.due
+    ]);
+    rows.push(['TOTAL','','','',totGross,totDaily,'',totSalary,totLoan,totBal,totPaid,totDue]);
+    XLSX.download('Staff_Salary_'+ym+'.xlsx',[{name:'Salary_'+ym.replace('-','_'),rows:[['Admin & Staff Salary — '+monthName(ym)],head,...rows]}]);
+  };
+}};
+
 
 /* register new modules in menu */
-(()=>{const i=MODS.findIndex(m=>m.k==='reports');MODS.splice(i,0,{k:'corp',t:'Corporate clients',g:'Business',ic:'corp'},{k:'staff',t:'Staff and Salary',g:'Business',ic:'staff'})})();
+(()=>{const i=MODS.findIndex(m=>m.k==='reports');MODS.splice(i,0,{k:'corp',t:'Corporate clients',g:'Business',ic:'corp'},{k:'staff',t:'Staff and Salary',g:'Business',ic:'staff'});
+{const si=MODS.findIndex(m=>m.k==='settings');if(si>=0)MODS.splice(si,0,{k:'docs',t:'Licenses & Documents',g:'Setup',ic:'docs'})}})();
+
+/* ============ Licenses & Documents Vault (PDF / JPG Storage & Download) ============ */
+const COMMON_DOCS=[
+  'Trade License',
+  'Drug License',
+  'DGHS Clinic / Diagnostic Center License',
+  'BAEC Atomic Energy / Radiology License',
+  'Environment Clearance Certificate (DoE)',
+  'Fire Safety & Civil Defence License',
+  'TIN / Tax Identification Certificate',
+  'BMDC Registration Certificate',
+  'RJSC Company Incorporation Certificate',
+  'City Corporation / Municipal Trade Permit',
+  'Premises Lease Deed / Rent Agreement',
+  'Other Legal Approval / Accreditation'
+];
+
+function downloadDocFile(mediaId,fileName){
+  const data=Media.get(mediaId);
+  if(!data)return toast('File data not found','err');
+  const a=document.createElement('a');
+  a.href=data;
+  a.download=fileName||'document';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Download started: '+(fileName||'file'));
+}
+
+function previewDocModal(d){
+  const data=Media.get(d.mediaId);
+  if(!data)return toast('File not uploaded or empty','err');
+  const isPdf=String(d.fileType||'').includes('pdf')||String(d.fileName||'').toLowerCase().endsWith('.pdf');
+  const body=isPdf
+    ? `<iframe src="${data}" style="width:100%;height:75vh;border:none;border-radius:6px;background:#fff"></iframe>`
+    : `<div style="text-align:center;background:#000;border-radius:6px;padding:10px"><img src="${data}" style="max-width:100%;max-height:75vh;object-fit:contain;border-radius:4px;display:inline-block"></div>`;
+  Modal.open(`👁️ ${esc(d.title)} — ${esc(d.docNo||'')}`,body,{
+    w:'xl',
+    foot:`<button class="btn btn-o" data-close>Close</button><button class="btn btn-a" onclick="downloadDocFile('${d.mediaId}','${esc(d.fileName||d.title)}')">⬇️ Download File</button>`
+  });
+}
+
+const DocForm={
+  open(id){
+    const d=id?DB.get('docs',id):{title:'Trade License',issueDate:today()};
+    let fileData='',fileName=d.fileName||'',fileType=d.fileType||'',fileSize=d.fileSize||'';
+
+    const m=Modal.open(id?'Edit License / Document':'New License / Document',`
+      <div class="g2 kn">
+        ${fld('Document Title *',`
+          <input id="dc_t" list="dc_tl" value="${esc(d.title||'')}">
+          <datalist id="dc_tl">${COMMON_DOCS.map(x=>`<option value="${x}">`).join('')}</datalist>
+        `,'call')}
+        ${fld('License / Registration No *',`<input id="dc_no" value="${esc(d.docNo||'')}">`)}
+        ${fld('Issuing Authority',`<input id="dc_au" placeholder="e.g. DGHS, City Corporation, BAEC" value="${esc(d.auth||'')}">`)}
+        ${fld('Issue Date',`<input id="dc_id" type="date" value="${esc(d.issueDate||'')}">`)}
+        ${fld('Expiry Date',`<input id="dc_ed" type="date" value="${esc(d.expiryDate||'')}">`)}
+        ${fld('Upload File (PDF / JPG / PNG)',`
+          <input id="dc_fl" type="file" accept=".pdf,image/jpeg,image/png,image/webp">
+          <div id="dc_fl_info" class="muted" style="font-size:12px;margin-top:4px">
+            ${d.fileName?`Current file: <b>${esc(d.fileName)}</b> (${esc(d.fileSize||'')})`:'Select a PDF or image file'}
+          </div>
+        `,'call')}
+        ${fld('Notes / Remarks',`<textarea id="dc_nt" rows="2">${esc(d.notes||'')}</textarea>`,'call')}
+      </div>
+    `,{w:'md',foot:'<button class="btn btn-o" data-close>Cancel</button><button class="btn btn-a" id="dc_ok" data-enter-submit>Save Document</button>'});
+
+    $('#dc_fl',m).onchange=e=>{
+      const f=e.target.files[0];
+      if(!f)return;
+      fileName=f.name;
+      fileType=f.type||(f.name.endsWith('.pdf')?'application/pdf':'image/jpeg');
+      const szKb=Math.round(f.size/1024);
+      fileSize=szKb>1024?(szKb/1024).toFixed(1)+' MB':szKb+' KB';
+      const reader=new FileReader();
+      reader.onload=()=>{
+        fileData=reader.result;
+        $('#dc_fl_info',m).innerHTML=`Selected: <b style="color:#15803d">${esc(fileName)}</b> (${fileSize})`;
+      };
+      reader.readAsDataURL(f);
+    };
+
+    $('#dc_ok',m).onclick=()=>{
+      const title=$('#dc_t',m).value.trim();
+      const docNo=$('#dc_no',m).value.trim();
+      if(!title)return toast('Enter document title','err');
+      const docId=id||uid();
+      const mediaId='doc_'+docId;
+
+      if(fileData){
+        Media.set(mediaId,fileData);
+      }
+
+      const rec={
+        ...(id?DB.get('docs',id):{created:Date.now()}),
+        id:docId,
+        title,
+        docNo,
+        auth:$('#dc_au',m).value.trim(),
+        issueDate:$('#dc_id',m).value,
+        expiryDate:$('#dc_ed',m).value,
+        notes:$('#dc_nt',m).value.trim(),
+        fileName:fileName||(id&&(DB.get('docs',id)||{}).fileName)||'',
+        fileType:fileType||(id&&(DB.get('docs',id)||{}).fileType)||'',
+        fileSize:fileSize||(id&&(DB.get('docs',id)||{}).fileSize)||'',
+        mediaId,
+        updated:Date.now()
+      };
+
+      DB.put('docs',rec);
+      log(id?'Edit Document':'New Document',title);
+      Modal.close(m);
+      toast('Document saved ✓');
+      App.soft();
+    };
+  }
+};
+
+SCREENS.docs={
+  t:'Licenses & Documents',
+  render(el){
+    const all=DB.all('docs').sort((a,b)=>String(a.title).localeCompare(b.title));
+    const td=today();
+
+    const expired=all.filter(d=>d.expiryDate&&d.expiryDate<td);
+    const expiringSoon=all.filter(d=>d.expiryDate&&d.expiryDate>=td&&daysBetween(td,d.expiryDate)<=30);
+    const valid=all.filter(d=>!d.expiryDate||(d.expiryDate>=td&&daysBetween(td,d.expiryDate)>30));
+
+    let alertBanner='';
+    if(expired.length||expiringSoon.length){
+      alertBanner=`<div class="card" style="border-left:4px solid #dc2626;background:#fff1f2;margin-bottom:14px;padding:12px 16px">
+        <div style="font-weight:700;color:#991b1b;margin-bottom:4px">⚠️ License Expiry Notice:</div>
+        ${expired.map(d=>`<div style="font-size:12.5px;color:#b91c1c">• <b>${esc(d.title)}</b> (${esc(d.docNo||'—')}): <b>Expired on ${fmtD(d.expiryDate)}</b> — immediate renewal required!</div>`).join('')}
+        ${expiringSoon.map(d=>`<div style="font-size:12.5px;color:#b45309">• <b>${esc(d.title)}</b> (${esc(d.docNo||'—')}): Expiring soon on ${fmtD(d.expiryDate)} (<b>${daysBetween(td,d.expiryDate)} days left</b>)</div>`).join('')}
+      </div>`;
+    }
+
+    el.innerHTML=`
+      <div class="card" style="margin-bottom:12px">
+        <div class="row" style="align-items:center;gap:12px;flex-wrap:wrap">
+          <div>
+            <h3 style="margin:0;font-size:17px">📜 Licenses & Legal Documents Vault</h3>
+            <div class="muted" style="font-size:12px">Upload, store and download official trade licenses, drug license, radiology approval and certificates in PDF or JPG format.</div>
+          </div>
+          <span class="sp"></span>
+          <button class="btn btn-a" id="dc_new">+ Add License / Document</button>
+        </div>
+      </div>
+
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><small>Total Documents</small><b>${all.length}</b></div>
+        <div class="kpi" style="--c:#dcfce7"><small>Active / Valid</small><b style="color:#15803d">${valid.length}</b></div>
+        <div class="kpi" style="--c:#fef3c7"><small>Expiring Soon (30 days)</small><b style="color:#b45309">${expiringSoon.length}</b></div>
+        <div class="kpi" style="--c:#fee2e2"><small>Expired</small><b style="color:#b91c1c">${expired.length}</b></div>
+      </div>
+
+      ${alertBanner}
+
+      <div class="card" id="dc_tb"></div>
+    `;
+
+    $('#dc_new').onclick=()=>DocForm.open();
+
+    const cols=[
+      {t:'Document Title',v:d=>d.title,h:d=>`<b>${esc(d.title)}</b>${d.auth?`<br><small class="muted">Authority: ${esc(d.auth)}</small>`:''}`},
+      {t:'License / Reg. No',v:d=>d.docNo||'—',h:d=>`<code>${esc(d.docNo||'—')}</code>`},
+      {t:'Issue Date',v:d=>fmtD(d.issueDate)},
+      {t:'Expiry Date',v:d=>fmtD(d.expiryDate),h:d=>{
+        if(!d.expiryDate)return '<span class="muted">No expiry</span>';
+        if(d.expiryDate<td)return `<span class="bdg b-cancelled" style="font-weight:700">Expired (${fmtD(d.expiryDate)})</span>`;
+        const days=daysBetween(td,d.expiryDate);
+        if(days<=30)return `<span class="bdg b-warn" style="font-weight:700">${days} days left</span>`;
+        return `<span class="bdg b-ok">${fmtD(d.expiryDate)}</span>`;
+      }},
+      {t:'File',h:d=>{
+        if(!d.fileName&&!Media.get(d.mediaId))return '<span class="muted">No file</span>';
+        const isPdf=String(d.fileType||'').includes('pdf')||String(d.fileName||'').toLowerCase().endsWith('.pdf');
+        return `<span class="bdg" style="background:${isPdf?'#fee2e2':'#eff6ff'};color:${isPdf?'#991b1b':'#1e40af'}">${isPdf?'📄 PDF':'🖼️ Image'}</span> <small class="muted">${esc(d.fileSize||'')}</small>`;
+      }},
+      {t:'Actions',cls:'r',h:d=>`
+        ${Media.get(d.mediaId)?`
+          <button class="btn btn-o btn-s" data-act="view" data-id="${d.id}" style="padding:4px 8px" title="Preview file">👁️ View</button>
+          <button class="btn btn-o btn-s" data-act="dl" data-id="${d.id}" style="padding:4px 8px" title="Download file">⬇️ Download</button>
+        `:''}
+        <button class="ib" data-act="e" data-id="${d.id}" title="Edit">✏️</button>
+        <button class="ib" data-act="del" data-id="${d.id}" style="color:var(--err)" title="Delete">🗑️</button>
+      `}
+    ];
+
+    dataTable($('#dc_tb'),{
+      key:'docs',
+      rows:all,
+      cols,
+      empty:'No licenses or documents added yet. Click "+ Add License / Document" to upload PDF/JPG.',
+      on:{
+        e:id=>DocForm.open(id),
+        del:async id=>{
+          const doc=DB.get('docs',id);
+          if(!doc)return;
+          if(await ask(`Delete document "${doc.title}"?`)){
+            Media.set(doc.mediaId,'');
+            DB.del('docs',id);
+            log('Delete Document',doc.title);
+            toast('Document deleted');
+            App.render();
+          }
+        },
+        view:id=>{
+          const doc=DB.get('docs',id);
+          if(doc)previewDocModal(doc);
+        },
+        dl:id=>{
+          const doc=DB.get('docs',id);
+          if(doc)downloadDocFile(doc.mediaId,doc.fileName||doc.title);
+        }
+      }
+    });
+  }
+};
+
 
 /* ============ Page tips ============ */
 const HINTS={dash:'See all the figures of the day at a glance here. Click any card to open the related page.',
@@ -4644,57 +5180,664 @@ MODS.push({k:'books',t:'Accounts Books',g:'Business',ic:'books'},{k:'ledger',t:'
 DEF_PERMS.manager.push('books','ledger','recon','monthly');if(DEF_PERMS.accounts)DEF_PERMS.accounts.push('books','ledger','recon','monthly');
 {const P=PANELS.find(p=>p.k==='md');if(P&&Array.isArray(P.mods))P.mods.push('books','monthly')}
 
-SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){const fy=fyOf(today());const st=this.st=this.st||{from:today(),to:today(),asof:today(),pfrom:fy.from,pto:today()};
-  el.innerHTML=tabsHtml(this.tab,[['day','Day Book'],['pl','Profit and Loss'],['tb','Trial Balance'],['bs','Balance Sheet'],['close','Year-End Closing and Lock']])+'<div class="card" id="bk_b"></div>';wireTabs(el,this);const box=$('#bk_b',el);
-  const bar=(inner)=>`<div class="row" style="gap:8px;align-items:flex-end;margin-bottom:10px;flex-wrap:wrap">${inner}<span style="flex:1"></span><button class="btn btn-o" id="bk_x">⬇ Excel</button><button class="btn btn-p" id="bk_pr">🖨 Print</button></div><div id="bk_t"></div>`;
-  const rng=()=>`${fld('From',`<input type="date" id="bk_f" value="${st.from}">`)}${fld('To',`<input type="date" id="bk_to" value="${st.to}">`)}`;
-  const wire=(f,t)=>{const a=$('#bk_f',box),b=$('#bk_to',box);if(a)a.onchange=()=>{st[f]=a.value||today();App.render()};if(b)b.onchange=()=>{st[t]=b.value||today();App.render()}};
+/* ============ Accounts Books (Tally Day Book, Continuous Ledger, Monthly Summary) ============ */
+SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
+  const fy=fyOf(today());
+  const st=this.st=this.st||{
+    from:today(),to:today(),mode:'',q:'',page:0,per:50,
+    cfrom:monthStart(),cto:today(),cmode:'',
+    sumYm:today().slice(0,7),
+    asof:today(),pfrom:fy.from,pto:today()
+  };
+
+  el.innerHTML=tabsHtml(this.tab,[
+    ['day','Tally Day Book'],
+    ['cont','Continuous Daily Ledger'],
+    ['summary','Monthly Daily Summary'],
+    ['pl','Profit and Loss'],
+    ['tb','Trial Balance'],
+    ['bs','Balance Sheet'],
+    ['close','Year-End Closing and Lock']
+  ])+'<div class="card" id="bk_b" style="padding:14px"></div>';
+  wireTabs(el,this);
+  const box=$('#bk_b',el);
+  const bar=(inner)=>`<div class="row" style="gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap">${inner}<span style="flex:1"></span><button class="btn btn-o" id="bk_x">⬇ Excel</button><button class="btn btn-p" id="bk_pr">🖨 Print</button></div><div id="bk_t"></div>`;
+
   let title='',sub='',html='',xl=null;
-  if(this.tab==='day'){box.innerHTML=bar(rng());wire('from','to');const all=moneyEntries();const before=all.filter(e=>e.date<st.from);const s=S();const ob=r2(num(s.openingCash)+sum(before,e=>num(e.inn)-num(e.out)));
-    const E=all.filter(e=>e.date>=st.from&&e.date<=st.to);let bal=ob;const rows=[{c:['','','Opening balance','','','',money(ob)],b:1}].concat(E.map(e=>{bal=r2(bal+num(e.inn)-num(e.out));return {c:[fmtD(e.date),new Date(num(e.ts)||Date.now()).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),`<b>${esc(e.head)}</b><br><small class="muted">${esc(e.desc||'')}</small>`,esc(e.mode),mny(e.inn),mny(e.out),money(bal)]}}));
-    const ti=sum(E,e=>num(e.inn)),to=sum(E,e=>num(e.out));rows.push({c:['','','Total','',money(ti),money(to),money(bal)],b:1});
-    const modes=[...new Set(E.map(e=>e.mode))];const mrows=modes.map(m=>{const x=E.filter(e=>e.mode===m);return {c:[esc(m),money(sum(x,e=>num(e.inn))),money(sum(x,e=>num(e.out))),money(sum(x,e=>num(e.inn)-num(e.out)))]}});
-    html=rowsTbl([['Date'],['Time'],['Particulars'],['Mode'],['Receipt','r'],['Payment','r'],['Balance','r']],rows)+`<div class="ch" style="margin-top:14px">Mode-wise for the period</div>`+rowsTbl([['Mode'],['Receipt','r'],['Payment','r'],['Net','r']],mrows);
-    title='DAY BOOK';sub=`${fmtD(st.from)} to ${fmtD(st.to)}`;xl={name:'Day_Book',head:['Date','Particulars','Details','Mode','Receipt','Payment'],rows:E.map(e=>[fmtD(e.date),e.head,e.desc||'',e.mode,num(e.inn),num(e.out)])}}
-  else if(this.tab==='pl'){box.innerHTML=bar(`${fld('From',`<input type="date" id="bk_f" value="${st.pfrom}">`)}${fld('To',`<input type="date" id="bk_to" value="${st.pto}">`)}<button class="btn btn-o" id="bk_fy">This financial year</button>`);wire('pfrom','pto');
-    $('#bk_fy',box).onclick=()=>{st.pfrom=fy.from;st.pto=today();App.render()};const r=bookCalc(st.pfrom,st.pto);
-    const inc=[{c:['Test income (after discount)',money(r.testInc)]},{c:['Consultation fees',money(r.consult)]}].concat(Object.entries(r.incH).map(([k,v])=>({c:[esc(k),money(v)]})));inc.push({c:['Total income',money(r.income)],b:1});
-    const exp=Object.entries(r.expH).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({c:[esc(k),money(v)]})).concat([{c:['Referral commission (earned on bills)',money(r.commAcc)]},{c:['Doctor share paid',money(r.conPaid)]},{c:['Purchases (reagents, supplies)',money(r.pur)]}]);exp.push({c:['Total expense',money(r.expense)],b:1});
+
+  /* ================= 1) TALLY DAY BOOK ================= */
+  if(this.tab==='day'){
+    const isRange=st.from!==st.to;
+    box.innerHTML=`
+      <div class="row" style="gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+        <div class="btns">
+          <button class="btn btn-o btn-s" id="dbk_prev">◀ Previous</button>
+          <button class="btn btn-o btn-s" id="dbk_today">📅 Today</button>
+          <button class="btn btn-o btn-s" id="dbk_next">Next ▶</button>
+        </div>
+        ${fld('Date',`<input type="date" id="dbk_f" value="${st.from}">`)}
+        <label class="chk" style="margin:0 4px"><input type="checkbox" id="dbk_isrng"${isRange?' checked':''}> Date Range</label>
+        <div id="dbk_to_wrap" style="${isRange?'':'display:none'}">${fld('To',`<input type="date" id="dbk_to" value="${st.to}">`)}</div>
+        ${fld('Payment Mode',`<select id="dbk_m">${opts([['','All Modes']].concat(MODES.map(m=>[m,m])),st.mode)}</select>`)}
+        <input class="tsearch" id="dbk_q" placeholder="Search vouchers..." value="${esc(st.q||'')}" style="max-width:200px">
+        <span class="sp"></span>
+        <button class="btn btn-o" id="bk_x">⬇ Excel</button>
+        <button class="btn btn-p" id="bk_pr">🖨 Print Day Book</button>
+      </div>
+      <div id="dbk_kpis"></div>
+      <div id="bk_t"></div>
+      <div id="dbk_pgr" class="pgr" style="margin-top:10px"></div>
+    `;
+
+    $('#dbk_prev').onclick=()=>{st.from=addDays(st.from,-1);if(!$('#dbk_isrng').checked)st.to=st.from;st.page=0;App.render()};
+    $('#dbk_next').onclick=()=>{st.from=addDays(st.from,1);if(!$('#dbk_isrng').checked)st.to=st.from;st.page=0;App.render()};
+    $('#dbk_today').onclick=()=>{st.from=today();st.to=today();st.page=0;App.render()};
+    $('#dbk_isrng').onchange=e=>{
+      if(!e.target.checked){st.to=st.from}
+      $('#dbk_to_wrap').style.display=e.target.checked?'':'none';
+      st.page=0;
+      App.render();
+    };
+    $('#dbk_f').onchange=e=>{st.from=e.target.value||today();if(!$('#dbk_isrng').checked)st.to=st.from;st.page=0;App.render()};
+    $('#dbk_to').onchange=e=>{st.to=e.target.value||st.from;st.page=0;App.render()};
+    $('#dbk_m').onchange=e=>{st.mode=e.target.value;st.page=0;App.render()};
+    $('#dbk_q').oninput=e=>{st.q=e.target.value;st.page=0;drawTallyTable()};
+
+    const all=moneyEntries().filter(e=>!st.mode||e.mode===st.mode);
+    const before=all.filter(e=>e.date<st.from);
+    const s=S();
+    const ob=r2((!st.mode||st.mode==='Cash'?num(s.openingCash):0)+sum(before,e=>num(e.inn)-num(e.out)));
+    const allPeriod=all.filter(e=>e.date>=st.from&&e.date<=st.to);
+    const ti=sum(allPeriod,e=>num(e.inn));
+    const to=sum(allPeriod,e=>num(e.out));
+    const cb=r2(ob+ti-to);
+
+    $('#dbk_kpis').innerHTML=`
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><small>Opening Balance</small><b>Tk ${money(ob)}</b></div>
+        <div class="kpi" style="--c:#dcfce7"><small>Total Receipts (Dr)</small><b style="color:#15803d">+ Tk ${money(ti)}</b></div>
+        <div class="kpi" style="--c:#fee2e2"><small>Total Payments (Cr)</small><b style="color:#b91c1c">- Tk ${money(to)}</b></div>
+        <div class="kpi" style="--c:#e0f2fe"><small>Closing Balance</small><b style="color:#0284c7">Tk ${money(cb)}</b></div>
+      </div>
+    `;
+
+    const vTypeBadge=e=>{
+      if(e.c==='payments')return '<span class="bdg b-ok">Receipt (Bill)</span>';
+      if(e.head&&e.head.includes('Staff Salary'))return '<span class="bdg b-exp">Salary</span>';
+      if(e.head&&e.head.includes('Doctor Share'))return '<span class="bdg b-done">Doctor Share</span>';
+      if(e.head&&e.head.includes('Commission'))return '<span class="bdg b-warn">Commission</span>';
+      if(e.head&&e.head.includes('Supplier'))return '<span class="bdg b-info">Supplier</span>';
+      return e.inn>0?'<span class="bdg b-ok">Receipt</span>':'<span class="bdg b-cancelled">Payment</span>';
+    };
+
+    function drawTallyTable(){
+      const q=(st.q||'').trim().toLowerCase();
+      const filtered=q?allPeriod.filter(e=>`${e.head} ${e.desc||''} ${e.mode} ${e.by||''}`.toLowerCase().includes(q)):allPeriod;
+      const N=filtered.length;
+      const per=st.per||50;
+      const pages=Math.max(1,Math.ceil(N/per));
+      if(st.page>=pages)st.page=pages-1;
+      const startIdx=st.page*per;
+      const slice=per===999999?filtered:filtered.slice(startIdx,startIdx+per);
+
+      // Running balance calculation
+      let bal=ob;
+      filtered.forEach((e,i)=>{
+        e._bal=r2(bal+num(e.inn)-num(e.out));
+        bal=e._bal;
+      });
+
+      let tbodyHtml=slice.map((e,idx)=>{
+        const tm=new Date(num(e.ts)||Date.now()).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        return `
+          <tr>
+            <td style="text-align:center;color:var(--mut)">${startIdx+idx+1}</td>
+            <td>${fmtD(e.date)} <small class="muted">${tm}</small></td>
+            <td><b>${esc(e.head)}</b>${e.desc?`<br><small class="muted">${esc(e.desc)}</small>`:''}</td>
+            <td>${vTypeBadge(e)}</td>
+            <td><span class="bdg">${esc(e.mode)}</span></td>
+            <td class="r" style="color:#15803d;font-weight:600">${e.inn?money(e.inn):''}</td>
+            <td class="r" style="color:#b91c1c;font-weight:600">${e.out?money(e.out):''}</td>
+            <td class="r" style="font-weight:600">${money(e._bal)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      if(!tbodyHtml){
+        tbodyHtml=`<tr><td colspan="8" class="empty">No vouchers found for this period</td></tr>`;
+      }
+
+      $('#bk_t').innerHTML=`
+        <div class="twrap" style="max-height:calc(100vh - 290px);overflow:auto;border:1px solid var(--bd);border-radius:8px">
+          <table class="tbl kn" style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="position:sticky;top:0;z-index:10;background:#0f172a;color:#fff">
+                <th style="padding:10px 8px;width:45px;text-align:center;background:#0f172a;color:#fff">#</th>
+                <th style="padding:10px 10px;width:120px;background:#0f172a;color:#fff">Date / Time</th>
+                <th style="padding:10px 10px;background:#0f172a;color:#fff">Particulars</th>
+                <th style="padding:10px 8px;width:110px;background:#0f172a;color:#fff">Voucher Type</th>
+                <th style="padding:10px 8px;width:90px;background:#0f172a;color:#fff">Mode</th>
+                <th style="padding:10px 10px;text-align:right;width:120px;background:#0f172a;color:#fff">Debit (Dr)</th>
+                <th style="padding:10px 10px;text-align:right;width:120px;background:#0f172a;color:#fff">Credit (Cr)</th>
+                <th style="padding:10px 10px;text-align:right;width:130px;background:#0f172a;color:#fff">Balance</th>
+              </tr>
+              <tr style="background:#f1f5f9;font-weight:700">
+                <td colspan="7" style="padding:6px 10px">Opening Balance (b/f)</td>
+                <td class="r" style="padding:6px 10px">${money(ob)}</td>
+              </tr>
+            </thead>
+            <tbody>${tbodyHtml}</tbody>
+            <tfoot>
+              <tr style="position:sticky;bottom:0;z-index:10;background:#f8fafc;font-weight:700;border-top:2px solid var(--bd)">
+                <td colspan="5" style="padding:10px;text-align:right">Total (${filtered.length} Vouchers):</td>
+                <td class="r" style="padding:10px;color:#15803d">${money(ti)}</td>
+                <td class="r" style="padding:10px;color:#b91c1c">${money(to)}</td>
+                <td class="r" style="padding:10px;color:#0284c7">${money(cb)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      `;
+
+      // Pagination controls
+      const pgrEl=$('#dbk_pgr');
+      if(N<=per&&!st.page){
+        pgrEl.style.display='none';
+      }else{
+        pgrEl.style.display='flex';
+        const B=(lbl,to,dis,on)=>`<button class="btn btn-s ${on?'btn-p':'btn-o'}" data-pg="${to}"${dis?' disabled':''}>${lbl}</button>`;
+        const nums=[];
+        for(let i=Math.max(0,st.page-2);i<=Math.min(pages-1,st.page+2);i++){
+          nums.push(B(i+1,i,false,i===st.page));
+        }
+        pgrEl.innerHTML=`
+          <span class="muted">Showing <b>${N?startIdx+1:0}–${Math.min(startIdx+per,N)}</b> of <b>${N}</b></span>
+          <span class="sp"></span>
+          <span class="muted">Rows</span>
+          <select id="dbk_per_sel" class="pgn">${[25,50,100,200,500].map(v=>`<option value="${v}"${v===per?' selected':''}>${v}</option>`).join('')}<option value="999999"${per===999999?' selected':''}>All</option></select>
+          ${pages>1?B('«',0,!st.page)+B('‹',st.page-1,!st.page)+nums.join('')+B('›',st.page+1,st.page>=pages-1)+B('»',pages-1,st.page>=pages-1):''}
+        `;
+        pgrEl.onclick=e=>{
+          const b=e.target.closest('[data-pg]');
+          if(!b||b.disabled)return;
+          st.page=+b.dataset.pg;
+          drawTallyTable();
+        };
+        const pSel=$('#dbk_per_sel');
+        if(pSel)pSel.onchange=e=>{st.per=num(e.target.value)||50;st.page=0;drawTallyTable()};
+      }
+    }
+
+    drawTallyTable();
+
+    title='TALLY DAY BOOK';
+    sub=st.from===st.to?fmtD(st.from):`${fmtD(st.from)} to ${fmtD(st.to)}`;
+    xl={name:'Tally_Day_Book',head:['#','Date','Particulars','Details','Type','Mode','Debit (Dr)','Credit (Cr)','Balance'],rows:allPeriod.map((e,i)=>[i+1,fmtD(e.date),e.head,e.desc||'',e.inn>0?'Receipt':'Payment',e.mode,num(e.inn),num(e.out),''])};
+
+    $('#bk_pr').onclick=()=>{
+      let prRows=allPeriod.map((e,i)=>{
+        const tm=new Date(num(e.ts)||Date.now()).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        return `<tr>
+          <td style="border:1px solid #000;text-align:center;padding:4px">${i+1}</td>
+          <td style="border:1px solid #000;padding:4px">${fmtD(e.date)} ${tm}</td>
+          <td style="border:1px solid #000;padding:4px"><b>${esc(e.head)}</b>${e.desc?` <span style="font-size:10px;color:#475569">(${esc(e.desc)})</span>`:''}</td>
+          <td style="border:1px solid #000;padding:4px;text-align:center">${e.inn>0?'Receipt':'Payment'}</td>
+          <td style="border:1px solid #000;padding:4px;text-align:center">${esc(e.mode)}</td>
+          <td style="border:1px solid #000;padding:4px;text-align:right">${e.inn?money(e.inn):''}</td>
+          <td style="border:1px solid #000;padding:4px;text-align:right">${e.out?money(e.out):''}</td>
+        </tr>`;
+      }).join('');
+
+      const prHtml=`
+        <div style="font-family:Arial,sans-serif;color:#000">
+          <div style="text-align:center;margin-bottom:12px">
+            <h2 style="margin:0;font-size:18px">${esc(S().name)}</h2>
+            <div style="font-size:13px;font-weight:700">TALLY DAY BOOK VOUCHER REGISTER</div>
+            <div style="font-size:12px;color:#475569">Period: ${esc(sub)}</div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead>
+              <tr style="background:#f1f5f9;font-weight:700">
+                <th style="border:1px solid #000;padding:5px;width:35px">#</th>
+                <th style="border:1px solid #000;padding:5px;width:110px">Date & Time</th>
+                <th style="border:1px solid #000;padding:5px">Particulars</th>
+                <th style="border:1px solid #000;padding:5px;width:75px">Type</th>
+                <th style="border:1px solid #000;padding:5px;width:65px">Mode</th>
+                <th style="border:1px solid #000;padding:5px;width:85px;text-align:right">Debit (Dr)</th>
+                <th style="border:1px solid #000;padding:5px;width:85px;text-align:right">Credit (Cr)</th>
+              </tr>
+              <tr style="background:#fff;font-weight:700">
+                <td colspan="5" style="border:1px solid #000;padding:4px">Opening Balance:</td>
+                <td colspan="2" style="border:1px solid #000;padding:4px;text-align:right">${money(ob)}</td>
+              </tr>
+            </thead>
+            <tbody>${prRows}</tbody>
+            <tfoot>
+              <tr style="background:#f1f5f9;font-weight:700">
+                <td colspan="5" style="border:1px solid #000;padding:6px;text-align:right">Total Receipts / Payments:</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(ti)}</td>
+                <td style="border:1px solid #000;padding:6px;text-align:right">${money(to)}</td>
+              </tr>
+              <tr style="background:#e2e8f0;font-weight:700">
+                <td colspan="5" style="border:1px solid #000;padding:6px;text-align:right">Closing Balance:</td>
+                <td colspan="2" style="border:1px solid #000;padding:6px;text-align:right">${money(cb)}</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div style="display:flex;justify-content:space-between;margin-top:40px;padding:0 20px;font-size:11px;font-weight:700">
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Prepared by</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Accountant</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:140px;text-align:center">Authorized Signature</div>
+          </div>
+        </div>
+      `;
+      Print.go(prHtml,{land:false,page:'A4',title:'Tally_Day_Book'});
+    };
+
+    $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:xl.name.slice(0,30),rows:[[title+' — '+sub],xl.head,...xl.rows]}]);
+    return;
+  }
+
+  /* ================= 2) CONTINUOUS DAILY CASH & EXPENSE LEDGER (Image 1) ================= */
+  if(this.tab==='cont'){
+    box.innerHTML=`
+      <div class="row" style="gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap">
+        ${fld('From Date',`<input type="date" id="cnt_f" value="${st.cfrom}">`)}
+        ${fld('To Date',`<input type="date" id="cnt_to" value="${st.cto}">`)}
+        ${fld('Payment Mode',`<select id="cnt_m">${opts([['','All Modes']].concat(MODES.map(m=>[m,m])),st.cmode)}</select>`)}
+        <span class="sp"></span>
+        <button class="btn btn-o" id="bk_x">⬇ Excel</button>
+        <button class="btn btn-p" id="bk_pr">🖨 Print Continuous Ledger</button>
+      </div>
+      <div id="bk_t"></div>
+    `;
+
+    $('#cnt_f').onchange=e=>{st.cfrom=e.target.value||monthStart();App.render()};
+    $('#cnt_to').onchange=e=>{st.cto=e.target.value||today();App.render()};
+    $('#cnt_m').onchange=e=>{st.cmode=e.target.value;App.render()};
+
+    const all=moneyEntries().filter(e=>!st.cmode||e.mode===st.cmode);
+    const before=all.filter(e=>e.date<st.cfrom);
+    const s=S();
+    let curBal=r2((!st.cmode||st.cmode==='Cash'?num(s.openingCash):0)+sum(before,e=>num(e.inn)-num(e.out)));
+
+    const dateSet=new Set();
+    all.filter(e=>e.date>=st.cfrom&&e.date<=st.cto).forEach(e=>dateSet.add(e.date));
+    if(!dateSet.size)dateSet.add(st.cfrom);
+    const dates=[...dateSet].sort();
+
+    const fmtNeg=v=>{const n=num(v);return n<0?`(${money(Math.abs(n))})`:money(n)};
+
+    let tblRows='';
+    const xlRows=[];
+    let prTables='';
+
+    dates.forEach(d=>{
+      const dayE=all.filter(e=>e.date===d);
+      const dayIn=sum(dayE,e=>num(e.inn));
+      const dayOut=sum(dayE,e=>num(e.out));
+      const dayOpen=curBal;
+      const grandTot=r2(dayOpen+dayIn);
+      const dayClose=r2(grandTot-dayOut);
+      curBal=dayClose;
+
+      const dObj=new Date(d+'T00:00:00');
+      const dName=dObj.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'short',year:'numeric'});
+
+      // Date Header Row (dark blue)
+      tblRows+=`
+        <tr style="background:#1e3a5f;color:#fff;font-weight:700">
+          <td style="padding:7px 10px;font-size:12px;color:#fff">${fmtD(d)}</td>
+          <td colspan="4" style="padding:7px 10px;font-size:12.5px;color:#fff">• ${dName}</td>
+        </tr>
+      `;
+      xlRows.push([fmtD(d),'• '+dName,'','','']);
+
+      // Opening Balance Row
+      tblRows+=`
+        <tr style="font-weight:600">
+          <td style="padding:5px 10px;color:var(--mut)">${fmtD(d)}</td>
+          <td style="padding:5px 10px">Opening Balance</td>
+          <td class="r" style="padding:5px 10px;font-weight:700">${fmtNeg(dayOpen)}</td>
+          <td></td><td></td>
+        </tr>
+      `;
+      xlRows.push([fmtD(d),'Opening Balance',dayOpen,'','']);
+
+      // Cash In Rows
+      const inItems=dayE.filter(e=>e.inn>0);
+      inItems.forEach(e=>{
+        const desc=e.desc?` <span class="muted">(${esc(e.desc)})</span>`:'';
+        tblRows+=`
+          <tr>
+            <td style="padding:4px 10px;color:var(--mut)">${fmtD(d)}</td>
+            <td style="padding:4px 10px">${esc(e.head)}${desc}</td>
+            <td class="r" style="padding:4px 10px">${money(e.inn)}</td>
+            <td></td><td></td>
+          </tr>
+        `;
+        xlRows.push([fmtD(d),e.head+(e.desc?' ('+e.desc+')':''),num(e.inn),'','']);
+      });
+
+      // Grand Total Row
+      tblRows+=`
+        <tr style="background:#f1f5f9;font-weight:700">
+          <td style="padding:5px 10px;color:var(--mut)">${fmtD(d)}</td>
+          <td style="padding:5px 10px">Grand Total</td>
+          <td class="r" style="padding:5px 10px;color:#1e3a5f">${fmtNeg(grandTot)}</td>
+          <td></td><td></td>
+        </tr>
+      `;
+      xlRows.push([fmtD(d),'Grand Total',grandTot,'','']);
+
+      // Expense Rows
+      const outItems=dayE.filter(e=>e.out>0);
+      outItems.forEach(e=>{
+        const desc=e.desc?` <span class="muted">(${esc(e.desc)})</span>`:'';
+        tblRows+=`
+          <tr>
+            <td style="padding:4px 10px;color:var(--mut)">${fmtD(d)}</td>
+            <td style="padding:4px 10px">${esc(e.head)}${desc}</td>
+            <td></td>
+            <td class="r" style="padding:4px 10px">${money(e.out)}</td>
+            <td></td>
+          </tr>
+        `;
+        xlRows.push([fmtD(d),e.head+(e.desc?' ('+e.desc+')':''),'',num(e.out),'']);
+      });
+
+      // Total Exp. Row (peach highlight)
+      tblRows+=`
+        <tr style="background:#ffedd5;color:#9a3412;font-weight:700">
+          <td style="padding:6px 10px">${fmtD(d)}</td>
+          <td style="padding:6px 10px">Total Exp.</td>
+          <td></td>
+          <td class="r" style="padding:6px 10px">${money(dayOut)}</td>
+          <td></td>
+        </tr>
+      `;
+      xlRows.push([fmtD(d),'Total Exp.','',dayOut,'']);
+
+      // Remaining Balance (Closing) Row (light green highlight)
+      tblRows+=`
+        <tr style="background:#dcfce7;color:#166534;font-weight:700">
+          <td style="padding:6px 10px">${fmtD(d)}</td>
+          <td style="padding:6px 10px">Remaining Balance (Closing)</td>
+          <td></td><td></td>
+          <td class="r" style="padding:6px 10px;font-size:13px">${fmtNeg(dayClose)}</td>
+        </tr>
+      `;
+      xlRows.push([fmtD(d),'Remaining Balance (Closing)','','',dayClose]);
+
+      // Blank spacing row
+      tblRows+=`<tr><td colspan="5" style="height:12px;background:transparent;border:none"></td></tr>`;
+    });
+
+    html=`
+      <div style="margin-bottom:10px;text-align:center">
+        <h3 style="margin:0;font-size:16px">${esc(s.name)} — Continuous Daily Cash & Expense Ledger</h3>
+        <div class="muted" style="font-size:12px">Period: ${fmtD(st.cfrom)} to ${fmtD(st.cto)}</div>
+      </div>
+      <div class="twrap" style="max-height:calc(100vh - 270px);overflow:auto;border:1px solid var(--bd);border-radius:8px">
+        <table class="tbl kn" style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="position:sticky;top:0;z-index:10;background:#0f172a;color:#fff">
+              <th style="padding:10px;width:110px;background:#0f172a;color:#fff">Date</th>
+              <th style="padding:10px;background:#0f172a;color:#fff">Particulars</th>
+              <th style="padding:10px;text-align:right;width:150px;background:#0f172a;color:#fff">Cash In (Debit)</th>
+              <th style="padding:10px;text-align:right;width:150px;background:#0f172a;color:#fff">Expense (Credit)</th>
+              <th style="padding:10px;text-align:right;width:160px;background:#0f172a;color:#fff">Balance</th>
+            </tr>
+          </thead>
+          <tbody>${tblRows}</tbody>
+        </table>
+      </div>
+    `;
+
+    title='Continuous Daily Cash & Expense Ledger';
+    sub=`${fmtD(st.cfrom)} to ${fmtD(st.cto)}`;
+    xl={name:'Continuous_Daily_Ledger',head:['Date','Particulars','Cash In (Debit)','Expense (Credit)','Balance'],rows:xlRows};
+
+    $('#bk_t').innerHTML=html;
+    $('#bk_pr').onclick=()=>bkPrint(title,sub,html,false);
+    $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:'Ledger',rows:[[title+' — '+sub],xl.head,...xl.rows]}]);
+    return;
+  }
+
+  /* ================= 3) MONTHLY DAILY SUMMARY ================= */
+  if(this.tab==='summary'){
+    const ym=st.sumYm||today().slice(0,7);
+    const all=moneyEntries();
+    const [y,mStr]=ym.split('-');
+    const daysInMonth=new Date(+y,+mStr,0).getDate();
+
+    let sumIn=0,sumOut=0,sumBal=0;
+    let sRows='';
+    const xlRows=[];
+
+    for(let d=1;d<=daysInMonth;d++){
+      const dayPad=String(d).padStart(2,'0');
+      const dStr=`${ym}-${dayPad}`;
+      const dDisplay=`${dayPad}.${mStr}.${y}`;
+      const dayE=all.filter(e=>e.date===dStr);
+      const dayIn=sum(dayE,e=>num(e.inn));
+      const dayOut=sum(dayE,e=>num(e.out));
+      const dayBal=dayIn-dayOut;
+
+      sumIn+=dayIn;
+      sumOut+=dayOut;
+      sumBal+=dayBal;
+
+      sRows+=`
+        <tr>
+          <td style="padding:7px 12px;font-family:monospace;font-size:13px">${dDisplay}</td>
+          <td class="r" style="padding:7px 12px;font-weight:600">${money(dayIn)}</td>
+          <td class="r" style="padding:7px 12px;font-weight:600">${money(dayOut)}</td>
+          <td class="r" style="padding:7px 12px;font-weight:700;color:${dayBal>=0?'#15803d':'#b91c1c'}">${money(dayBal)}</td>
+        </tr>
+      `;
+      xlRows.push([dDisplay,dayIn,dayOut,dayBal]);
+    }
+
+    const avgIn=r2(sumIn/daysInMonth);
+    const avgOut=r2(sumOut/daysInMonth);
+    const avgBal=r2(sumBal/daysInMonth);
+
+    box.innerHTML=`
+      <div class="row" style="gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap">
+        ${fld('Select Month',`<input type="month" id="sum_m" value="${ym}">`)}
+        <span class="sp"></span>
+        <button class="btn btn-o" id="bk_x">⬇ Excel</button>
+        <button class="btn btn-p" id="bk_pr">🖨 Print Statement</button>
+      </div>
+
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><small>Total Collection (Dr)</small><b style="color:#15803d">Tk ${money(sumIn)}</b></div>
+        <div class="kpi" style="--c:#fee2e2"><small>Total Expense (Cr)</small><b style="color:#b91c1c">Tk ${money(sumOut)}</b></div>
+        <div class="kpi" style="--c:#e0f2fe"><small>Net Remaining Balance</small><b style="color:${sumBal>=0?'#15803d':'#b91c1c'}">Tk ${money(sumBal)}</b></div>
+        <div class="kpi" style="--c:#f1f5f9"><small>Daily Average Net</small><b>Tk ${money(avgBal)}</b></div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--bd)">
+        <div class="twrap" style="max-height:calc(100vh - 310px);overflow:auto">
+          <table class="tbl kn" style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="position:sticky;top:0;z-index:10;background:#0f172a;color:#fff">
+                <th style="padding:10px 14px;background:#0f172a;color:#fff;width:25%">Date</th>
+                <th style="padding:10px 14px;text-align:right;background:#0f172a;color:#fff;width:25%">Total Collection (Dr)</th>
+                <th style="padding:10px 14px;text-align:right;background:#0f172a;color:#fff;width:25%">Total Expense (Cr)</th>
+                <th style="padding:10px 14px;text-align:right;background:#0f172a;color:#fff;width:25%">Net Balance</th>
+              </tr>
+            </thead>
+            <tbody>${sRows}</tbody>
+            <tfoot>
+              <tr style="position:sticky;bottom:0;z-index:10;background:#f1f5f9;font-weight:700;border-top:2px solid var(--bd)">
+                <td style="padding:10px 14px">Total:</td>
+                <td class="r" style="padding:10px 14px;color:#15803d">${money(sumIn)}</td>
+                <td class="r" style="padding:10px 14px;color:#b91c1c">${money(sumOut)}</td>
+                <td class="r" style="padding:10px 14px;color:${sumBal>=0?'#15803d':'#b91c1c'}">${money(sumBal)}</td>
+              </tr>
+              <tr style="position:sticky;bottom:0;z-index:10;background:#f8fafc;font-weight:700">
+                <td style="padding:8px 14px">Daily Average:</td>
+                <td class="r" style="padding:8px 14px">${money(avgIn)}</td>
+                <td class="r" style="padding:8px 14px">${money(avgOut)}</td>
+                <td class="r" style="padding:8px 14px">${money(avgBal)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    `;
+
+    $('#sum_m').onchange=e=>{st.sumYm=e.target.value||today().slice(0,7);App.render()};
+
+    title='Monthly Daily Summary — '+monthName(ym);
+    sub=monthName(ym);
+    xl={name:'Monthly_Summary_'+ym,head:['Date','Total Collection','Total Expense','Net Balance'],rows:xlRows.concat([['Total:',sumIn,sumOut,sumBal],['Daily Average:',avgIn,avgOut,avgBal]])};
+
+    // Formatted print report matching Image 2
+    $('#bk_pr').onclick=()=>{
+      let prBodyRows=xlRows.map(r=>`
+        <tr>
+          <td style="border:1px solid #000;padding:5px 8px;text-align:center">${r[0]}</td>
+          <td style="border:1px solid #000;padding:5px 8px;text-align:right">${money(r[1])}</td>
+          <td style="border:1px solid #000;padding:5px 8px;text-align:right">${money(r[2])}</td>
+          <td style="border:1px solid #000;padding:5px 8px;text-align:right;font-weight:700">${money(r[3])}</td>
+        </tr>
+      `).join('');
+
+      const prHtml=`
+        <div style="font-family:Arial,sans-serif;color:#000;max-width:550px;margin:0 auto">
+          <div style="border:2px solid #000;overflow:hidden">
+            <div style="display:flex;border-bottom:2px solid #000;background:#f8fafc">
+              <div style="width:30%;border-right:2px solid #000;padding:8px;text-align:center;font-weight:700;font-size:14px">Month</div>
+              <div style="width:70%;padding:8px;text-align:center;font-weight:700;font-size:14px">${monthName(ym)}</div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:11px">
+              <thead>
+                <tr style="background:#0f172a;color:#fff;font-weight:700">
+                  <th style="border:1px solid #000;padding:6px;width:28%;text-align:center">Date</th>
+                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Total Collection</th>
+                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Total Expense</th>
+                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Remaining</th>
+                </tr>
+              </thead>
+              <tbody>${prBodyRows}</tbody>
+              <tfoot>
+                <tr style="border-top:2px solid #000;font-weight:700;background:#f1f5f9">
+                  <td style="border:1px solid #000;padding:6px;text-align:center">Total:</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumIn)}</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumOut)}</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumBal)}</td>
+                </tr>
+                <tr style="font-weight:700;background:#fff">
+                  <td style="border:1px solid #000;padding:6px;text-align:center">Average</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgIn)}</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgOut)}</td>
+                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgBal)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:35px;font-size:11px;font-weight:700">
+            <div style="border-top:1px solid #000;padding-top:4px;width:110px;text-align:center">Prepared by</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:110px;text-align:center">Accountant</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:130px;text-align:center">Managing Director</div>
+          </div>
+        </div>
+      `;
+      Print.go(prHtml,{land:false,page:'A4',title:'Monthly_Summary_'+ym});
+    };
+
+    $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'.xlsx',[{name:'Summary',rows:[[title],xl.head,...xl.rows]}]);
+    return;
+  }
+
+  /* ================= 4) PROFIT AND LOSS ================= */
+  if(this.tab==='pl'){
+    box.innerHTML=bar(`${fld('From',`<input type="date" id="bk_f" value="${st.pfrom}">`)}${fld('To',`<input type="date" id="bk_to" value="${st.pto}">`)}<button class="btn btn-o" id="bk_fy">This financial year</button>`);
+    const wire=(f,t)=>{const a=$('#bk_f',box),b=$('#bk_to',box);if(a)a.onchange=()=>{st[f]=a.value||today();App.render()};if(b)b.onchange=()=>{st[t]=b.value||today();App.render()}};
+    wire('pfrom','pto');
+    $('#bk_fy',box).onclick=()=>{st.pfrom=fy.from;st.pto=today();App.render()};
+    const r=bookCalc(st.pfrom,st.pto);
+    const inc=[{c:['Test income (after discount)',money(r.testInc)]},{c:['Consultation fees',money(r.consult)]}].concat(Object.entries(r.incH).map(([k,v])=>({c:[esc(k),money(v)]})));
+    inc.push({c:['Total income',money(r.income)],b:1});
+    const exp=Object.entries(r.expH).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({c:[esc(k),money(v)]})).concat([{c:['Referral commission (earned on bills)',money(r.commAcc)]},{c:['Doctor share paid',money(r.conPaid)]},{c:['Purchases (reagents, supplies)',money(r.pur)]}]);
+    exp.push({c:['Total expense',money(r.expense)],b:1});
     html=`<div class="g2"><div><div class="ch">Income</div>${rowsTbl([['Particulars'],['Amount (Tk)','r']],inc)}</div><div><div class="ch">Expense</div>${rowsTbl([['Particulars'],['Amount (Tk)','r']],exp)}</div></div><div class="alert ${r.profit>=0?'s':'e'}" style="margin-top:12px;font-size:15px"><b>Net ${r.profit>=0?'Profit':'Loss'}: Tk ${money(Math.abs(r.profit))}</b> <small>(Gross bill Tk ${money(r.gross)}, discount Tk ${money(r.disc)})</small></div>`;
-    title='PROFIT AND LOSS STATEMENT';sub=`${fmtD(st.pfrom)} to ${fmtD(st.pto)}`;xl={name:'Profit_and_Loss',head:['Particulars','Income','Expense'],rows:inc.map(x=>[x.c[0].replace(/<[^>]+>/g,''),num(String(x.c[1]).replace(/,/g,'')),'']).concat(exp.map(x=>[x.c[0].replace(/<[^>]+>/g,''),'',num(String(x.c[1]).replace(/,/g,''))]))}}
-  else if(this.tab==='tb'||this.tab==='bs'){box.innerHTML=bar(fld('As on',`<input type="date" id="bk_f" value="${st.asof}">`));wire('asof','asof');const a=$('#bk_f',box);a.onchange=()=>{st.asof=a.value||today();App.render()};
+    title='PROFIT AND LOSS STATEMENT';sub=`${fmtD(st.pfrom)} to ${fmtD(st.pto)}`;
+    xl={name:'Profit_and_Loss',head:['Particulars','Income','Expense'],rows:inc.map(x=>[x.c[0].replace(/<[^>]+>/g,''),num(String(x.c[1]).replace(/,/g,'')),'']).concat(exp.map(x=>[x.c[0].replace(/<[^>]+>/g,''),'',num(String(x.c[1]).replace(/,/g,''))]))};
+  }
+
+  /* ================= 5) TRIAL BALANCE / BALANCE SHEET ================= */
+  else if(this.tab==='tb'||this.tab==='bs'){
+    box.innerHTML=bar(fld('As on',`<input type="date" id="bk_f" value="${st.asof}">`));
+    const a=$('#bk_f',box);if(a)a.onchange=()=>{st.asof=a.value||today();App.render()};
     const r=bookCalc('',st.asof);const f=fyOf(st.asof);const cur=bookCalc(f.from,st.asof);const ret=r2(r.profit-cur.profit);
-    if(this.tab==='tb'){const D=[],C=[];const put=(n,v,dr)=>{v=r2(v);if(!v)return;((v>0)===dr?D:C).push([n,Math.abs(v)])};
-      Object.entries(r.cash).forEach(([m,v])=>put(m==='Cash'?'Cash in hand':m+' account',v,true));put(r.rec>=0?'Patients receivable (due)':'Patient advances',r.rec,true);put('Loans and advances given',r.loanRec,true);
-      Object.entries(r.expH).forEach(([k,v])=>put(k,v,true));put('Referral commission',r.commAcc,true);put('Doctor share',r.conPaid,true);put('Purchases',r.pur,true);
-      put('Capital / Opening cash',r.open,false);put('Capital invested by share holders',num(r.capIn),false);put('Profit paid / capital withdrawn (share holders)',num(r.drawn),true);put('Test income',r.testInc,false);put('Consultation fees',r.consult,false);Object.entries(r.incH).forEach(([k,v])=>put(k,v,false));
-      put('Referral commission payable',r.commPay,false);put('Supplier payable',r.supPay,false);put('Loans taken',r.loanPay,false);
-      const n=Math.max(D.length,C.length),rows=[];for(let i=0;i<n;i++)rows.push({c:[esc((D[i]||[''])[0]),D[i]?money(D[i][1]):'',esc((C[i]||[''])[0]),C[i]?money(C[i][1]):'']});
-      const td=sum(D,x=>x[1]),tc=sum(C,x=>x[1]);rows.push({c:['Total',money(td),'Total',money(tc)],b:1});
-      html=rowsTbl([['Debit (Dr)'],['Tk','r'],['Credit (Cr)'],['Tk','r']],rows)+`<div class="alert ${Math.abs(td-tc)<0.5?'s':'e'}" style="margin-top:10px">${Math.abs(td-tc)<0.5?'✓ Trial balance agrees (Debit = Credit)':'Difference Tk '+money(td-tc)}</div>`;
-      title='TRIAL BALANCE';sub='As on '+fmtD(st.asof);xl={name:'Trial_Balance',head:['Debit','Tk','Credit','Tk'],rows:[...Array(n)].map((_,i)=>[(D[i]||[''])[0],D[i]?D[i][1]:'',(C[i]||[''])[0],C[i]?C[i][1]:''])}}
-    else{const A=Object.entries(r.cash).filter(x=>r2(x[1])).map(([m,v])=>[m==='Cash'?'Cash in hand':m+' account',v]);if(r.rec>0)A.push(['Patients receivable (due)',r.rec]);if(r.loanRec)A.push(['Loans and advances given',r.loanRec]);
-      const Li=[];if(r.commPay)Li.push(['Referral commission payable',r.commPay]);if(r.supPay)Li.push(['Supplier payable',r.supPay]);if(r.loanPay)Li.push(['Loans taken',r.loanPay]);if(r.rec<0)Li.push(['Patient advances',-r.rec]);
-      const Eq=[['Capital / Opening cash',r.open],...(num(r.capIn)||num(r.drawn)?[['Share holders: capital invested less paid out',r2(num(r.capIn)-num(r.drawn))]]:[]),['Retained profit (previous years)',ret],[`Profit for ${f.label} (to ${fmtD(st.asof)})`,cur.profit]];
+    if(this.tab==='tb'){
+      const D=[],C=[];
+      const add=(n,d,c)=>{if(r2(d)>0)D.push([n,r2(d)]);if(r2(c)>0)C.push([n,r2(c)])};
+      add('Cash and bank balances',r.cashT,0);
+      add('Receivable from patients (due bills)',r.rec,0);
+      add('Receivable from corporate clients',r.corpRec,0);
+      add('Payable to suppliers',0,r.supPay);
+      add('Payable to doctors (consultation share)',0,r.conPay);
+      add('Payable to referrers (commission)',0,r.commPay);
+      add('Loan payable (net)',0,r.loanNet);
+      add('Owner capital / equity',0,r.equity);
+      add('Retained profit from previous years',ret<0?-ret:0,ret>0?ret:0);
+      add('Test income',0,cur.testInc);add('Consultation fee income',0,cur.consult);
+      Object.entries(cur.incH).forEach(([k,v])=>add(k,0,v));
+      Object.entries(cur.expH).forEach(([k,v])=>add(k,v,0));
+      add('Referral commission',cur.commAcc,0);add('Doctor share',cur.conPaid,0);add('Purchases',cur.pur,0);
+      const td=sum(D,x=>x[1]),tc=sum(C,x=>x[1]);
+      const max=Math.max(D.length,C.length);
+      const rows=[];for(let i=0;i<max;i++){const d=D[i],c=C[i];rows.push({c:[d?esc(d[0]):'',d?money(d[1]):'',c?esc(c[0]):'',c?money(c[1]):'']})}
+      rows.push({c:['Total',money(td),'Total',money(tc)],b:1});
+      html=rowsTbl([['Debit particulars'],['Debit (Tk)','r'],['Credit particulars'],['Credit (Tk)','r']],rows)+`<div class="alert ${Math.abs(td-tc)<0.5?'s':'e'}" style="margin-top:10px">${Math.abs(td-tc)<0.5?'✓ Trial balance agrees':'Difference Tk '+money(td-tc)}</div>`;
+      title='TRIAL BALANCE';sub='As on '+fmtD(st.asof);
+      xl={name:'Trial_Balance',head:['Debit Particulars','Debit Tk','Credit Particulars','Credit Tk'],rows:rows.map(x=>[x.c[0],num(String(x.c[1]).replace(/,/g,'')),x.c[2],num(String(x.c[3]).replace(/,/g,''))])};
+    }else{
+      const A=[['Cash and bank balances',r.cashT],['Receivable from patients (due bills)',r.rec],['Receivable from corporate clients',r.corpRec]].filter(x=>x[1]);
+      const Li=[['Payable to suppliers',r.supPay],['Payable to doctors (consultation share)',r.conPay],['Payable to referrers (commission)',r.commPay],['Loan payable (net)',r.loanNet]].filter(x=>x[1]);
+      const Eq=[['Owner capital',r.equity],['Retained profit from previous years',ret],[`Profit for this period (${fmtD(f.from)} to ${fmtD(st.asof)})`,cur.profit]];
       const ta=sum(A,x=>x[1]),tl=sum(Li,x=>x[1])+sum(Eq,x=>x[1]);const tb=(l)=>l.map(x=>({c:[esc(x[0]),money(x[1])]}));
       html=`<div class="g2"><div><div class="ch">Assets</div>${rowsTbl([['Particulars'],['Tk','r']],tb(A).concat([{c:['Total assets',money(ta)],b:1}]))}</div><div><div class="ch">Liabilities and Owner's Equity</div>${rowsTbl([['Particulars'],['Tk','r']],tb(Li).concat(Li.length?[{c:['Total liabilities',money(sum(Li,x=>x[1]))],b:1}]:[]).concat(tb(Eq)).concat([{c:['Total liabilities and equity',money(tl)],b:1}]))}</div></div><div class="alert ${Math.abs(ta-tl)<0.5?'s':'e'}" style="margin-top:10px">${Math.abs(ta-tl)<0.5?'✓ Balance sheet agrees':'Difference Tk '+money(ta-tl)}</div><p class="muted" style="font-size:12px">Stock of reagents is shown as expense when purchased.</p>`;
-      title='BALANCE SHEET';sub='As on '+fmtD(st.asof);xl={name:'Balance_Sheet',head:['Particulars','Tk'],rows:A.concat([['Total assets',ta]],Li,Eq,[['Total liabilities and equity',tl]])}}}
-  else{const C=DB.all('closings').sort((a,b)=>a.to<b.to?1:-1);const s=S();const adm=Auth.user.role==='admin';const pf=fyOf(addDays(fyOf(today()).from,-1));
+      title='BALANCE SHEET';sub='As on '+fmtD(st.asof);
+      xl={name:'Balance_Sheet',head:['Particulars','Tk'],rows:A.concat([['Total assets',ta]],Li,Eq,[['Total liabilities and equity',tl]])};
+    }
+  }
+
+  /* ================= 6) YEAR-END CLOSING & POSTING LOCK ================= */
+  else{
+    const C=DB.all('closings').sort((a,b)=>a.to<b.to?1:-1);const s=S();const adm=Auth.user.role==='admin';const pf=fyOf(addDays(fyOf(today()).from,-1));
     box.innerHTML=`<div class="g2"><div><div class="ch">🔒 Posting lock</div><p class="muted" style="font-size:12.5px;margin-top:0">Entries dated on or before the lock date cannot be added, changed or deleted by anyone (bills, collections, expenses, payments, purchases, loans). Lab results and report delivery still work.</p>
       <div class="row" style="gap:8px;align-items:flex-end">${fld('Locked up to',`<input type="date" id="lk_d" value="${esc(s.lockUpto||'')}" ${adm?'':'disabled'}>`)}${adm?'<button class="btn btn-a" id="lk_s">Save lock</button><button class="btn btn-o" id="lk_m">Lock last month</button><button class="btn btn-o" id="lk_x">Unlock</button>':''}</div>
       <div class="ch" style="margin-top:16px">Financial year</div><div class="row" style="gap:8px;align-items:flex-end">${fld('Year starts in',`<select id="fy_m" ${adm?'':'disabled'}>${opts([1,2,3,4,5,6,7,8,9,10,11,12].map(i=>[i,['January','February','March','April','May','June','July','August','September','October','November','December'][i-1]]),fyStartM())}</select>`)}${adm?'<button class="btn btn-o" id="fy_s">Save</button>':''}</div></div>
-      <div><div class="ch">📕 Year-end closing</div><p class="muted" style="font-size:12.5px;margin-top:0">Closing a year saves its final profit and balances and locks all its entries. The profit moves to "Retained profit" in the balance sheet.</p>
+      <div><div class="ch">📖 Year-end closing</div><p class="muted" style="font-size:12.5px;margin-top:0">Closing a year saves its final profit and balances and locks all its entries. The profit moves to "Retained profit" in the balance sheet.</p>
       ${adm?`<div class="row" style="gap:8px;align-items:flex-end">${fld('Year',`<select id="yc_y">${opts([0,1,2,3].map(i=>{let d=fyOf(today()).from;for(let k=0;k<=i;k++)d=fyOf(addDays(d,-1)).from;const f=fyOf(d);return [f.from,f.label+' ('+fmtD(f.from)+' to '+fmtD(f.to)+')']}),pf.from)}</select>`)}<button class="btn btn-w" id="yc_go">Close year</button></div>`:''}
       ${rowsTbl([['Year'],['Period'],['Profit','r'],['Closed by']],C.map(c=>({c:[esc(c.label),fmtD(c.from)+' to '+fmtD(c.to),money(c.profit),esc(c.by)+'<br><small class="muted">'+fmtDT(c.at)+'</small>']})))}</div></div>`;
-    if(adm){$('#lk_s',box).onclick=()=>{setSet({lockUpto:$('#lk_d',box).value||''});log('Posting lock',$('#lk_d',box).value||'off');toast('Saved');App.render()};$('#lk_x',box).onclick=async()=>{if(await ask('Remove the posting lock?')){setSet({lockUpto:''});log('Posting lock','off');App.render()}};
+    if(adm){
+      $('#lk_s',box).onclick=()=>{setSet({lockUpto:$('#lk_d',box).value||''});log('Posting lock',$('#lk_d',box).value||'off');toast('Saved');App.render()};
+      $('#lk_x',box).onclick=async()=>{if(await ask('Remove the posting lock?')){setSet({lockUpto:''});log('Posting lock','off');App.render()}};
       $('#lk_m',box).onclick=()=>{const d=addDays(today().slice(0,8)+'01',-1);setSet({lockUpto:d});log('Posting lock',d);toast('Locked up to '+fmtD(d));App.render()};
       $('#fy_s',box).onclick=()=>{setSet({fyM:num($('#fy_m',box).value)});toast('Saved');App.render()};
-      $('#yc_go',box).onclick=async()=>{const f=fyOf($('#yc_y',box).value);if(f.to>=today())return toast('This year has not ended yet','warn');const r=bookCalc(f.from,f.to),b=bookCalc('',f.to);
+      $('#yc_go',box).onclick=async()=>{
+        const f=fyOf($('#yc_y',box).value);if(f.to>=today())return toast('This year has not ended yet','warn');
+        const r=bookCalc(f.from,f.to),b=bookCalc('',f.to);
         if(!await ask(`Close financial year ${f.label}?\nProfit: Tk ${money(r.profit)}\nCash and bank: Tk ${money(b.cashT)}\nAll entries up to ${fmtD(f.to)} will be locked.`,{ok:'Close year'}))return;
         DB.put('closings',{id:'fy_'+f.from,label:f.label,from:f.from,to:f.to,profit:r.profit,income:r.income,expense:r.expense,cash:b.cash,rec:b.rec,supPay:b.supPay,commPay:b.commPay,by:Auth.user.name,at:Date.now()});
-        if(!S().lockUpto||S().lockUpto<f.to)setSet({lockUpto:f.to});log('Year-end closing',f.label+' profit '+money(r.profit));toast('Year closed and locked');App.render()}}
-    return}
-  $('#bk_t',box).innerHTML=html;$('#bk_pr',box).onclick=()=>bkPrint(title,sub,html,this.tab==='day');$('#bk_x',box).onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:xl.name.slice(0,30),rows:[[title+' — '+sub],xl.head,...xl.rows]}])}};
+        if(!S().lockUpto||S().lockUpto<f.to)setSet({lockUpto:f.to});log('Year-end closing',f.label+' profit '+money(r.profit));toast('Year closed and locked');App.render();
+      };
+    }
+    return;
+  }
+
+  $('#bk_t',box).innerHTML=html;
+  $('#bk_pr',box).onclick=()=>bkPrint(title,sub,html,false);
+  $('#bk_x',box).onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:xl.name.slice(0,30),rows:[[title+' — '+sub],xl.head,...xl.rows]}]);
+}};
+
 
 /* ---- 10) posting lock ---- */
 const LOCK_COLS=new Set(['bills','payments','txns','commPays','conPays','supPays','purchases','loantx','stockTx']);
