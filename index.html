@@ -5280,7 +5280,6 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       const startIdx=st.page*per;
       const slice=per===999999?filtered:filtered.slice(startIdx,startIdx+per);
 
-      // Running balance calculation
       let bal=ob;
       filtered.forEach((e,i)=>{
         e._bal=r2(bal+num(e.inn)-num(e.out));
@@ -5339,7 +5338,6 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
         </div>
       `;
 
-      // Pagination controls
       const pgrEl=$('#dbk_pgr');
       if(N<=per&&!st.page){
         pgrEl.style.display='none';
@@ -5390,10 +5388,10 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
 
       const prHtml=`
         <div style="font-family:Arial,sans-serif;color:#000">
-          <div style="text-align:center;margin-bottom:12px">
-            <h2 style="margin:0;font-size:18px">${esc(S().name)}</h2>
-            <div style="font-size:13px;font-weight:700">TALLY DAY BOOK VOUCHER REGISTER</div>
-            <div style="font-size:12px;color:#475569">Period: ${esc(sub)}</div>
+          ${Print.head(true)}
+          <div style="text-align:center;margin:10px 0 14px">
+            <div style="font-size:14px;font-weight:700;letter-spacing:0.5px">TALLY DAY BOOK — DAILY VOUCHER REGISTER</div>
+            <div style="font-size:12px;color:#475569;margin-top:2px">Period: ${esc(sub)}</div>
           </div>
           <table style="width:100%;border-collapse:collapse;font-size:11px">
             <thead>
@@ -5407,7 +5405,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
                 <th style="border:1px solid #000;padding:5px;width:85px;text-align:right">Credit (Cr)</th>
               </tr>
               <tr style="background:#fff;font-weight:700">
-                <td colspan="5" style="border:1px solid #000;padding:4px">Opening Balance:</td>
+                <td colspan="5" style="border:1px solid #000;padding:4px">Opening Balance (b/f):</td>
                 <td colspan="2" style="border:1px solid #000;padding:4px;text-align:right">${money(ob)}</td>
               </tr>
             </thead>
@@ -5424,7 +5422,7 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
               </tr>
             </tfoot>
           </table>
-          <div style="display:flex;justify-content:space-between;margin-top:40px;padding:0 20px;font-size:11px;font-weight:700">
+          <div style="display:flex;justify-content:space-between;margin-top:35px;padding:0 20px;font-size:11px;font-weight:700">
             <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Prepared by</div>
             <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Accountant</div>
             <div style="border-top:1px solid #000;padding-top:4px;width:140px;text-align:center">Authorized Signature</div>
@@ -5470,7 +5468,6 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
 
     let tblRows='';
     const xlRows=[];
-    let prTables='';
 
     dates.forEach(d=>{
       const dayE=all.filter(e=>e.date===d);
@@ -5487,8 +5484,8 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       // Date Header Row (dark blue)
       tblRows+=`
         <tr style="background:#1e3a5f;color:#fff;font-weight:700">
-          <td style="padding:7px 10px;font-size:12px;color:#fff">${fmtD(d)}</td>
-          <td colspan="4" style="padding:7px 10px;font-size:12.5px;color:#fff">• ${dName}</td>
+          <td style="padding:6px 8px;font-size:11px;color:#fff">${fmtD(d)}</td>
+          <td colspan="4" style="padding:6px 8px;font-size:12px;color:#fff">• ${dName}</td>
         </tr>
       `;
       xlRows.push([fmtD(d),'• '+dName,'','','']);
@@ -5496,9 +5493,9 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       // Opening Balance Row
       tblRows+=`
         <tr style="font-weight:600">
-          <td style="padding:5px 10px;color:var(--mut)">${fmtD(d)}</td>
-          <td style="padding:5px 10px">Opening Balance</td>
-          <td class="r" style="padding:5px 10px;font-weight:700">${fmtNeg(dayOpen)}</td>
+          <td style="padding:4px 8px;color:var(--mut)">${fmtD(d)}</td>
+          <td style="padding:4px 8px">Opening Balance</td>
+          <td class="r" style="padding:4px 8px;font-weight:700">${fmtNeg(dayOpen)}</td>
           <td></td><td></td>
         </tr>
       `;
@@ -5510,9 +5507,9 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
         const desc=e.desc?` <span class="muted">(${esc(e.desc)})</span>`:'';
         tblRows+=`
           <tr>
-            <td style="padding:4px 10px;color:var(--mut)">${fmtD(d)}</td>
-            <td style="padding:4px 10px">${esc(e.head)}${desc}</td>
-            <td class="r" style="padding:4px 10px">${money(e.inn)}</td>
+            <td style="padding:3px 8px;color:var(--mut)">${fmtD(d)}</td>
+            <td style="padding:3px 8px">${esc(e.head)}${desc}</td>
+            <td class="r" style="padding:3px 8px">${money(e.inn)}</td>
             <td></td><td></td>
           </tr>
         `;
@@ -5522,9 +5519,9 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       // Grand Total Row
       tblRows+=`
         <tr style="background:#f1f5f9;font-weight:700">
-          <td style="padding:5px 10px;color:var(--mut)">${fmtD(d)}</td>
-          <td style="padding:5px 10px">Grand Total</td>
-          <td class="r" style="padding:5px 10px;color:#1e3a5f">${fmtNeg(grandTot)}</td>
+          <td style="padding:4px 8px;color:var(--mut)">${fmtD(d)}</td>
+          <td style="padding:4px 8px">Grand Total</td>
+          <td class="r" style="padding:4px 8px;color:#1e3a5f">${fmtNeg(grandTot)}</td>
           <td></td><td></td>
         </tr>
       `;
@@ -5536,10 +5533,10 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
         const desc=e.desc?` <span class="muted">(${esc(e.desc)})</span>`:'';
         tblRows+=`
           <tr>
-            <td style="padding:4px 10px;color:var(--mut)">${fmtD(d)}</td>
-            <td style="padding:4px 10px">${esc(e.head)}${desc}</td>
+            <td style="padding:3px 8px;color:var(--mut)">${fmtD(d)}</td>
+            <td style="padding:3px 8px">${esc(e.head)}${desc}</td>
             <td></td>
-            <td class="r" style="padding:4px 10px">${money(e.out)}</td>
+            <td class="r" style="padding:3px 8px">${money(e.out)}</td>
             <td></td>
           </tr>
         `;
@@ -5549,10 +5546,10 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       // Total Exp. Row (peach highlight)
       tblRows+=`
         <tr style="background:#ffedd5;color:#9a3412;font-weight:700">
-          <td style="padding:6px 10px">${fmtD(d)}</td>
-          <td style="padding:6px 10px">Total Exp.</td>
+          <td style="padding:5px 8px">${fmtD(d)}</td>
+          <td style="padding:5px 8px">Total Exp.</td>
           <td></td>
-          <td class="r" style="padding:6px 10px">${money(dayOut)}</td>
+          <td class="r" style="padding:5px 8px">${money(dayOut)}</td>
           <td></td>
         </tr>
       `;
@@ -5561,23 +5558,19 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       // Remaining Balance (Closing) Row (light green highlight)
       tblRows+=`
         <tr style="background:#dcfce7;color:#166534;font-weight:700">
-          <td style="padding:6px 10px">${fmtD(d)}</td>
-          <td style="padding:6px 10px">Remaining Balance (Closing)</td>
+          <td style="padding:5px 8px">${fmtD(d)}</td>
+          <td style="padding:5px 8px">Remaining Balance (Closing)</td>
           <td></td><td></td>
-          <td class="r" style="padding:6px 10px;font-size:13px">${fmtNeg(dayClose)}</td>
+          <td class="r" style="padding:5px 8px;font-size:12px">${fmtNeg(dayClose)}</td>
         </tr>
       `;
       xlRows.push([fmtD(d),'Remaining Balance (Closing)','','',dayClose]);
 
       // Blank spacing row
-      tblRows+=`<tr><td colspan="5" style="height:12px;background:transparent;border:none"></td></tr>`;
+      tblRows+=`<tr><td colspan="5" style="height:8px;background:transparent;border:none"></td></tr>`;
     });
 
     html=`
-      <div style="margin-bottom:10px;text-align:center">
-        <h3 style="margin:0;font-size:16px">${esc(s.name)} — Continuous Daily Cash & Expense Ledger</h3>
-        <div class="muted" style="font-size:12px">Period: ${fmtD(st.cfrom)} to ${fmtD(st.cto)}</div>
-      </div>
       <div class="twrap" style="max-height:calc(100vh - 270px);overflow:auto;border:1px solid var(--bd);border-radius:8px">
         <table class="tbl kn" style="width:100%;border-collapse:collapse">
           <thead>
@@ -5594,13 +5587,45 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
       </div>
     `;
 
-    title='Continuous Daily Cash & Expense Ledger';
     sub=`${fmtD(st.cfrom)} to ${fmtD(st.cto)}`;
     xl={name:'Continuous_Daily_Ledger',head:['Date','Particulars','Cash In (Debit)','Expense (Credit)','Balance'],rows:xlRows};
 
     $('#bk_t').innerHTML=html;
-    $('#bk_pr').onclick=()=>bkPrint(title,sub,html,false);
-    $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:'Ledger',rows:[[title+' — '+sub],xl.head,...xl.rows]}]);
+
+    // Print: Only company header at top + Title box + Table (no repeated company line below!)
+    $('#bk_pr').onclick=()=>{
+      const prHtml=`
+        <div style="font-family:Arial,sans-serif;color:#000">
+          ${Print.head(true)}
+          <div style="text-align:center;margin:10px 0 14px">
+            <div style="display:inline-block;border:2px solid #000;border-radius:6px;padding:5px 18px;font-weight:700;font-size:14px;letter-spacing:0.5px">
+              Continuous Daily Cash & Expense Ledger
+            </div>
+            <div style="font-size:12px;color:#475569;margin-top:4px">Period: ${esc(sub)}</div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:10px">
+            <thead>
+              <tr style="background:#0f172a;color:#fff;font-weight:700">
+                <th style="border:1px solid #000;padding:4px 6px;width:80px;text-align:left">Date</th>
+                <th style="border:1px solid #000;padding:4px 6px;text-align:left">Particulars</th>
+                <th style="border:1px solid #000;padding:4px 6px;width:105px;text-align:right">Cash In (Debit)</th>
+                <th style="border:1px solid #000;padding:4px 6px;width:105px;text-align:right">Expense (Credit)</th>
+                <th style="border:1px solid #000;padding:4px 6px;width:115px;text-align:right">Balance</th>
+              </tr>
+            </thead>
+            <tbody>${tblRows}</tbody>
+          </table>
+          <div style="display:flex;justify-content:space-between;margin-top:35px;padding:0 20px;font-size:11px;font-weight:700">
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Prepared by</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:120px;text-align:center">Accountant</div>
+            <div style="border-top:1px solid #000;padding-top:4px;width:140px;text-align:center">Managing Director</div>
+          </div>
+        </div>
+      `;
+      Print.go(prHtml,{land:false,page:'A4',title:'Continuous_Daily_Ledger'});
+    };
+
+    $('#bk_x').onclick=()=>xl&&XLSX.download(xl.name+'_'+today()+'.xlsx',[{name:'Ledger',rows:[['Continuous Daily Cash & Expense Ledger — '+sub],xl.head,...xl.rows]}]);
     return;
   }
 
@@ -5695,46 +5720,47 @@ SCREENS.books={t:'Accounts Books',tab:'day',st:null,render(el){
     sub=monthName(ym);
     xl={name:'Monthly_Summary_'+ym,head:['Date','Total Collection','Total Expense','Net Balance'],rows:xlRows.concat([['Total:',sumIn,sumOut,sumBal],['Daily Average:',avgIn,avgOut,avgBal]])};
 
-    // Formatted print report matching Image 2
+    // Print: Includes Company Header at top + Box format
     $('#bk_pr').onclick=()=>{
       let prBodyRows=xlRows.map(r=>`
         <tr>
-          <td style="border:1px solid #000;padding:5px 8px;text-align:center">${r[0]}</td>
-          <td style="border:1px solid #000;padding:5px 8px;text-align:right">${money(r[1])}</td>
-          <td style="border:1px solid #000;padding:5px 8px;text-align:right">${money(r[2])}</td>
-          <td style="border:1px solid #000;padding:5px 8px;text-align:right;font-weight:700">${money(r[3])}</td>
+          <td style="border:1px solid #000;padding:4px 8px;text-align:center">${r[0]}</td>
+          <td style="border:1px solid #000;padding:4px 8px;text-align:right">${money(r[1])}</td>
+          <td style="border:1px solid #000;padding:4px 8px;text-align:right">${money(r[2])}</td>
+          <td style="border:1px solid #000;padding:4px 8px;text-align:right;font-weight:700">${money(r[3])}</td>
         </tr>
       `).join('');
 
       const prHtml=`
-        <div style="font-family:Arial,sans-serif;color:#000;max-width:550px;margin:0 auto">
-          <div style="border:2px solid #000;overflow:hidden">
+        <div style="font-family:Arial,sans-serif;color:#000;max-width:580px;margin:0 auto">
+          ${Print.head(true)}
+          <div style="border:2px solid #000;overflow:hidden;margin-top:10px">
             <div style="display:flex;border-bottom:2px solid #000;background:#f8fafc">
-              <div style="width:30%;border-right:2px solid #000;padding:8px;text-align:center;font-weight:700;font-size:14px">Month</div>
-              <div style="width:70%;padding:8px;text-align:center;font-weight:700;font-size:14px">${monthName(ym)}</div>
+              <div style="width:30%;border-right:2px solid #000;padding:6px;text-align:center;font-weight:700;font-size:13px">Month</div>
+              <div style="width:70%;padding:6px;text-align:center;font-weight:700;font-size:13px">${monthName(ym)}</div>
             </div>
-            <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <table style="width:100%;border-collapse:collapse;font-size:10.5px">
               <thead>
                 <tr style="background:#0f172a;color:#fff;font-weight:700">
-                  <th style="border:1px solid #000;padding:6px;width:28%;text-align:center">Date</th>
-                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Total Collection</th>
-                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Total Expense</th>
-                  <th style="border:1px solid #000;padding:6px;width:24%;text-align:right">Remaining</th>
+                  <th style="border:1px solid #000;padding:5px;width:28%;text-align:center">Date</th>
+                  <th style="border:1px solid #000;padding:5px;width:24%;text-align:right">Total Collection</th>
+                  <th style="border:1px solid #000;padding:5px;width:24%;text-align:right">Total Expense</th>
+                  <th style="border:1px solid #000;padding:5px;width:24%;text-align:right">Remaining</th>
                 </tr>
               </thead>
               <tbody>${prBodyRows}</tbody>
               <tfoot>
                 <tr style="border-top:2px solid #000;font-weight:700;background:#f1f5f9">
-                  <td style="border:1px solid #000;padding:6px;text-align:center">Total:</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumIn)}</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumOut)}</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(sumBal)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:center">Total:</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(sumIn)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(sumOut)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(sumBal)}</td>
                 </tr>
                 <tr style="font-weight:700;background:#fff">
-                  <td style="border:1px solid #000;padding:6px;text-align:center">Average</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgIn)}</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgOut)}</td>
-                  <td style="border:1px solid #000;padding:6px;text-align:right">${money(avgBal)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:center">Average</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(avgIn)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(avgOut)}</td>
+                  <td style="border:1px solid #000;padding:5px;text-align:right">${money(avgBal)}</td>
                 </tr>
               </tfoot>
             </table>
