@@ -1,8 +1,8 @@
 ﻿{
-  "version": "2.5.5",
+  "version": "2.5.6",
   "name": "AMAZ Diagnostic",
   "released": "2026-11-27",
   "changelog": [
-    "Salary Sheet Print: Fixed ReferenceError: pTotEarned is not defined for flawless 2-page printout with repeating header, logo, and signature blocks"
+    "Salary Sheet Print: Perfect compact 2-page layout (13 staff per page for 26 staff) with full header, logo, and title on both pages with zero spillover"
   ]
 }
