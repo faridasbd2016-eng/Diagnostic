@@ -1,10 +1,11 @@
 ﻿{
-  "version": "2.5.3",
+  "version": "2.5.4",
   "name": "AMAZ Diagnostic",
   "released": "2026-11-27",
   "changelog": [
-    "Salary Sheet & Staff Directory: Company Details and Logo now repeat at the top of every page in multi-page printing",
-    "Letterhead Layout: Company Logo is centered compactly right next to the Diagnostic Center name (matching Invoice style)",
-    "Print Flow: Instant 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog"
+    "Salary Sheet & Staff Directory: Every page now has the Diagnostic Center Logo, Name, Address, and Title with deterministic page pagination",
+    "Header Alignment: Center Logo is cleanly placed right beside the Bengali & English name with no awkward spacing (matching Invoice letterhead)",
+    "Salary Sheet Table: Every staff row has its own Department badge with clean column alignment (fixing broken cell on page 2)",
+    "Print Flow: Direct 1-click printing for Invoices, Test Reports, and Prescriptions without orientation dialog"
   ]
 }
