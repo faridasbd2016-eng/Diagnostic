@@ -1,8 +1,6 @@
 ﻿{
-  "version": "2.5.6",
-  "name": "AMAZ Diagnostic",
-  "released": "2026-11-27",
-  "changelog": [
-    "Salary Sheet Print: Perfect compact 2-page layout (13 staff per page for 26 staff) with full header, logo, and title on both pages with zero spillover"
-  ]
+  "version": "2.5.7",
+  "buildDate": "2026-11-27",
+  "name": "AMAZ Diagnostic - Diagnostic Center Management",
+  "notes": "Doctor Serial blank start, Inactive Doctor/Test/Medicine notification, 1-click Active/Inactive list toggle, Mobile menu font fix, Salary 35px signing room"
 }
