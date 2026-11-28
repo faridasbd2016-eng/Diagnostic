@@ -1,6 +1,6 @@
 ﻿{
-  "version": "2.5.7",
-  "buildDate": "2026-11-27",
+  "version": "2.5.8",
+  "buildDate": "2026-11-28",
   "name": "AMAZ Diagnostic - Diagnostic Center Management",
-  "notes": "Doctor Serial blank start, Inactive Doctor/Test/Medicine notification, 1-click Active/Inactive list toggle, Mobile menu font fix, Salary 35px signing room"
+  "notes": "1-click instant Report printing without Portrait/Landscape modal, Doctor Serial blank start, 1-click Active/Inactive toggle"
 }
