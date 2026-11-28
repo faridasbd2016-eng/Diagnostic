@@ -402,21 +402,6 @@ pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;max-hei
   }
 }
 </style>
-<style id="pad_report_compact_fit">
-  @media print {
-    .dpg .pbox { margin-bottom: 4px !important; font-size: 10.5px !important; }
-    .dpg .pbox td { padding: 2px 4px !important; line-height: 1.2 !important; }
-    .dpg .dept { margin: 4px 0 2px !important; font-size: 13px !important; padding: 2px 4px !important; }
-    .dpg .rp { margin-top: 3px !important; font-size: 10.5px !important; }
-    .dpg .rp th { padding: 2.5px 3px !important; font-size: 10.5px !important; }
-    .dpg .rp td { padding: 2px 3px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
-    .dpg .rp tr.tgap, .dpg .rp tr.tgapd { height: 2px !important; line-height: 2px !important; }
-    .dpg .sig { margin-top: auto !important; padding-top: 4px !important; margin-bottom: 2px !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-    .dpg .sig > div { font-size: 10px !important; }
-    .dpg .sig img { max-height: 36px !important; }
-    .dpg .rpt-clean-foot { break-inside: avoid !important; page-break-inside: avoid !important; }
-  }
-</style>
 </head>
 <body>
 <div id="login"></div>
@@ -425,8 +410,14 @@ pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;max-hei
 <script>
 'use strict';
 /* ============ AMAZ Diagnostic — Core ============ */
-const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'2.6.5'};
+const APP={name:'AMAZ Diagnostic',full:'Diagnostic Center Management System',ver:'2.6.6'};
 const CHANGELOG=[{v:'1.2.0',d:'2026-11-20',n:['Doctor portal: separate doctor login, own serial queue, view previous reports and prescriptions, e-prescription (drug list, templates, follow-up) and print','Tests advised by the doctor are added to the bill at reception in one click','Comparison with previous results (Delta check) with large-change alert','Critical value alert with notification log','Signature images: in settings and per user, placed automatically on Verify','QR code on reports and invoices','Online report portal: patients view reports on mobile and download PDF','Equipment and maintenance log (service / calibration reminders)','Cashier shift closing (note counting, short/excess, print)','PIN approval by Manager (over-limit discount, bill edit/cancel, report with due)','Business analysis (MIS): monthly comparison, trends, top tests/doctors, time and weekday analysis']},{v:'1.1.0',d:'2026-11-20',n:['New module: Corporate / Panel clients (auto discount, credit billing, bulk payment collection, statement)','New module: Staff and Salary (monthly salary sheet, payments go to accounts, print)','Service charge items (home collection, report copy): billed without report','WhatsApp messages: bill, report ready, due reminder, serial','Summary window after saving a bill (print / label / WhatsApp / new bill)','First-run setup wizard','Dashboard To-Do list (late reports, dues, backup reminder etc.)','Helpful tips on every page, font size control, menu button on mobile/tablet','Global search also finds patients (Ctrl+K)','Result entry: Save and Next, all tests of the same patient one after another']},{v:'1.0.0',d:'2026-11-20',n:['First release: patient registration and billing, lab worklist and result entry (auto flag and formula), report delivery, referrer commission, doctor serial, accounts and cash book, inventory (purchase, usage, auto reagent consumption), 16 reports, user roles and permissions, cloud sync, backup/restore','License system: 15-day trial, AMAZ1 license key (Settings → License), warning 10 days before expiry, 7-day grace period, PC count control (via cloud sync)']}];
+CHANGELOG.unshift({v:'2.6.6',d:'2026-11-28',n:[
+  'System Engine: Fixed JavaScript syntax to ensure instant flawless loading with zero blank screen',
+  'Uploaded Pad Test Reports: Strict 1-page compact layout preventing signature spillover and eliminating duplicate pad ribbon prints for CBC, Urine R/M/E, Biochemistry, and USG',
+  'Report Footer: In-flow clean footer attached below signature block, completely eliminating table text collision and overwriting',
+  'Invoice & Salary Sheet: 100% B&W Popular Diagnostic invoice format + 2-page full color executive salary sheet with bottom-pinned signatures'
+]});
 CHANGELOG.unshift({v:'2.6.5',d:'2026-11-28',n:[
   'Uploaded Pad Test Reports: Fixed bottom signature spillover — removed fixed .pfix collision that was overwriting bottom table rows, and set compact auto-fitting so CBC, Urine R/M/E, Biochemistry, and USG strictly fit on 1 single page with signatures',
   'Uploaded Pad Display: Pad ribbon prints strictly on its designated page, completely eliminating accidental second page pad ribbon duplicates',
@@ -3102,22 +3093,7 @@ const Print={
     }
 
     d.open();
-    d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(o.title||s.name)}</title><style>@page{size:${o.page||'A4'};margin:${o.margin||'10mm 12mm'}}${PRINT_CSS}</style><style id="pad_report_compact_fit">
-  @media print {
-    .dpg .pbox { margin-bottom: 4px !important; font-size: 10.5px !important; }
-    .dpg .pbox td { padding: 2px 4px !important; line-height: 1.2 !important; }
-    .dpg .dept { margin: 4px 0 2px !important; font-size: 13px !important; padding: 2px 4px !important; }
-    .dpg .rp { margin-top: 3px !important; font-size: 10.5px !important; }
-    .dpg .rp th { padding: 2.5px 3px !important; font-size: 10.5px !important; }
-    .dpg .rp td { padding: 2px 3px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
-    .dpg .rp tr.tgap, .dpg .rp tr.tgapd { height: 2px !important; line-height: 2px !important; }
-    .dpg .sig { margin-top: auto !important; padding-top: 4px !important; margin-bottom: 2px !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-    .dpg .sig > div { font-size: 10px !important; }
-    .dpg .sig img { max-height: 36px !important; }
-    .dpg .rpt-clean-foot { break-inside: avoid !important; page-break-inside: avoid !important; }
-  }
-</style>
-</head><body>${finalBody}</body></html>`);
+    d.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(o.title||s.name)}</title><style>@page{size:${o.page||'A4'};margin:${o.margin||'10mm 12mm'}}${PRINT_CSS}</style></head><body>${finalBody}</body></html>`);
     d.close();
     let done=false;
     const fire=()=>{
@@ -3460,21 +3436,6 @@ const Print={
     box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
   }
 }
-</style>
-<style id="pad_report_compact_fit">
-  @media print {
-    .dpg .pbox { margin-bottom: 4px !important; font-size: 10.5px !important; }
-    .dpg .pbox td { padding: 2px 4px !important; line-height: 1.2 !important; }
-    .dpg .dept { margin: 4px 0 2px !important; font-size: 13px !important; padding: 2px 4px !important; }
-    .dpg .rp { margin-top: 3px !important; font-size: 10.5px !important; }
-    .dpg .rp th { padding: 2.5px 3px !important; font-size: 10.5px !important; }
-    .dpg .rp td { padding: 2px 3px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
-    .dpg .rp tr.tgap, .dpg .rp tr.tgapd { height: 2px !important; line-height: 2px !important; }
-    .dpg .sig { margin-top: auto !important; padding-top: 4px !important; margin-bottom: 2px !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-    .dpg .sig > div { font-size: 10px !important; }
-    .dpg .sig img { max-height: 36px !important; }
-    .dpg .rpt-clean-foot { break-inside: avoid !important; page-break-inside: avoid !important; }
-  }
 </style>
 </head><body>${body}</body></html>`);d.close();
     let done=false;const fire=()=>{if(done)return;done=true;const ae=document.activeElement;try{f.contentWindow.focus();f.contentWindow.print()}catch(e){console.warn(e)}setTimeout(()=>{try{window.focus();if(ae&&ae.focus&&document.contains(ae))ae.focus()}catch(e){}},30);setTimeout(()=>f.remove(),2000)};
@@ -3900,21 +3861,6 @@ function viewReportModal(billId,ids,title){const h=Print.reportHtml(billId,ids);
     box-shadow: 0 6px 20px rgba(13,148,136,0.45) !important;
   }
 }
-</style>
-<style id="pad_report_compact_fit">
-  @media print {
-    .dpg .pbox { margin-bottom: 4px !important; font-size: 10.5px !important; }
-    .dpg .pbox td { padding: 2px 4px !important; line-height: 1.2 !important; }
-    .dpg .dept { margin: 4px 0 2px !important; font-size: 13px !important; padding: 2px 4px !important; }
-    .dpg .rp { margin-top: 3px !important; font-size: 10.5px !important; }
-    .dpg .rp th { padding: 2.5px 3px !important; font-size: 10.5px !important; }
-    .dpg .rp td { padding: 2px 3px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
-    .dpg .rp tr.tgap, .dpg .rp tr.tgapd { height: 2px !important; line-height: 2px !important; }
-    .dpg .sig { margin-top: auto !important; padding-top: 4px !important; margin-bottom: 2px !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-    .dpg .sig > div { font-size: 10px !important; }
-    .dpg .sig img { max-height: 36px !important; }
-    .dpg .rpt-clean-foot { break-inside: avoid !important; page-break-inside: avoid !important; }
-  }
 </style>
 </head><body>${h.pages}</body></html>`;
   $('#vr_p',m).onclick=()=>Print.report(billId,ids)}
@@ -9794,21 +9740,6 @@ const PDFX={MM:96/25.4,next(){Print._pdf=true;clearTimeout(this._t);this._t=setT
   }
 }
 </style>
-<style id="pad_report_compact_fit">
-  @media print {
-    .dpg .pbox { margin-bottom: 4px !important; font-size: 10.5px !important; }
-    .dpg .pbox td { padding: 2px 4px !important; line-height: 1.2 !important; }
-    .dpg .dept { margin: 4px 0 2px !important; font-size: 13px !important; padding: 2px 4px !important; }
-    .dpg .rp { margin-top: 3px !important; font-size: 10.5px !important; }
-    .dpg .rp th { padding: 2.5px 3px !important; font-size: 10.5px !important; }
-    .dpg .rp td { padding: 2px 3px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
-    .dpg .rp tr.tgap, .dpg .rp tr.tgapd { height: 2px !important; line-height: 2px !important; }
-    .dpg .sig { margin-top: auto !important; padding-top: 4px !important; margin-bottom: 2px !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-    .dpg .sig > div { font-size: 10px !important; }
-    .dpg .sig img { max-height: 36px !important; }
-    .dpg .rpt-clean-foot { break-inside: avoid !important; page-break-inside: avoid !important; }
-  }
-</style>
 </head><body style="margin:0;width:${cw}mm">${body}</body></html>`);d.close();
       await new Promise(r=>setTimeout(r,60));await Promise.all([...d.images].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,3000)})));try{await d.fonts.ready}catch(e){}
       const raw=[...d.querySelectorAll('style')].map(s=>s.textContent).join('\n');const css=raw.replace(/@media\s+print/g,'@media all').replace(/(^|[\s,}])body(?=[\s,{.:#\[])/g,'$1.pdfbody').replace(/@page[^{]*\{(?:[^{}]|\{[^{}]*\})*\}/g,'');
@@ -13297,7 +13228,7 @@ const DP_DIM={A4:[210,297],A5:[148,210],Letter:[215.9,279.4],Legal:[215.9,355.6]
 const dpDims=pg=>{pg=String(pg||'A4').trim();if(/auto|landscape/i.test(pg))return null;const m=/^([\d.]+)mm\s+([\d.]+)mm/.exec(pg);if(m)return [num(m[1]),num(m[2])];return DP_DIM[pg.split(/\s+/)[0]]||null};
 const dpPic=k=>{const P=(S().pad||{})[k];if(!k||!P||!P.on||!P.img)return '';return Media.get('padimg_'+k)||Media.get('padimg')};
 const dpMargins=m=>{const a=String(m||'10mm').trim().split(/\s+/).map(x=>num(parseFloat(x)));if(a.length===1)return [a[0],a[0],a[0],a[0]];if(a.length===2)return [a[0],a[1],a[0],a[1]];if(a.length===3)return [a[0],a[1],a[2],a[1]];return a.slice(0,4)};
-const DP_CSS='<style>.dpg{position:relative;box-sizing:border-box!important;overflow:hidden!important;page-break-inside:avoid!important;break-inside:avoid!important;page-break-after:always!important;break-after:page!important}.dpg>.dpimg{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;object-fit:fill;pointer-events:none}.dpg>*:not(.dpimg):not(style){position:relative;z-index:1;max-height:100%}</style>';
+const DP_CSS='<style>.dpg{position:relative;box-sizing:border-box!important;overflow:hidden!important;page-break-inside:avoid!important;break-inside:avoid!important;page-break-after:always!important;break-after:page!important}.dpg>.dpimg{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;object-fit:fill;pointer-events:none}.dpg>*:not(.dpimg):not(style){position:relative;z-index:1;max-height:100%}.dpg .pbox{margin-bottom:4px!important;font-size:10.5px!important}.dpg .pbox td{padding:2px 4px!important;line-height:1.2!important}.dpg .dept{margin:4px 0 2px!important;font-size:13px!important;padding:2px 4px!important}.dpg .rp{margin-top:3px!important;font-size:10.5px!important}.dpg .rp th{padding:2.5px 3px!important;font-size:10.5px!important}.dpg .rp td{padding:2px 3px!important;font-size:10.5px!important;line-height:1.15!important}.dpg .rp tr.tgap,.dpg .rp tr.tgapd{height:2px!important;line-height:2px!important}.dpg .sig{margin-top:auto!important;padding-top:4px!important;margin-bottom:2px!important;break-inside:avoid!important;page-break-inside:avoid!important}.dpg .sig>div{font-size:10px!important}.dpg .sig img{max-height:36px!important}.dpg .rpt-clean-foot{break-inside:avoid!important;page-break-inside:avoid!important}</style>';
 function dpadApply(body,o){const dim=dpDims(o.page);if(!dim)return {body,o};const H=(dim[1]-0.6).toFixed(1);const m=dpMargins(o.margin);
   if(body.includes('data-pk=')){const tp=document.createElement('template');tp.innerHTML=body;const pages=[...tp.content.querySelectorAll('.page[data-pk]')];if(!pages.some(pg=>dpPic(pg.dataset.pk)))return {body,o};
     let fb=null;pages.forEach(pg=>{const k=pg.dataset.pk,pp=padOf(k),t=pp.on?pp.t:10,b=pp.on?pp.b:10;if(fb===null)fb=[b,m[1],m[3]];const pic=dpPic(k);
@@ -13307,10 +13238,8 @@ function dpadApply(body,o){const dim=dpDims(o.page);if(!dim)return {body,o};cons
     body=DP_CSS+`<style>@page{margin:0}@page padpath{margin:0}@page padrad{margin:0}</style>`+tp.innerHTML;return {body,o:{...o,margin:'0'}}}
   if(body.includes('class="page"')||body.includes('class="lbl"'))return {body,o};
   const pic=dpPic(Print._pk);if(!pic)return {body,o};
-  return {body:DP_CSS+`<div class="dpg" style="height:${H}mm;max-height:${H}mm;padding:${m[0]}mm ${m[1]}mm ${m[2]}mm ${m[3]}mm;box-sizing:border-box;overflow:hidden;page-break-inside:avoid;break-inside:avoid"><img class="dpimg" src="${pic}" alt="">${body}</div>`,o:{...o,margin:'0'}}}
-  if(body.includes('class="page"')||body.includes('class="lbl"'))return {body,o};
-  const pic=dpPic(Print._pk);if(!pic)return {body,o};
-  return {body:DP_CSS+`<div class="dpg" style="height:${H}mm;padding:${m[0]}mm ${m[1]}mm ${m[2]}mm ${m[3]}mm"><img class="dpimg" src="${pic}" alt="">${body}</div>`,o:{...o,margin:'0'}}}
+  return {body:DP_CSS+`<div class="dpg" style="height:${H}mm;max-height:${H}mm;padding:${m[0]}mm ${m[1]}mm ${m[2]}mm ${m[3]}mm;box-sizing:border-box;overflow:hidden;page-break-inside:avoid;break-inside:avoid"><img class="dpimg" src="${pic}" alt="">${body}</div>`,o:{...o,margin:'0'}}
+}
 /* read a picture as JPEG, and find where the pad's top and bottom design end (mm on A4) */
 function padPicLoad(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=()=>rej(fr.error);fr.onload=()=>{const img=new Image();img.onerror=()=>rej(new Error('Not a picture'));img.onload=()=>{
   const W=Math.min(1240,img.width),Hh=Math.round(img.height*W/img.width);const c=document.createElement('canvas');c.width=W;c.height=Hh;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,Hh);x.drawImage(img,0,0,W,Hh);
