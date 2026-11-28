@@ -1,5 +1,5 @@
-﻿// Service Worker for AMAZ Diagnostic PWA (v2.6.0)
-const CACHE_NAME = 'amaz-diagnostic-v24';
+﻿// Service Worker for AMAZ Diagnostic PWA (v2.6.1)
+const CACHE_NAME = 'amaz-diagnostic-v25';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
