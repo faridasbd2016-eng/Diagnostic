@@ -1,6 +1,5 @@
 ﻿{
-  "version": "2.6.2",
+  "version": "2.6.4",
   "buildDate": "2026-11-28",
-  "name": "AMAZ Diagnostic - Diagnostic Center Management",
-  "notes": "Full color corporate Salary Sheet (Popular/Labaid style), 16 staff on Page 1, signatures pinned to absolute page bottom"
+  "minAppVersion": "2.0.0"
 }
